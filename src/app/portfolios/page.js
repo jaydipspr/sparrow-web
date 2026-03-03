@@ -6,6 +6,12 @@ import PortfoliosPrimary from "@/components/sections/portfolios/PortfoliosPrimar
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
+
+export const metadata = {
+	title: "Portfolio - Sparrow Softtech | Innovation Unlimited",
+	description: "Explore our portfolio of successful projects. See how Sparrow Softtech delivers innovative technology solutions across various industries.",
+};
+
 export default function Portfolios() {
 	return (
 		<div>

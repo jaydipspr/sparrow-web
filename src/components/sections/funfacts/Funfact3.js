@@ -32,7 +32,7 @@ const Funfact3 = () => {
 										<i className="tji-phone"></i>
 									</span>
 									<Link className="number" href="tel:18884521505">
-										<span>1-888-452-1505</span>
+										<span>+91 9409354326</span>
 									</Link>
 								</div>
 							</div>

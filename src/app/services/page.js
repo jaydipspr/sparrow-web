@@ -9,6 +9,12 @@ import ServicesPrimary from "@/components/sections/services/ServicesPrimary";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
+
+export const metadata = {
+	title: "Services - Sparrow Softtech | Innovation Unlimited",
+	description: "Explore our comprehensive technology services including Artificial Intelligence, Industrial Automation, Robotics, Embedded Systems, Software Development, IoT, and more.",
+};
+
 export default function Services() {
 	return (
 		<div>

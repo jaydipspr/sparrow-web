@@ -6,8 +6,26 @@ import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
 import getPortfolio from "@/libs/getPortfolio";
+import getAPortfolio from "@/libs/getAPortfolio";
 import { notFound } from "next/navigation";
 const items = getPortfolio();
+
+export async function generateMetadata({ params }) {
+	const { id } = await params;
+	const portfolio = getAPortfolio(id);
+	
+	if (!portfolio || !portfolio.title) {
+		return {
+			title: "Portfolio - Sparrow Softtech | Innovation Unlimited",
+			description: "Explore our portfolio of successful projects.",
+		};
+	}
+
+	return {
+		title: `${portfolio.title} - Portfolio | Sparrow Softtech | Innovation Unlimited`,
+		description: portfolio.shortDesc || portfolio.desc || `View ${portfolio.title} project from Sparrow Softtech portfolio.`,
+	};
+}
 
 export default async function PortfolioDetails({ params }) {
 	const { id } = await params;

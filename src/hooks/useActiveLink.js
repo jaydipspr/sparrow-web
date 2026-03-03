@@ -38,7 +38,7 @@ export default function useActiveLink() {
 	const currentPathname = usePathname();
 	const makeActiveLink = modifiableObject => {
 		const { name } = modifiableObject;
-		const isPages = name === "Pages" ? true : false;
+		const isPages = name === "Pages" || name === "Technology" ? true : false;
 		const currentObject = {
 			...modifiableObject,
 			isActive: checkActive(modifiableObject, currentPathname, isPages),

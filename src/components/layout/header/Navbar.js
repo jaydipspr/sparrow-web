@@ -1,3 +1,4 @@
+"use client";
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import useActiveLink from "@/hooks/useActiveLink";
 import getNavItems from "@/libs/getNavItems";
@@ -199,16 +200,16 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 						</ul>
 					</li>
 					<li
-						className={`has-dropdown ${
+						className={`${portfolioNav?.submenu?.length ? "has-dropdown" : ""} ${
 							portfolioNav?.isActive ? "current-menu-ancestor" : ""
 						}`}
 					>
 						<Link href={portfolioNav?.path ? portfolioNav?.path : "#"}>
 							{portfolioNav?.name}
 						</Link>
-						<ul className="sub-menu">
-							{portfolioNav?.submenu?.length
-								? portfolioNav?.submenu?.map((item, idx) => (
+						{portfolioNav?.submenu?.length ? (
+							<ul className="sub-menu">
+								{portfolioNav?.submenu?.map((item, idx) => (
 										<li
 											key={idx}
 											className={item?.isActive ? "current-menu-item" : ""}
@@ -217,32 +218,32 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 												{item?.name ? item?.name : "Portfolio"}
 											</Link>
 										</li>
-								  ))
-								: ""}
-						</ul>
+								  ))}
+							</ul>
+						) : null}
 					</li>
 					<li
-						className={`has-dropdown ${
+						className={`${blogNav?.submenu?.length ? "has-dropdown" : ""} ${
 							blogNav?.isActive ? "current-menu-ancestor" : ""
 						}`}
 					>
 						<Link href={blogNav?.path ? blogNav?.path : "#"}>
 							{blogNav?.name}
 						</Link>
-						<ul className="sub-menu">
-							{blogNav?.submenu?.length
-								? blogNav?.submenu?.map((item, idx) => (
+						{blogNav?.submenu?.length ? (
+							<ul className="sub-menu">
+								{blogNav?.submenu?.map((item, idx) => (
 										<li
 											key={idx}
 											className={item?.isActive ? "current-menu-item" : ""}
 										>
-											<Link href={item?.path ? item?.path : "/portfolios"}>
-												{item?.name ? item?.name : "Portfolio"}
+											<Link href={item?.path ? item?.path : "/blogs"}>
+												{item?.name ? item?.name : "Blog"}
 											</Link>
 										</li>
-								  ))
-								: ""}
-						</ul>
+								  ))}
+							</ul>
+						) : null}
 					</li>
 					<li className={contactNav?.isActive ? "current-menu-ancestor" : ""}>
 						<Link href={contactNav?.path ? contactNav?.path : "#"}>

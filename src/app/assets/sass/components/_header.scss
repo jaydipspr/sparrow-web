@@ -296,8 +296,15 @@ START: Theme Header CSS
 .site_logo {
 	.logo {
 		display: inline-block;
-		max-width: 136px;
+		max-width: 150px;
+		max-height: 60px;
 		width: 100%;
+		height: auto;
+		img {
+			max-height: 60px;
+			width: auto;
+			height: auto;
+		}
 	}
 }
 .menu-area {

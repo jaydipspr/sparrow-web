@@ -100,7 +100,7 @@ const Header = ({
 											<span className="call-icon">
 												<i className="tji-phone"></i>
 											</span>
-											<span className="call-text">1-888-452-1505</span>
+											<span className="call-text">+91 9409354326</span>
 										</Link>
 									) : headerType === 5 ? (
 										""

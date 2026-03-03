@@ -6,158 +6,133 @@
 	},
 	{
 		"id": 2,
-		"name": "Pages",
-		"path": "/about",
+		"name": "Technology",
+		"path": "/technology",
 		"submenu": [
 			{
 				"id": 1,
-				"name": "Main Pages",
+				"name": "Web Development",
 				"path": "#",
 				"items": [
-					{ "id": 1, "name": "About us", "path": "/about", "badge": null },
+					{ "id": 1, "name": "React.js", "path": "/technology/reactjs", "badge": "HOT" },
 					{
 						"id": 2,
-						"name": "Our history",
-						"path": "/history",
+						"name": "Node.js",
+						"path": "/technology/nodejs",
 						"badge": "HOT"
 					},
-					{ "id": 3, "name": "Team", "path": "/team", "badge": null },
+					{ "id": 3, "name": "Next.js", "path": "/technology/nextjs", "badge": "New" },
 					{
 						"id": 4,
-						"name": "Team details",
-						"path": "/team/1",
+						"name": "Vue.js",
+						"path": "/technology/vuejs",
 						"badge": null
 					},
 					{
 						"id": 5,
-						"name": "Careers",
-						"path": "/careers",
-						"badge": "New"
+						"name": "Angular",
+						"path": "/technology/angular",
+						"badge": null
 					},
 					{
 						"id": 6,
-						"name": "Careers details",
-						"path": "/careers/1",
-						"badge": null
+						"name": "TypeScript",
+						"path": "/technology/typescript",
+						"badge": "New"
 					},
 					{
 						"id": 7,
-						"name": "Pricing Plan",
-						"path": "/pricing-plan",
+						"name": "JavaScript",
+						"path": "/technology/javascript",
 						"badge": null
 					},
-					{ "id": 8, "name": "Feedbacks", "path": "#", "badge": null },
-					{ "id": 9, "name": "Faq", "path": "/faq", "badge": null },
-					{ "id": 10, "name": "Conatct", "path": "/contact", "badge": null }
+					{ "id": 8, "name": "Python", "path": "/technology/python", "badge": null },
+					{ "id": 9, "name": "PHP", "path": "/technology/php", "badge": null },
+					{ "id": 10, "name": "Laravel", "path": "/technology/laravel", "badge": null }
 				]
 			},
 			{
 				"id": 2,
-				"name": "Other pages",
+				"name": "Application Development",
 				"path": "#",
 				"items": [
-					{ "id": 1, "name": "Services", "path": "/services", "badge": null },
+					{ "id": 1, "name": "Flutter", "path": "/technology/flutter", "badge": "HOT" },
 					{
 						"id": 2,
-						"name": "Service details",
-						"path": "/services/1",
-						"badge": null
+						"name": "React Native",
+						"path": "/technology/react-native",
+						"badge": "HOT"
 					},
-					{
-						"id": 3,
-						"name": "Portfolios",
-						"path": "/portfolios",
-						"badge": null
-					},
+					{ "id": 3, "name": "Swift", "path": "/technology/swift", "badge": null },
 					{
 						"id": 4,
-						"name": "Portfolio details",
-						"path": "/portfolios/1",
+						"name": "Kotlin",
+						"path": "/technology/kotlin",
 						"badge": null
 					},
 					{
 						"id": 5,
-						"name": "Error 404",
-						"path": "/error",
+						"name": "Ionic",
+						"path": "/technology/ionic",
 						"badge": null
 					},
 					{
 						"id": 6,
-						"name": "Blog grid",
-						"path": "/blog-grid",
-						"badge": "NEW"
+						"name": "Xamarin",
+						"path": "/technology/xamarin",
+						"badge": null
 					},
 					{
 						"id": 7,
-						"name": "Blog standard",
-						"path": "/blogs",
+						"name": "NativeScript",
+						"path": "/technology/nativescript",
 						"badge": null
 					},
-					{
-						"id": 8,
-						"name": "Blog sidebar",
-						"path": "/blog-sidebar",
-						"badge": null
-					},
-					{
-						"id": 9,
-						"name": "Blog details",
-						"path": "/blogs/1",
-						"badge": null
-					},
-					{
-						"id": 10,
-						"name": "Term & conditions",
-						"path": "/terms-and-conditions",
-						"badge": null
-					}
+					{ "id": 8, "name": "Dart", "path": "/technology/dart", "badge": null },
+					{ "id": 9, "name": "Java", "path": "/technology/java", "badge": null },
+					{ "id": 10, "name": "C#", "path": "/technology/csharp", "badge": null }
 				]
 			},
 			{
 				"id": 3,
-				"name": "Shop pages",
-				"path": "/shop",
+				"name": "Backend & Database",
+				"path": "#",
 				"items": [
-					{ "id": 1, "name": "Shop", "path": "/shop", "badge": "HOT" },
+					{ "id": 1, "name": "MongoDB", "path": "/technology/mongodb", "badge": "HOT" },
 					{
 						"id": 2,
-						"name": "Shop details",
-						"path": "/shop/1",
+						"name": "PostgreSQL",
+						"path": "/technology/postgresql",
 						"badge": null
 					},
-					{ "id": 3, "name": "Cart", "path": "/cart", "badge": null },
+					{ "id": 3, "name": "MySQL", "path": "/technology/mysql", "badge": null },
 					{
 						"id": 4,
-						"name": "Checkout",
-						"path": "/checkout",
+						"name": "Redis",
+						"path": "/technology/redis",
 						"badge": null
 					},
 					{
 						"id": 5,
-						"name": "My account",
-						"path": "#",
+						"name": "Express.js",
+						"path": "/technology/expressjs",
 						"badge": null
 					},
 					{
 						"id": 6,
-						"name": "Wishlist",
-						"path": "/wishlist",
-						"badge": "NEW"
+						"name": "Django",
+						"path": "/technology/django",
+						"badge": "New"
 					},
 					{
 						"id": 7,
-						"name": "Login",
-						"path": "/login",
+						"name": "Firebase",
+						"path": "/technology/firebase",
 						"badge": null
 					},
-					{
-						"id": 8,
-						"name": "Registration",
-						"path": "/password",
-						"badge": null
-					},
-					{ "id": 9, "name": "Order confirm", "path": "#", "badge": null },
-					{ "id": 10, "name": "Coming soon", "path": "#", "badge": null }
+					{ "id": 8, "name": "AWS", "path": "/technology/aws", "badge": null },
+					{ "id": 9, "name": "Docker", "path": "/technology/docker", "badge": null },
+					{ "id": 10, "name": "Kubernetes", "path": "/technology/kubernetes", "badge": "New" }
 				]
 			}
 		]
@@ -169,89 +144,99 @@
 		"submenu": [
 			{
 				"id": 1,
-				"name": "Business Strategy Development",
+				"name": "Artificial Intelligence",
 				"icon": "tji-service-1",
 				"path": "/services/1"
 			},
 			{
 				"id": 2,
-				"name": "Customer Experience Solutions",
+				"name": "Industrial Automation",
 				"icon": "tji-service-2",
 				"path": "/services/2"
 			},
 			{
 				"id": 3,
-				"name": "Sustainability and ESG Consulting",
+				"name": "Robotics",
 				"icon": "tji-service-3",
 				"path": "/services/3"
 			},
 			{
 				"id": 4,
-				"name": "Training and Development Programs",
+				"name": "Embedded System Development",
 				"icon": "tji-service-4",
 				"path": "/services/4"
 			},
 			{
 				"id": 5,
-				"name": "IT Support & Maintenance",
+				"name": "Software Development",
 				"icon": "tji-service-5",
 				"path": "/services/5"
 			},
 			{
 				"id": 6,
-				"name": "Marketing Strategy & Campaigns",
+				"name": "Internet Of Things",
 				"icon": "tji-service-6",
 				"path": "/services/6"
+			},
+			{
+				"id": 7,
+				"name": "Product Innovation",
+				"icon": "tji-service-1",
+				"path": "/services/7"
+			},
+			{
+				"id": 8,
+				"name": "Process Optimization",
+				"icon": "tji-service-2",
+				"path": "/services/8"
+			},
+			{
+				"id": 9,
+				"name": "Project Management",
+				"icon": "tji-service-3",
+				"path": "/services/9"
+			},
+			{
+				"id": 10,
+				"name": "3D Design",
+				"icon": "tji-service-4",
+				"path": "/services/10"
+			},
+			{
+				"id": 11,
+				"name": "Automation in Textile",
+				"icon": "tji-service-5",
+				"path": "/services/11"
+			},
+			{
+				"id": 12,
+				"name": "Automation in Chemical",
+				"icon": "tji-service-6",
+				"path": "/services/12"
+			},
+			{
+				"id": 13,
+				"name": "R & D",
+				"icon": "tji-service-1",
+				"path": "/services/13"
+			},
+			{
+				"id": 14,
+				"name": "Jobwork",
+				"icon": "tji-service-2",
+				"path": "/services/14"
 			}
 		]
 	},
 	{
 		"id": 4,
 		"name": "Portfolio",
-		"path": "/portfolios",
-		"submenu": [
-			{
-				"id": 1,
-				"name": "Portfolios",
-				"path": "/portfolios"
-			},
-			{
-				"id": 2,
-				"name": "Portfolio details",
-				"path": "/portfolios/1"
-			}
-		]
+		"path": "/portfolios"
 	},
 	{
 		"id": 5,
 		"name": "Blog",
-		"path": "/blogs",
-		"submenu": [
-			{
-				"id": 1,
-				"name": "Blog",
-				"path": "/blogs",
-				"badge": "NEW"
-			},
-			{
-				"id": 2,
-				"name": "Blog grid",
-				"path": "/blog-grid",
-				"badge": null
-			},
-			{
-				"id": 3,
-				"name": "Blog with sidebar",
-				"path": "/blog-sidebar",
-				"badge": null
-			},
-			{
-				"id": 4,
-				"name": "Blog details",
-				"path": "/blogs/1",
-				"badge": null
-			}
-		]
+		"path": "/blogs"
 	},
 	{
 		"id": 6,

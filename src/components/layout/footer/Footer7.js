@@ -129,15 +129,15 @@ const Footer7 = () => {
 												<span className="icon">
 													<i className="tji-phone-2"></i>
 												</span>
-												<span className="text">+1 (009) 544-7818</span>
+												<span className="text">+91 9409354326</span>
 											</Link>
 										</li>
 										<li>
-											<Link href="mailto:info@bexon.com">
+											<Link href="mailto:contact@sparrowsofttech.com">
 												<span className="icon">
 													<i className="tji-envelop-2"></i>
 												</span>
-												<span className="text">info@bexon.com</span>
+												<span className="text">contact@sparrowsofttech.com</span>
 											</Link>
 										</li>
 									</ul>

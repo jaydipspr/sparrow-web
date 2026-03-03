@@ -44,14 +44,14 @@ const MobileMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
 								</div>
 								<div className="contact-item">
 									<span className="subtitle">Email</span>
-									<Link className="contact-link" href="mailto:info@bexon.com">
-										info@bexon.com
+									<Link className="contact-link" href="mailto:contact@sparrowsofttech.com">
+										contact@sparrowsofttech.com
 									</Link>
 								</div>
 								<div className="contact-item">
 									<span className="subtitle">Location</span>
 									<span className="contact-link">
-										993 Renner Burg, West Rond, MT 94251-030
+										MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India.
 									</span>
 								</div>
 							</div>

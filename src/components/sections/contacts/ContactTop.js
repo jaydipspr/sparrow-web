@@ -26,7 +26,7 @@ const ContactTop = () => {
 								<i className="tji-location-3"></i>
 							</div>
 							<h3 className="contact-title">Our Location</h3>
-							<p>993 Renner Burg, West Rond, MT 94251-030</p>
+							<p>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India.</p>
 						</div>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-sm-6">
@@ -43,7 +43,7 @@ const ContactTop = () => {
 									<Link href="mailto:support@bexon.com">support@bexon.com</Link>
 								</li>
 								<li>
-									<Link href="mailto:info@bexon.com">info@bexon.com</Link>
+									<Link href="mailto:contact@sparrowsofttech.com">contact@sparrowsofttech.com</Link>
 								</li>
 							</ul>
 						</div>
@@ -59,7 +59,7 @@ const ContactTop = () => {
 							<h3 className="contact-title">Call us</h3>
 							<ul className="contact-list">
 								<li>
-									<Link href="tel:10095447818">+1 (009) 544-7818</Link>
+									<Link href="tel:10095447818">+91 9409354326</Link>
 								</li>
 								<li>
 									<Link href="tel:10098801810">+1 (009) 880-1810</Link>

@@ -47,7 +47,7 @@ const Faq4 = () => {
 								<span className="call-icon">
 									<i className="tji-phone"></i>
 								</span>
-								<span>1-888-452-1505</span>
+								<span>+91 9409354326</span>
 							</Link>
 						</div>
 					</div>

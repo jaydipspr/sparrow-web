@@ -524,6 +524,38 @@ START: Theme Header CSS
 	}
 }
 
+.header-profile-btn {
+	color: var(--tj-color-heading-primary);
+	font-size: 20px;
+	line-height: 1;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background-color: var(--tj-color-grey-1);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	i {
+		line-height: 1;
+		display: inline-flex;
+		transition: transform 0.3s;
+	}
+	@media #{$lg} {
+		font-size: 18px;
+		width: 44px;
+		height: 44px;
+	}
+	&:hover {
+		background-color: var(--tj-color-theme-primary);
+		color: var(--tj-color-common-white);
+		i {
+			transform: scale(1.1);
+		}
+	}
+}
+
 .header-contact {
 	font-size: 20px;
 	line-height: 1;

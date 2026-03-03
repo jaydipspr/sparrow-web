@@ -146,9 +146,19 @@ const Header = ({
 											</button>
 										</div>
 									)}
+									{/* Admin Profile Icon */}
+									<div className="header-profile">
+										<Link
+											href="/admin/login"
+											className="header-profile-btn"
+											title="Admin Login"
+										>
+											<i className="fa-light fa-user"></i>
+										</Link>
+									</div>
 									{headerType !== 5 ? (
 										<div className="header-button">
-											<ButtonPrimary text={"Let’s Talk"} url={"/contact"} />
+											<ButtonPrimary text={"Let's Talk"} url={"/contact"} />
 										</div>
 									) : (
 										""

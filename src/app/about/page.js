@@ -12,6 +12,11 @@ import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
 
+export const metadata = {
+	title: "About Us - Sparrow Softtech | Innovation Unlimited",
+	description: "Learn about Sparrow Softtech - A leading technology solutions provider specializing in AI, Automation, Robotics, Software Development, and more.",
+};
+
 export default function About() {
 	return (
 		<div>

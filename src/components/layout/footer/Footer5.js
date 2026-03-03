@@ -147,10 +147,10 @@ const Footer5 = () => {
 								<h5 className="title">Our Office</h5>
 								<div className="footer-contact-info">
 									<div className="contact-item">
-										<span>993 Renner Burg, West Rond, MT 94251-030, USA.</span>
+										<span>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India., USA.</span>
 									</div>
 									<div className="contact-item">
-										<Link href="tel:10095447818">P: +1 (009) 544-7818</Link>
+										<Link href="tel:10095447818">P: +91 9409354326</Link>
 										<Link href="mailto:support@bexon.com">
 											M: support@bexon.com
 										</Link>

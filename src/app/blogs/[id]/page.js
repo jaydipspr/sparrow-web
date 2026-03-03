@@ -6,8 +6,26 @@ import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
 import getBlogs from "@/libs/getBlogs";
+import getABlog from "@/libs/getABlog";
 import { notFound } from "next/navigation";
 const items = getBlogs();
+
+export async function generateMetadata({ params }) {
+	const { id } = await params;
+	const blog = getABlog(id);
+	
+	if (!blog || !blog.title) {
+		return {
+			title: "Blog - Sparrow Softtech | Innovation Unlimited",
+			description: "Read our latest blog posts about technology trends and industry insights.",
+		};
+	}
+
+	return {
+		title: `${blog.title} - Blog | Sparrow Softtech | Innovation Unlimited`,
+		description: blog.desc || blog.desc1 || `Read about ${blog.title} on Sparrow Softtech blog.`,
+	};
+}
 
 export default async function BlogDetails({ params }) {
 	const { id } = await params;

@@ -43,7 +43,7 @@ const TeamCard = ({ teamMember }) => {
 					<Link href={`/team/${id}`}>{name}</Link>
 				</h4>
 				<span className="designation">{desig}</span>
-				<Link className="mail-at" href="mailto:info@bexon.com">
+				<Link className="mail-at" href="mailto:contact@sparrowsofttech.com">
 					<i className="tji-at"></i>
 				</Link>
 			</div>

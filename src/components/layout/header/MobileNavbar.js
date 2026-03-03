@@ -201,12 +201,12 @@ const MobileNavbar = () => {
 									  ))
 									: ""}
 							</MobileMenuItem>
-							<MobileMenuItem
-								text={portfolioNav?.name}
-								url={portfolioNav?.path ? portfolioNav?.path : "#"}
-							>
-								{portfolioNav?.submenu?.length
-									? portfolioNav?.submenu?.map((item, idx) => (
+							{portfolioNav?.submenu?.length ? (
+								<MobileMenuItem
+									text={portfolioNav?.name}
+									url={portfolioNav?.path ? portfolioNav?.path : "#"}
+								>
+									{portfolioNav?.submenu?.map((item, idx) => (
 											<li
 												key={idx}
 												className={item?.isActive ? "current-menu-item" : ""}
@@ -215,26 +215,38 @@ const MobileNavbar = () => {
 													{item?.name ? item?.name : "Portfolio"}
 												</Link>
 											</li>
-									  ))
-									: ""}
-							</MobileMenuItem>
-							<MobileMenuItem
-								text={blogNav?.name}
-								url={blogNav?.path ? blogNav?.path : "#"}
-							>
-								{blogNav?.submenu?.length
-									? blogNav?.submenu?.map((item, idx) => (
+									  ))}
+								</MobileMenuItem>
+							) : (
+								<li>
+									<Link href={portfolioNav?.path ? portfolioNav?.path : "#"}>
+										{portfolioNav?.name}
+									</Link>
+								</li>
+							)}
+							{blogNav?.submenu?.length ? (
+								<MobileMenuItem
+									text={blogNav?.name}
+									url={blogNav?.path ? blogNav?.path : "#"}
+								>
+									{blogNav?.submenu?.map((item, idx) => (
 											<li
 												key={idx}
 												className={item?.isActive ? "current-menu-item" : ""}
 											>
-												<Link href={item?.path ? item?.path : "/portfolios"}>
-													{item?.name ? item?.name : "Portfolio"}
+												<Link href={item?.path ? item?.path : "/blogs"}>
+													{item?.name ? item?.name : "Blog"}
 												</Link>
 											</li>
-									  ))
-									: ""}
-							</MobileMenuItem>
+									  ))}
+								</MobileMenuItem>
+							) : (
+								<li>
+									<Link href={blogNav?.path ? blogNav?.path : "#"}>
+										{blogNav?.name}
+									</Link>
+								</li>
+							)}
 							<li className="mean-last">
 								<Link href={contactNav?.path ? contactNav?.path : "#"}>
 									{" "}

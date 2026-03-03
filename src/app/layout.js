@@ -32,8 +32,8 @@ const headingFont = Mona_Sans({
 });
 
 export const metadata = {
-	title: "Bexon - Corporate Business React NextJs Template",
-	description: "Bexon - Corporate Business React NextJs Template",
+	title: "Sparrow Softtech - Innovation Unlimited",
+	description: "Sparrow Softtech - Empowering Your Business with Smart Solutions. We provide innovative technology solutions including AI, Automation, Robotics, Software Development, and more.",
 };
 
 export default function RootLayout({ children }) {

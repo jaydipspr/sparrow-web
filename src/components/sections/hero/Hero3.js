@@ -37,7 +37,7 @@ const Hero3 = () => {
 								<ButtonPrimary text={"Learn More"} url={"/contact"} />
 								<Link className="number" href="tel:18884521505">
 									<i className="tji-phone"></i>
-									<span>1-888-452-1505</span>
+									<span>+91 9409354326</span>
 								</Link>
 							</div>
 						</div>

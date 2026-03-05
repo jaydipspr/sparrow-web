@@ -8,12 +8,13 @@ const ServiceDetailsMain = ({ currentItemId }) => {
 	const currentId = currentItemId;
 	const { prevId, nextId, currentItem, isPrevItem, isNextItem } =
 		getPreviousNextItem(items, currentId);
-	const { title } = currentItem || {};
+	const { name, title } = currentItem || {};
+	const displayTitle = title || name || "Service Details";
 	return (
 		<div>
 			<HeroInner
-				title={title ? title : "Service Details"}
-				text={title ? title : "Service Details"}
+				title={displayTitle}
+				text={displayTitle}
 				breadcrums={[{ name: "Services", path: "/services" }]}
 			/>
 			<ServicesDetailsPrimary

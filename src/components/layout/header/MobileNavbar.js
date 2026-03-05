@@ -3,6 +3,7 @@ import getNavItems from "@/libs/getNavItems";
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenuItem from "./MobileMenuItem";
+import TechnologyDropdownTeam from "./TechnologyDropdownTeam";
 
 const MobileNavbar = () => {
 	const navItems = getNavItems();
@@ -139,31 +140,7 @@ const MobileNavbar = () => {
 													</div>
 											  ))
 											: ""}
-										<div className="col-12 col-lg-3 mega-menu-pages-single">
-											<div className="mega-menu-pages-single-inner">
-												<div className="feature-box">
-													<div className="feature-content">
-														<h2 className="title">Modern</h2>
-														<span>Home Makeover</span>
-														<Link
-															className="read-more feature-contact"
-															href="tel:8321890640"
-														>
-															<i className="tji-phone-3"></i>
-															<span>+8 (321) 890-640</span>
-														</Link>
-													</div>
-													<div className="feature-images">
-														<Image
-															src="/images/service/service-ad.webp"
-															alt=""
-															width={370}
-															height={370}
-														/>
-													</div>
-												</div>
-											</div>
-										</div>
+										<TechnologyDropdownTeam />
 									</div>
 								</li>
 							</MobileMenuItem>

@@ -5,14 +5,12 @@ import { authenticateAdmin } from "@/middleware/auth";
 export async function GET(request) {
 	try {
 		const admin = await authenticateAdmin(request);
-
 		if (!admin) {
 			return NextResponse.json(
 				{ error: "Unauthorized. Please login." },
 				{ status: 401 }
 			);
 		}
-
 		return NextResponse.json({
 			success: true,
 			data: {

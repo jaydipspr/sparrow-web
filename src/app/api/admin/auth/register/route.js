@@ -6,10 +6,8 @@ import Admin from "@/models/Admin";
 export async function POST(request) {
 	try {
 		await connectDB();
-
 		const body = await request.json();
 		const { email, password } = body;
-
 		// Validation
 		if (!email || !password) {
 			return NextResponse.json(
@@ -17,23 +15,19 @@ export async function POST(request) {
 				{ status: 400 }
 			);
 		}
-
 		// Check if admin already exists
 		const existingAdmin = await Admin.findOne({ email });
-
 		if (existingAdmin) {
 			return NextResponse.json(
 				{ error: "Admin with this email already exists" },
 				{ status: 400 }
 			);
 		}
-
 		// Create new admin
 		const admin = await Admin.create({
 			email,
 			password,
 		});
-
 		return NextResponse.json(
 			{
 				success: true,
@@ -56,7 +50,6 @@ export async function POST(request) {
 				{ status: 400 }
 			);
 		}
-
 		return NextResponse.json(
 			{ error: "Failed to create admin", details: error.message },
 			{ status: 500 }

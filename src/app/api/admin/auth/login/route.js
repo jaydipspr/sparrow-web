@@ -10,10 +10,8 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 export async function POST(request) {
 	try {
 		await connectDB();
-
 		const body = await request.json();
 		const { email, password } = body;
-
 		// Validation
 		if (!email || !password) {
 			return NextResponse.json(
@@ -21,27 +19,22 @@ export async function POST(request) {
 				{ status: 400 }
 			);
 		}
-
 		// Find admin by email and include password
 		const admin = await Admin.findOne({ email }).select("+password");
-
 		if (!admin) {
 			return NextResponse.json(
 				{ error: "Invalid email or password" },
 				{ status: 401 }
 			);
 		}
-
 		// Compare password
 		const isPasswordValid = await admin.comparePassword(password);
-
 		if (!isPasswordValid) {
 			return NextResponse.json(
 				{ error: "Invalid email or password" },
 				{ status: 401 }
 			);
 		}
-
 		// Generate JWT token
 		const token = jwt.sign(
 			{
@@ -53,7 +46,6 @@ export async function POST(request) {
 				expiresIn: JWT_EXPIRES_IN,
 			}
 		);
-
 		// Return success response with token
 		return NextResponse.json(
 			{

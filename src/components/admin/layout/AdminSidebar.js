@@ -44,24 +44,30 @@ const AdminSidebar = ({ isOpen, onClose }) => {
 		},
 		{
 			id: 4,
+			title: "Technology",
+			icon: "fa-light fa-microchip",
+			path: "/admin/technology",
+		},
+		{
+			id: 5,
 			title: "Portfolio",
 			icon: "fa-light fa-folder-open",
 			path: "/admin/portfolio",
 		},
 		{
-			id: 5,
+			id: 6,
 			title: "Contacts",
 			icon: "fa-light fa-envelope",
 			path: "/admin/contacts",
 		},
 		{
-			id: 6,
+			id: 7,
 			title: "Team",
 			icon: "fa-light fa-users",
 			path: "/admin/team",
 		},
 		{
-			id: 7,
+			id: 8,
 			title: "Settings",
 			icon: "fa-light fa-gear",
 			path: "/admin/settings",

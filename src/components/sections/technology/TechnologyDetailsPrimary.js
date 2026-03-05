@@ -3,6 +3,7 @@ import BootstrapWrapper from "@/components/shared/wrappers/BootstrapWrapper";
 import Image from "next/image";
 import Link from "next/link";
 import CtaSidebar from "../cta/CtaSidebar";
+import TechnologyTeamSection from "./TechnologyTeamSection";
 
 const TechnologyDetailsPrimary = ({ option }) => {
 	const {

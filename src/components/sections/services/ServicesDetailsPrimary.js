@@ -14,7 +14,8 @@ const ServicesDetailsPrimary = ({ option }) => {
 		prevId,
 		nextId,
 	} = option || {};
-	const { title, titleLarge, id, iconName, img } = currentItem || {};
+	const { name, title, id, iconName, img, description, points, desc, desc1, desc2, desc3 } = currentItem || {};
+	const displayTitle = title || name || "Service Details";
 	const sidebarItems = items?.slice(0, 6);
 	return (
 		<section className="tj-service-area section-gap">
@@ -22,37 +23,59 @@ const ServicesDetailsPrimary = ({ option }) => {
 				<div className="row row-gap-5">
 					<div className="col-lg-8">
 						<div className="post-details-wrapper">
-							<div className="blog-images wow fadeInUp" data-wow-delay=".1s">
-								<Image
-									src="/images/service/service-details.webp"
-									alt="Images"
-									width={870}
-									height={450}
-									style={{ height: "auto" }}
-								/>
-							</div>
+							{img && (
+								<div className="blog-images wow fadeInUp" data-wow-delay=".1s">
+									<Image
+										src={img}
+										alt={displayTitle}
+										width={750}
+										height={450}
+										style={{ width: "100%", height: "auto", maxHeight: "450px", objectFit: "cover" }}
+									/>
+								</div>
+							)}
 							<h2 className="title title-anim">
-								Transforming Customer: Tailored Solutions for Experiences.
+								{displayTitle}
 							</h2>
 							<div className="blog-text">
-								<p className="wow fadeInUp" data-wow-delay=".3s">
-									Recognize that exceptional customer experiences are at the
-									heart of every successful business. Our Customer Experience
-									Solutions are crafted to help you transform every interaction
-									your customers have with your brand into a meaningful and
-									positive experience. We believe that understanding the
-									customer journey and providing personalized, seamless
-									experiences can significantly enhance customer loyalty,
-									satisfaction, and lifetime value.Our approach to customer
-									experience is comprehensive and data-driven.
-								</p>
-								<p className="wow fadeInUp" data-wow-delay=".3s">
-									Our approach to customer experience is comprehensive and
-									data-driven. We begin by assessing your current customer
-									touchpoints, identifying areas for improvement, and using
-									insights to develop strategies that meet your customers’
-									evolving needs. From optimizing digital platforms.
-								</p>
+								{description && (
+									<p className="wow fadeInUp" data-wow-delay=".3s">
+										{description}
+									</p>
+								)}
+								{/* Backward compatibility with old fields */}
+								{!description && desc && (
+									<p className="wow fadeInUp" data-wow-delay=".3s">
+										{desc}
+									</p>
+								)}
+								{!description && desc1 && (
+									<p className="wow fadeInUp" data-wow-delay=".3s">
+										{desc1}
+									</p>
+								)}
+								{!description && desc2 && (
+									<p className="wow fadeInUp" data-wow-delay=".3s">
+										{desc2}
+									</p>
+								)}
+								{!description && desc3 && (
+									<p className="wow fadeInUp" data-wow-delay=".3s">
+										{desc3}
+									</p>
+								)}
+								{points && points.length > 0 && (
+									<ul className="wow fadeInUp" data-wow-delay=".3s">
+										{points.map((point, index) => (
+											<li key={index}>
+												<span>
+													<i className="tji-check"></i>
+												</span>
+												{point}
+											</li>
+										))}
+									</ul>
+								)}
 								<ul className="wow fadeInUp" data-wow-delay=".3s">
 									<li>
 										<span>
@@ -97,50 +120,6 @@ const ServicesDetailsPrimary = ({ option }) => {
 										Proactive Engagement
 									</li>
 								</ul>
-								<div className="images-wrap">
-									<div className="row">
-										<div className="col-sm-6">
-											<div
-												className="image-box wow fadeInUp"
-												data-wow-delay=".3s"
-											>
-												<Image
-													src="/images/service/service-3.webp"
-													alt="Image"
-													width={420}
-													height={420}
-													style={{ height: "auto" }}
-												/>
-											</div>
-										</div>
-										<div className="col-sm-6">
-											<div
-												className="image-box wow fadeInUp"
-												data-wow-delay=".5s"
-											>
-												<Image
-													src="/images/service/service-4.webp"
-													alt="Image"
-													width={420}
-													height={420}
-													style={{ height: "auto" }}
-												/>
-											</div>
-										</div>
-									</div>
-								</div>
-								<h3 className="wow fadeInUp" data-wow-delay=".3s">
-									Our Range of Customer Services
-								</h3>
-								<p className="wow fadeInUp" data-wow-delay=".3s">
-									At Bexon, we don't just focus on solving customer problems—we
-									focus on creating experiences that delight and build lasting
-									relationships. Whether it's through improving customer service
-									operations, leveraging technology, or designing more engaging
-									digital experiences, our team is here to help you exceed your
-									customers' expectations every time. We help you understand
-									your customers deeply, optimize their experience.
-								</p>
 								<div className="details-content-box">
 									<div
 										className="service-details-item wow fadeInUp"
@@ -439,13 +418,13 @@ const ServicesDetailsPrimary = ({ option }) => {
 								<h4 className="widget-title">More Services</h4>
 								<ul>
 									{sidebarItems?.length
-										? sidebarItems?.map(({ shortTitle, id }, idx) => (
+										? sidebarItems?.map(({ name, title, id }, idx) => (
 												<li key={idx}>
 													<Link
 														className={`${currentId === id ? "active" : ""}`}
 														href={`/services/${id}`}
 													>
-														{shortTitle}
+														{title || name}
 														<span className="icon">
 															<i className="tji-arrow-right"></i>
 														</span>

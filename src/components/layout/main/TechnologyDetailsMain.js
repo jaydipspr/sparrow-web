@@ -1,5 +1,6 @@
 import HeroInner from "@/components/sections/hero/HeroInner";
 import TechnologyDetailsPrimary from "@/components/sections/technology/TechnologyDetailsPrimary";
+import TechnologyTeamSection from "@/components/sections/technology/TechnologyTeamSection";
 import getTechnologies from "@/libs/getTechnologies";
 import getPreviousNextTechnology from "@/libs/getPreviousNextTechnology";
 
@@ -26,6 +27,7 @@ const TechnologyDetailsMain = ({ currentSlug }) => {
 					isNextItem,
 				}}
 			/>
+			<TechnologyTeamSection />
 		</div>
 	);
 };

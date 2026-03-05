@@ -1,7 +1,12 @@
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import Link from "next/link";
+import getNavItems from "@/libs/getNavItems";
 
 const Footer4 = () => {
+	const navItems = getNavItems();
+	const serviceNav = navItems?.find((item) => item.name === "Services");
+	const services = serviceNav?.submenu || [];
+
 	return (
 		<footer className="tj-footer-section footer-4 section-gap-x">
 			<div className="footer-top">
@@ -104,24 +109,22 @@ const Footer4 = () => {
 							>
 								<h5 className="title">Services</h5>
 								<ul>
-									<li>
-										<Link href="/services/1">Customer Experience</Link>
-									</li>
-									<li>
-										<Link href="/services/2">Training Programs</Link>
-									</li>
-									<li>
-										<Link href="/services/3">Business Strategy</Link>
-									</li>
-									<li>
-										<Link href="/services/4">Training Program</Link>
-									</li>
-									<li>
-										<Link href="/services/5">ESG Consulting</Link>
-									</li>
-									<li>
-										<Link href="/services/6">Development Hub</Link>
-									</li>
+									{services.length > 0
+										? services.slice(0, 6).map((service, idx) => (
+												<li key={service.id || idx}>
+													<Link href={service.path || `#`}>
+														{service.name}
+													</Link>
+												</li>
+										  ))
+										: null}
+									{services.length > 6 && (
+										<li>
+											<Link href="/services" className="view-more-link">
+												View More <i className="tji-arrow-right"></i>
+											</Link>
+										</li>
+									)}
 								</ul>
 							</div>
 						</div>
@@ -139,18 +142,21 @@ const Footer4 = () => {
 										<Link href="/team">Team Member</Link>
 									</li>
 									<li>
-										<Link href="#">Recognitions</Link>
-									</li>
-									<li>
 										<Link href="/careers">
 											Careers <span className="badge">New</span>
 										</Link>
 									</li>
 									<li>
-										<Link href="/blogs">News</Link>
+										<Link href="/technology">Technology</Link>
 									</li>
 									<li>
-										<Link href="#">Feedback</Link>
+										<Link href="/portfolios">Portfolio</Link>
+									</li>
+									<li>
+										<Link href="/products">Products</Link>
+									</li>
+									<li>
+										<Link href="/blogs">Blog</Link>
 									</li>
 								</ul>
 							</div>
@@ -194,7 +200,7 @@ const Footer4 = () => {
 											href="https://themeforest.net/user/theme-junction/portfolio"
 											target="_blank"
 										>
-											Bexon
+											Sparrow Softtech
 										</Link>{" "}
 										All right reserved
 									</p>

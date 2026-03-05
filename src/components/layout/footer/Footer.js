@@ -1,6 +1,11 @@
 import Link from "next/link";
+import getNavItems from "@/libs/getNavItems";
 
 const Footer = () => {
+	const navItems = getNavItems();
+	const serviceNav = navItems?.find((item) => item.name === "Services");
+	const services = serviceNav?.submenu || [];
+
 	return (
 		<footer className="tj-footer-section footer-1 section-gap-x">
 			<div className="footer-main-area">
@@ -36,24 +41,22 @@ const Footer = () => {
 							>
 								<h5 className="title">Services</h5>
 								<ul>
-									<li>
-										<Link href="/services/1">Customer Experience</Link>
-									</li>
-									<li>
-										<Link href="/services/2">Training Programs</Link>
-									</li>
-									<li>
-										<Link href="/services/3">Business Strategy</Link>
-									</li>
-									<li>
-										<Link href="/services/4">Training Program</Link>
-									</li>
-									<li>
-										<Link href="/services/5">ESG Consulting</Link>
-									</li>
-									<li>
-										<Link href="/services/6">Development Hub</Link>
-									</li>
+									{services.length > 0
+										? services.slice(0, 6).map((service, idx) => (
+												<li key={service.id || idx}>
+													<Link href={service.path || `#`}>
+														{service.name}
+													</Link>
+												</li>
+										  ))
+										: null}
+									{services.length > 6 && (
+										<li>
+											<Link href="/services" className="view-more-link">
+												View More <i className="tji-arrow-right"></i>
+											</Link>
+										</li>
+									)}
 								</ul>
 							</div>
 						</div>
@@ -62,29 +65,32 @@ const Footer = () => {
 								className="footer-widget widget-nav-menu wow fadeInUp"
 								data-wow-delay=".5s"
 							>
-								<h5 className="title">Resources</h5>
-								<ul>
-									<li>
-										<Link href="/contact">Contact us</Link>
-									</li>
-									<li>
-										<Link href="/team">Team Member</Link>
-									</li>
-									<li>
-										<Link href="#">Recognitions</Link>
-									</li>
-									<li>
-										<Link href="/careers">
-											Careers <span className="badge">New</span>
-										</Link>
-									</li>
-									<li>
-										<Link href="/blogs">News</Link>
-									</li>
-									<li>
-										<Link href="#">Feedback</Link>
-									</li>
-								</ul>
+							<h5 className="title">Resources</h5>
+							<ul>
+								<li>
+									<Link href="/contact">Contact us</Link>
+								</li>
+								<li>
+									<Link href="/team">Team Member</Link>
+								</li>
+								<li>
+									<Link href="/careers">
+										Careers <span className="badge">New</span>
+									</Link>
+								</li>
+								<li>
+									<Link href="/technology">Technology</Link>
+								</li>
+								<li>
+									<Link href="/portfolios">Portfolio</Link>
+								</li>
+								<li>
+									<Link href="/products">Products</Link>
+								</li>
+								<li>
+									<Link href="/blogs">Blog</Link>
+								</li>
+							</ul>
 							</div>
 						</div>
 						<div className="col-xl-4 col-lg-5 col-md-6">
@@ -173,7 +179,7 @@ const Footer = () => {
 											href="https://themeforest.net/user/theme-junction/portfolio"
 											target="_blank"
 										>
-											Bexon
+											Sparrow Softtech
 										</Link>{" "}
 										All right reserved
 									</p>

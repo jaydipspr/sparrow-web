@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import api from "@/lib/axios";
 
 export default function AdminLoginPage() {
 	const router = useRouter();
@@ -21,38 +22,29 @@ export default function AdminLoginPage() {
 		setError("");
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		setError("");
 		setLoading(true);
 
-		try {
-			const response = await fetch("/api/admin/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
+		api.post("/api/admin/auth/login", formData)
+			.then((response) => {
+				if (response.data.success && response.data.data?.token) {
+					// Store token in localStorage
+					localStorage.setItem("adminToken", response.data.data.token);
+					// Redirect to admin dashboard
+					router.push("/admin");
+				} else {
+					throw new Error(response.data.error || "Login failed");
+				}
+			})
+			.catch((err) => {
+				console.error("Login error:", err);
+				setError(err.response?.data?.error || err.message || "An error occurred during login");
+			})
+			.finally(() => {
+				setLoading(false);
 			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(data.error || "Login failed");
-			}
-
-			// Store token in localStorage
-			if (data.data?.token) {
-				localStorage.setItem("adminToken", data.data.token);
-			}
-
-			// Redirect to admin dashboard
-			router.push("/admin");
-		} catch (err) {
-			setError(err.message || "An error occurred during login");
-		} finally {
-			setLoading(false);
-		}
 	};
 
 	return (

@@ -163,6 +163,28 @@ START: Theme Footer CSS
 			}
 			a {
 				color: var(--tj-color-text-body);
+			}
+			.view-more-link {
+				color: var(--tj-color-theme-primary);
+				font-weight: 600;
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				transition: all 0.3s ease;
+				i {
+					font-size: 12px;
+					transition: transform 0.3s ease;
+				}
+				&:hover {
+					color: var(--tj-color-theme-primary);
+					gap: 10px;
+					i {
+						transform: translateX(3px);
+					}
+				}
+			}
+			a:not(.view-more-link) {
+				color: var(--tj-color-text-body);
 				display: inline-flex;
 				align-items: center;
 				gap: 4px;

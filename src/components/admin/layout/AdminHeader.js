@@ -32,14 +32,6 @@ const AdminHeader = ({ toggleSidebar }) => {
 				</div>
 				<div className="admin-header-right">
 					<div className="admin-header-actions">
-						<button className="admin-header-btn" title="Notifications">
-							<i className="fa-light fa-bell"></i>
-							<span className="admin-badge">3</span>
-						</button>
-						<button className="admin-header-btn" title="Messages">
-							<i className="fa-light fa-envelope"></i>
-							<span className="admin-badge">5</span>
-						</button>
 						<div className="admin-user-menu">
 							<div className="admin-user-avatar">
 								<i className="fa-light fa-user"></i>

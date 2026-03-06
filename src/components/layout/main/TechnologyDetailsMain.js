@@ -42,13 +42,13 @@ const TechnologyDetailsMain = async ({ technology }) => {
 	const isNextItem = !!nextItem;
 	
 	const { title, name } = currentItem || {};
-	const displayTitle = title || name || "Technology Details";
+	const displayName = name || title || "Technology Details";
 	
 	return (
 		<div>
 			<HeroInner
-				title={displayTitle}
-				text={displayTitle}
+				title={displayName}
+				text={displayName}
 				breadcrums={[{ name: "Technology", path: "/technology" }]}
 			/>
 			<TechnologyDetailsPrimary

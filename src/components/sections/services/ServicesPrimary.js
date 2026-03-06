@@ -2,11 +2,29 @@
 import ServiceCard4 from "@/components/shared/cards/ServiceCard4";
 import Paginations from "@/components/shared/others/Paginations";
 import usePagination from "@/hooks/usePagination";
-import getALlServices from "@/libs/getALlServices";
+import { useServices } from "@/hooks/useServices";
 import makeWowDelay from "@/libs/makeWowDelay";
+import { useEffect, useState } from "react";
 
 const ServicesPrimary = () => {
-	const items = getALlServices();
+	const { services: apiServices, loading } = useServices();
+	const [items, setItems] = useState([]);
+	
+	// Use only API services - no JSON fallback
+	useEffect(() => {
+		if (apiServices && apiServices.length > 0) {
+			// Map API services to match expected format
+			const mappedServices = apiServices.map((service) => ({
+				...service,
+				id: service._id?.toString() || service.id,
+				slug: service.slug || service._id?.toString(),
+			}));
+			setItems(mappedServices);
+		} else {
+			setItems([]);
+		}
+	}, [apiServices, loading]);
+	
 	const limit = 6;
 	// get pagination details
 	const {

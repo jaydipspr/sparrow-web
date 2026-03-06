@@ -5,14 +5,17 @@ import Cta from "@/components/sections/cta/Cta";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
-import getALlServices from "@/libs/getALlServices";
-import getAService from "@/libs/getAService";
+import { getAllServicesFromAPI, getServiceBySlug } from "@/libs/getALlServices";
 import { notFound } from "next/navigation";
-const items = getALlServices();
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
 	const { id } = await params;
-	const service = getAService(id);
+	// Try to fetch from API first (by slug or id)
+	const service = await getServiceBySlug(id);
 	
 	if (!service || !service.title) {
 		return {
@@ -23,17 +26,20 @@ export async function generateMetadata({ params }) {
 
 	return {
 		title: `${service.title} - Sparrow Softtech | Innovation Unlimited`,
-		description: service.shortDesc || service.desc || `Learn more about ${service.title} services from Sparrow Softtech.`,
+		description: service.description || `Learn more about ${service.title} services from Sparrow Softtech.`,
 	};
 }
 
 export default async function ServiceDetails({ params }) {
 	const { id } = await params;
 
-	const isExistItem = items?.find(({ id: id1 }) => id1 === parseInt(id));
-	if (!isExistItem) {
+	// Fetch service from API by slug or id
+	const service = await getServiceBySlug(id);
+	
+	if (!service) {
 		notFound();
 	}
+
 	return (
 		<div>
 			<BackToTop />
@@ -43,7 +49,7 @@ export default async function ServiceDetails({ params }) {
 				<div id="smooth-content">
 					<main>
 						<HeaderSpace />
-						<ServiceDetailsMain currentItemId={parseInt(id)} />
+						<ServiceDetailsMain service={service} />
 						<Cta />
 					</main>
 					<Footer />
@@ -54,6 +60,16 @@ export default async function ServiceDetails({ params }) {
 		</div>
 	);
 }
+
 export async function generateStaticParams() {
-	return items?.map(({ id }) => ({ id: id.toString() }));
+	try {
+		const items = await getAllServicesFromAPI();
+		// Use ID as primary, fallback to slug for backward compatibility
+		return items?.map(({ id, _id, slug }) => ({ 
+			id: id?.toString() || _id?.toString() || slug 
+		})) || [];
+	} catch (error) {
+		console.error("Error generating static params:", error);
+		return [];
+	}
 }

@@ -2,19 +2,105 @@
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import useActiveLink from "@/hooks/useActiveLink";
 import getNavItems from "@/libs/getNavItems";
+import { useServices } from "@/hooks/useServices";
+import { useTechnologies } from "@/hooks/useTechnologies";
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 import TechnologyDropdownTeam from "./TechnologyDropdownTeam";
 
 const Navbar = ({ headerType, isStickyHeader }) => {
 	const makeActiveLink = useActiveLink();
 	const navItems = getNavItems();
-	const homeNav = makeActiveLink(navItems[0]);
-	const pagesNav = makeActiveLink(navItems[1]);
-	const serviceNav = makeActiveLink(navItems[2]);
-	const portfolioNav = makeActiveLink(navItems[3]);
-	const blogNav = makeActiveLink(navItems[4]);
-	const contactNav = makeActiveLink(navItems[5]);
+	const { services: apiServices } = useServices();
+	const { technologies: apiTechnologies } = useTechnologies();
+	
+	// Merge nav items with actual service and technology data from API
+	const mergedNavItems = useMemo(() => {
+		const updatedNavItems = [...navItems];
+		
+		// Update Services
+		if (apiServices && apiServices.length > 0) {
+			const servicesNavIndex = updatedNavItems.findIndex(item => item.name === "Services");
+			
+			if (servicesNavIndex !== -1 && updatedNavItems[servicesNavIndex].submenu) {
+				// Map each nav item to actual service from API by matching name
+				// Only include services that exist in the API (active services)
+				updatedNavItems[servicesNavIndex].submenu = updatedNavItems[servicesNavIndex].submenu
+					.map(navService => {
+						// Find matching service from API by name (case-insensitive)
+						const matchingService = apiServices.find(apiService => 
+							apiService.name?.toLowerCase() === navService.name?.toLowerCase() ||
+							apiService.title?.toLowerCase() === navService.name?.toLowerCase()
+						);
+						
+						if (matchingService) {
+							// Update path with actual MongoDB ObjectId
+							const serviceId = matchingService._id?.toString() || matchingService.id;
+							return {
+								...navService,
+								path: `/services/${serviceId}`,
+							};
+						}
+						
+						// Return null for services not found in API (inactive services)
+						return null;
+					})
+					.filter(service => service !== null); // Remove inactive services
+			}
+		}
+		
+		// Update Technologies
+		if (apiTechnologies && apiTechnologies.length > 0) {
+			const technologyNavIndex = updatedNavItems.findIndex(item => item.name === "Technology");
+			
+			if (technologyNavIndex !== -1 && updatedNavItems[technologyNavIndex].submenu) {
+				// Group technologies by category
+				const technologiesByCategory = {
+					"Web Development": [],
+					"Application Development": [],
+					"Backend & Database": []
+				};
+				
+				apiTechnologies.forEach(tech => {
+					const category = tech.category;
+					if (technologiesByCategory[category]) {
+						const techId = tech._id?.toString() || tech.id;
+						technologiesByCategory[category].push({
+							id: techId,
+							name: tech.name,
+							path: `/technology/${techId}`,
+							badge: null // You can add badge logic here if needed
+						});
+					}
+				});
+				
+				// Update each category submenu with API technologies
+				updatedNavItems[technologyNavIndex].submenu = updatedNavItems[technologyNavIndex].submenu.map(categoryItem => {
+					const categoryName = categoryItem.name;
+					const apiTechItems = technologiesByCategory[categoryName] || [];
+					
+					if (apiTechItems.length > 0) {
+						return {
+							...categoryItem,
+							items: apiTechItems
+						};
+					}
+					
+					return categoryItem; // Keep original if no API technologies for this category
+				});
+			}
+		}
+		
+		return updatedNavItems;
+	}, [navItems, apiServices, apiTechnologies]);
+	
+	const homeNav = makeActiveLink(mergedNavItems[0]);
+	const pagesNav = makeActiveLink(mergedNavItems[1]);
+	const serviceNav = makeActiveLink(mergedNavItems[2]);
+	const portfolioNav = makeActiveLink(mergedNavItems[3]);
+	const blogNav = makeActiveLink(mergedNavItems[4]);
+	const contactNav = makeActiveLink(mergedNavItems[5]);
 
 	return (
 		<div className="menu-area d-none d-lg-inline-flex align-items-center">

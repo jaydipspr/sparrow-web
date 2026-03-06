@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
-import Service from "@/models/Service";
+import Technology from "@/models/Technology";
 import { authenticateAdmin } from "@/middleware/auth";
 
 /**
  * @swagger
- * /api/admin/services:
+ * /api/admin/technology:
  *   get:
- *     summary: Get all services (admin)
- *     description: Retrieve all services with pagination (admin only)
- *     tags: [Admin Services]
+ *     summary: Get all technologies (admin)
+ *     description: Retrieve all technologies with pagination (admin only)
+ *     tags: [Admin Technology]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -38,7 +38,7 @@ import { authenticateAdmin } from "@/middleware/auth";
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Service'
+ *                     $ref: '#/components/schemas/Technology'
  *                 pagination:
  *                   $ref: '#/components/schemas/Pagination'
  *       401:
@@ -74,14 +74,14 @@ export async function GET(request) {
 		const skip = (page - 1) * limit;
 
 		// Get total count
-		const totalCount = await Service.countDocuments({});
+		const totalCount = await Technology.countDocuments({});
 
-		// Get paginated services
-		const services = await Service.find({})
+		// Get paginated technologies
+		const technologies = await Technology.find({})
 			.sort({ createdAt: -1 })
 			.skip(skip)
 			.limit(limit)
-			.select("-order")
+			.select("-__v")
 			.lean();
 
 		// Calculate pagination metadata
@@ -91,7 +91,7 @@ export async function GET(request) {
 
 		return NextResponse.json({
 			success: true,
-			data: services,
+			data: technologies,
 			pagination: {
 				currentPage: page,
 				limit,
@@ -102,10 +102,10 @@ export async function GET(request) {
 			},
 		});
 	} catch (error) {
-		console.error("Error fetching services:", error);
+		console.error("Error fetching technologies:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to fetch services",
+				error: "Failed to fetch technologies",
 				details: error.message,
 			},
 			{ status: 500 }
@@ -113,13 +113,16 @@ export async function GET(request) {
 	}
 }
 
+// POST create new technology (admin)
+// Required fields: name, category, img
+// Optional fields: title, description, features (array of strings), isActive
 /**
  * @swagger
- * /api/admin/services:
+ * /api/admin/technology:
  *   post:
- *     summary: Create a new service (admin)
- *     description: Create a new service (admin only)
- *     tags: [Admin Services]
+ *     summary: Create a new technology (admin)
+ *     description: Create a new technology (admin only)
+ *     tags: [Admin Technology]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -130,30 +133,35 @@ export async function GET(request) {
  *             type: object
  *             required:
  *               - name
+ *               - category
  *               - img
  *             properties:
  *               name:
  *                 type: string
+ *                 example: React
+ *               category:
+ *                 type: string
+ *                 enum: [Web Development, Application Development, Backend & Database]
  *                 example: Web Development
  *               title:
  *                 type: string
- *                 example: Professional Web Development Services
+ *                 example: React - Modern UI Library
  *               img:
  *                 type: string
- *                 example: /images/service/service-1.webp
+ *                 example: /images/technology/react.webp
  *               description:
  *                 type: string
- *               points:
+ *               features:
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: ["Feature 1", "Feature 2"]
+ *                 example: ["Component-based", "Virtual DOM", "Reusable"]
  *               isActive:
  *                 type: boolean
  *                 default: true
  *     responses:
  *       201:
- *         description: Service created successfully
+ *         description: Technology created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -164,7 +172,7 @@ export async function GET(request) {
  *                 message:
  *                   type: string
  *                 data:
- *                   $ref: '#/components/schemas/Service'
+ *                   $ref: '#/components/schemas/Technology'
  *       400:
  *         description: Validation error
  *         content:
@@ -198,19 +206,25 @@ export async function POST(request) {
 		await connectDB();
 
 		const body = await request.json();
-		console.log("Received request body:", JSON.stringify(body, null, 2));
-		const { name, title, img, description, points, isActive } = body;
+		const { name, category, title, img, description, features, isActive } = body;
 
 		if (!name || name.trim() === "") {
 			return NextResponse.json(
-				{ error: "Service name is required" },
+				{ error: "Technology name is required" },
+				{ status: 400 }
+			);
+		}
+
+		if (!category || category.trim() === "") {
+			return NextResponse.json(
+				{ error: "Category is required" },
 				{ status: 400 }
 			);
 		}
 
 		if (!img || img.trim() === "") {
 			return NextResponse.json(
-				{ error: "Service image URL is required" },
+				{ error: "Technology image URL is required" },
 				{ status: 400 }
 			);
 		}
@@ -223,45 +237,43 @@ export async function POST(request) {
 			);
 		}
 
-		// Validate points is an array if provided
-		if (points !== undefined && !Array.isArray(points)) {
+		// Validate features is an array if provided
+		if (features !== undefined && !Array.isArray(features)) {
 			return NextResponse.json(
-				{ error: "Points must be an array of strings" },
+				{ error: "Features must be an array of strings" },
 				{ status: 400 }
 			);
 		}
 
-		// Check if service with same name exists
-		const existingService = await Service.findOne({
+		// Check if technology with same name exists
+		const existingTechnology = await Technology.findOne({
 			name: { $regex: new RegExp(`^${name}$`, "i") },
 		});
 
-		if (existingService) {
+		if (existingTechnology) {
 			return NextResponse.json(
-				{ error: "Service with this name already exists" },
+				{ error: "Technology with this name already exists" },
 				{ status: 400 }
 			);
 		}
 
-		// Create service with only the new schema fields
-		const serviceData = {
+		// Create technology with only the new schema fields
+		const technologyData = {
 			name: name.trim(),
+			category: category.trim(),
 			title: (title || "").trim(),
 			img: img.trim(),
 			description: description || "",
-			points: Array.isArray(points) ? points : [],
+			features: Array.isArray(features) ? features : [],
 			isActive: isActive !== undefined ? Boolean(isActive) : true,
 		};
 
-		console.log("Service data to save:", JSON.stringify(serviceData, null, 2));
-
-		// Create service using create() method which ensures all fields are saved
-		const service = await Service.create(serviceData);
-		console.log("Service created successfully with ID:", service._id);
+		// Create technology using create() method
+		const technology = await Technology.create(technologyData);
 
 		// Remove any old fields that shouldn't be in the schema (if they exist)
-		await Service.findByIdAndUpdate(
-			service._id,
+		await Technology.findByIdAndUpdate(
+			technology._id,
 			{
 				$unset: {
 					shortTitle: "",
@@ -281,30 +293,27 @@ export async function POST(request) {
 					desc3: "",
 					totalProject: "",
 					process: "",
-					order: "",
+					points: "",
 				},
 			}
 		);
 
-		// Fetch the service again to get the final state
-		const finalService = await Service.findById(service._id).select("-order").lean();
-		
-		// Log the saved service to verify
-		console.log("Final service after cleanup:", JSON.stringify(finalService, null, 2));
+		// Fetch the technology again to get the final state
+		const finalTechnology = await Technology.findById(technology._id).select("-__v").lean();
 
 		return NextResponse.json(
 			{
 				success: true,
-				message: "Service created successfully",
-				data: finalService, // Return the final service with all fields
+				message: "Technology created successfully",
+				data: finalTechnology,
 			},
 			{ status: 201 }
 		);
 	} catch (error) {
-		console.error("Error creating service:", error);
+		console.error("Error creating technology:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to create service",
+				error: "Failed to create technology",
 				details: error.message,
 			},
 			{ status: 500 }

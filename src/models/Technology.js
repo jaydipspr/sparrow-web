@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
 
-const ServiceSchema = new mongoose.Schema(
+const TechnologySchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Service name is required"],
+			required: [true, "Technology name is required"],
+			trim: true,
+		},
+		category: {
+			type: String,
+			required: [true, "Category is required"],
 			trim: true,
 		},
 		title: {
@@ -12,17 +17,17 @@ const ServiceSchema = new mongoose.Schema(
 			default: "",
 			trim: true,
 		},
-		// Main image displayed above title on service detail page
+		// Main image displayed above title on technology detail page
 		img: {
 			type: String,
-			required: [true, "Service image is required"],
+			required: [true, "Technology image is required"],
 			trim: true,
 		},
 		description: {
 			type: String,
 			default: "",
 		},
-		points: {
+		features: {
 			type: [String],
 			default: [],
 		},
@@ -39,10 +44,10 @@ const ServiceSchema = new mongoose.Schema(
 );
 
 // Index for faster queries
-ServiceSchema.index({ isActive: 1, createdAt: -1 });
+TechnologySchema.index({ isActive: 1, category: 1, createdAt: -1 });
 
 // Use existing model if available, otherwise create new one
 // This ensures we use the latest schema without breaking existing connections
-const Service = mongoose.models.Service || mongoose.model("Service", ServiceSchema);
+const Technology = mongoose.models.Technology || mongoose.model("Technology", TechnologySchema);
 
-export default Service;
+export default Technology;

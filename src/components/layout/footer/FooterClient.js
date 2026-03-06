@@ -1,9 +1,31 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getAllServicesFromAPI } from "@/libs/getALlServices";
+import api from "@/lib/axios";
 
-const Footer = async () => {
-	const apiServices = await getAllServicesFromAPI();
-	const services = apiServices?.slice(0, 6) || [];
+const FooterClient = () => {
+	const [services, setServices] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		// Fetch services from API
+		api.get("/api/services")
+			.then((response) => {
+				if (response.data.success) {
+					const apiServices = response.data.data || [];
+					setServices(apiServices.slice(0, 6));
+				}
+			})
+			.catch((err) => {
+				console.error("Error fetching services for footer:", err);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, []);
+
+	const apiServices = services;
+	const displayServices = apiServices?.slice(0, 6) || [];
 
 	return (
 		<footer className="tj-footer-section footer-1 section-gap-x">
@@ -40,8 +62,8 @@ const Footer = async () => {
 							>
 								<h5 className="title">Services</h5>
 								<ul>
-									{services.length > 0
-										? services.map((service, idx) => {
+									{!loading && displayServices.length > 0
+										? displayServices.map((service, idx) => {
 												const serviceId = service._id?.toString() || service.id;
 												return (
 													<li key={serviceId || idx}>
@@ -52,7 +74,7 @@ const Footer = async () => {
 												);
 										  })
 										: null}
-									{apiServices && apiServices.length > 6 && (
+									{!loading && apiServices && apiServices.length > 6 && (
 										<li>
 											<Link href="/services" className="view-more-link">
 												View More <i className="tji-arrow-right"></i>
@@ -176,7 +198,7 @@ const Footer = async () => {
 								</div>
 								<div className="copyright-text">
 									<p>
-										&copy; 2025 
+										&copy; 2025{" "}
 										<Link
 											href="https://themeforest.net/user/theme-junction/portfolio"
 											target="_blank"
@@ -201,4 +223,4 @@ const Footer = async () => {
 	);
 };
 
-export default Footer;
+export default FooterClient;

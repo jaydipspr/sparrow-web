@@ -5,13 +5,12 @@ import Cta from "@/components/sections/cta/Cta";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
-import getTechnologies from "@/libs/getTechnologies";
-import getATechnology from "@/libs/getATechnology";
+import { getTechnologyById } from "@/libs/getAllTechnologies";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-	const { slug } = await params;
-	const technology = getATechnology(slug);
+	const { slug: id } = await params;
+	const technology = await getTechnologyById(id);
 	
 	if (!technology || !technology.title) {
 		return {
@@ -21,17 +20,16 @@ export async function generateMetadata({ params }) {
 	}
 
 	return {
-		title: `${technology.title} - Sparrow Softtech | Innovation Unlimited`,
-		description: technology.shortDesc || technology.desc || `Learn more about ${technology.title} technology from Sparrow Softtech.`,
+		title: `${technology.title || technology.name} - Sparrow Softtech | Innovation Unlimited`,
+		description: technology.description || `Learn more about ${technology.name} technology from Sparrow Softtech.`,
 	};
 }
 
 export default async function TechnologyDetails({ params }) {
-	const { slug } = await params;
-	const items = getTechnologies();
+	const { slug: id } = await params;
+	const technology = await getTechnologyById(id);
 
-	const isExistItem = items?.find((item) => item.slug === slug);
-	if (!isExistItem) {
+	if (!technology) {
 		notFound();
 	}
 	return (
@@ -43,7 +41,7 @@ export default async function TechnologyDetails({ params }) {
 				<div id="smooth-content">
 					<main>
 						<HeaderSpace />
-						<TechnologyDetailsMain currentSlug={slug} />
+						<TechnologyDetailsMain technology={technology} />
 						<Cta />
 					</main>
 					<Footer />
@@ -55,7 +53,4 @@ export default async function TechnologyDetails({ params }) {
 	);
 }
 
-export async function generateStaticParams() {
-	const items = getTechnologies();
-	return items?.map(({ slug }) => ({ slug }));
-}
+export const dynamic = "force-dynamic";

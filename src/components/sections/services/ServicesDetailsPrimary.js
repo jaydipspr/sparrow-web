@@ -76,50 +76,6 @@ const ServicesDetailsPrimary = ({ option }) => {
 										))}
 									</ul>
 								)}
-								<ul className="wow fadeInUp" data-wow-delay=".3s">
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Personalization at Scale
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Improved Customer Retention
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Data-Driven Insights
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Omni-channel Integration
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Customer Retention
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Support Optimization
-									</li>
-									<li>
-										<span>
-											<i className="tji-check"></i>
-										</span>
-										Proactive Engagement
-									</li>
-								</ul>
 								<div className="details-content-box">
 									<div
 										className="service-details-item wow fadeInUp"
@@ -424,7 +380,7 @@ const ServicesDetailsPrimary = ({ option }) => {
 														className={`${currentId === id ? "active" : ""}`}
 														href={`/services/${id}`}
 													>
-														{title || name}
+														{name || title}
 														<span className="icon">
 															<i className="tji-arrow-right"></i>
 														</span>

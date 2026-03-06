@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
-import Service from "@/models/Service";
+import Technology from "@/models/Technology";
 import { authenticateAdmin } from "@/middleware/auth";
 import mongoose from "mongoose";
 
 /**
  * @swagger
- * /api/admin/services/{id}:
+ * /api/admin/technology/{id}:
  *   get:
- *     summary: Get a single service by ID (admin)
- *     description: Retrieve a single service by its ID (admin only)
- *     tags: [Admin Services]
+ *     summary: Get a single technology by ID (admin)
+ *     description: Retrieve a single technology by its ID (admin only)
+ *     tags: [Admin Technology]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -19,7 +19,7 @@ import mongoose from "mongoose";
  *         required: true
  *         schema:
  *           type: string
- *         description: Service ID (MongoDB ObjectId)
+ *         description: Technology ID (MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Successful response
@@ -31,9 +31,9 @@ import mongoose from "mongoose";
  *                 success:
  *                   type: boolean
  *                 data:
- *                   $ref: '#/components/schemas/Service'
+ *                   $ref: '#/components/schemas/Technology'
  *       400:
- *         description: Invalid service ID
+ *         description: Invalid technology ID
  *         content:
  *           application/json:
  *             schema:
@@ -45,7 +45,7 @@ import mongoose from "mongoose";
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *       404:
- *         description: Service not found
+ *         description: Technology not found
  *         content:
  *           application/json:
  *             schema:
@@ -74,29 +74,29 @@ export async function GET(request, { params }) {
 
 		if (!mongoose.Types.ObjectId.isValid(id)) {
 			return NextResponse.json(
-				{ error: "Invalid service ID" },
+				{ error: "Invalid technology ID" },
 				{ status: 400 }
 			);
 		}
 
-		const service = await Service.findById(id).lean();
+		const technology = await Technology.findById(id).select("-__v").lean();
 
-		if (!service) {
+		if (!technology) {
 			return NextResponse.json(
-				{ error: "Service not found" },
+				{ error: "Technology not found" },
 				{ status: 404 }
 			);
 		}
 
 		return NextResponse.json({
 			success: true,
-			data: service,
+			data: technology,
 		});
 	} catch (error) {
-		console.error("Error fetching service:", error);
+		console.error("Error fetching technology:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to fetch service",
+				error: "Failed to fetch technology",
 				details: error.message,
 			},
 			{ status: 500 }
@@ -106,11 +106,11 @@ export async function GET(request, { params }) {
 
 /**
  * @swagger
- * /api/admin/services/{id}:
+ * /api/admin/technology/{id}:
  *   put:
- *     summary: Update a service (admin)
- *     description: Update an existing service (admin only)
- *     tags: [Admin Services]
+ *     summary: Update a technology (admin)
+ *     description: Update an existing technology (admin only)
+ *     tags: [Admin Technology]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -119,7 +119,7 @@ export async function GET(request, { params }) {
  *         required: true
  *         schema:
  *           type: string
- *         description: Service ID (MongoDB ObjectId)
+ *         description: Technology ID (MongoDB ObjectId)
  *     requestBody:
  *       required: true
  *       content:
@@ -129,13 +129,16 @@ export async function GET(request, { params }) {
  *             properties:
  *               name:
  *                 type: string
+ *               category:
+ *                 type: string
+ *                 enum: [Web Development, Application Development, Backend & Database]
  *               title:
  *                 type: string
  *               img:
  *                 type: string
  *               description:
  *                 type: string
- *               points:
+ *               features:
  *                 type: array
  *                 items:
  *                   type: string
@@ -143,7 +146,7 @@ export async function GET(request, { params }) {
  *                 type: boolean
  *     responses:
  *       200:
- *         description: Service updated successfully
+ *         description: Technology updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -154,7 +157,7 @@ export async function GET(request, { params }) {
  *                 message:
  *                   type: string
  *                 data:
- *                   $ref: '#/components/schemas/Service'
+ *                   $ref: '#/components/schemas/Technology'
  *       400:
  *         description: Validation error
  *         content:
@@ -168,7 +171,7 @@ export async function GET(request, { params }) {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *       404:
- *         description: Service not found
+ *         description: Technology not found
  *         content:
  *           application/json:
  *             schema:
@@ -197,20 +200,20 @@ export async function PUT(request, { params }) {
 
 		if (!mongoose.Types.ObjectId.isValid(id)) {
 			return NextResponse.json(
-				{ error: "Invalid service ID" },
+				{ error: "Invalid technology ID" },
 				{ status: 400 }
 			);
 		}
 
 		const body = await request.json();
-		const { name, title, img, description, points, isActive } = body;
+		const { name, category, title, img, description, features, isActive } = body;
 
-		// Check if service exists
-		const existingService = await Service.findById(id);
+		// Check if technology exists
+		const existingTechnology = await Technology.findById(id);
 
-		if (!existingService) {
+		if (!existingTechnology) {
 			return NextResponse.json(
-				{ error: "Service not found" },
+				{ error: "Technology not found" },
 				{ status: 404 }
 			);
 		}
@@ -219,24 +222,34 @@ export async function PUT(request, { params }) {
 		if (name !== undefined) {
 			if (!name || name.trim() === "") {
 				return NextResponse.json(
-					{ error: "Service name is required" },
+					{ error: "Technology name is required" },
 					{ status: 400 }
 				);
 			}
 
 			// If name is being changed, check for duplicates
-			if (name !== existingService.name) {
-				const duplicateService = await Service.findOne({
+			if (name !== existingTechnology.name) {
+				const duplicateTechnology = await Technology.findOne({
 					name: { $regex: new RegExp(`^${name}$`, "i") },
 					_id: { $ne: id },
 				});
 
-				if (duplicateService) {
+				if (duplicateTechnology) {
 					return NextResponse.json(
-						{ error: "Service with this name already exists" },
+						{ error: "Technology with this name already exists" },
 						{ status: 400 }
 					);
 				}
+			}
+		}
+
+		// Validate category if provided
+		if (category !== undefined) {
+			if (!category || category.trim() === "") {
+				return NextResponse.json(
+					{ error: "Category is required" },
+					{ status: 400 }
+				);
 			}
 		}
 
@@ -244,7 +257,7 @@ export async function PUT(request, { params }) {
 		if (img !== undefined) {
 			if (!img || img.trim() === "") {
 				return NextResponse.json(
-					{ error: "Service image URL is required" },
+					{ error: "Technology image URL is required" },
 					{ status: 400 }
 				);
 			}
@@ -258,21 +271,22 @@ export async function PUT(request, { params }) {
 			}
 		}
 
-		// Validate points is an array if provided
-		if (points !== undefined && !Array.isArray(points)) {
+		// Validate features is an array if provided
+		if (features !== undefined && !Array.isArray(features)) {
 			return NextResponse.json(
-				{ error: "Points must be an array of strings" },
+				{ error: "Features must be an array of strings" },
 				{ status: 400 }
 			);
 		}
 
 		// Build update object with only provided fields
 		const updateData = {};
-		if (name !== undefined) updateData.name = name;
-		if (title !== undefined) updateData.title = title;
-		if (img !== undefined) updateData.img = img;
+		if (name !== undefined) updateData.name = name.trim();
+		if (category !== undefined) updateData.category = category.trim();
+		if (title !== undefined) updateData.title = title.trim();
+		if (img !== undefined) updateData.img = img.trim();
 		if (description !== undefined) updateData.description = description;
-		if (points !== undefined) updateData.points = points;
+		if (features !== undefined) updateData.features = features;
 		if (isActive !== undefined) updateData.isActive = isActive;
 
 		// Remove old fields that shouldn't be in the schema
@@ -294,29 +308,29 @@ export async function PUT(request, { params }) {
 			desc3: "",
 			totalProject: "",
 			process: "",
-			order: "",
+			points: "",
 		};
 
-		// Update service - set new fields and unset old ones
-		const updatedService = await Service.findByIdAndUpdate(
+		// Update technology - set new fields and unset old ones
+		const updatedTechnology = await Technology.findByIdAndUpdate(
 			id,
 			{
 				$set: updateData,
 				$unset: unsetData,
 			},
 			{ new: true, runValidators: true }
-		).lean();
+		).select("-__v").lean();
 
 		return NextResponse.json({
 			success: true,
-			message: "Service updated successfully",
-			data: updatedService,
+			message: "Technology updated successfully",
+			data: updatedTechnology,
 		});
 	} catch (error) {
-		console.error("Error updating service:", error);
+		console.error("Error updating technology:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to update service",
+				error: "Failed to update technology",
 				details: error.message,
 			},
 			{ status: 500 }
@@ -326,11 +340,11 @@ export async function PUT(request, { params }) {
 
 /**
  * @swagger
- * /api/admin/services/{id}:
+ * /api/admin/technology/{id}:
  *   delete:
- *     summary: Delete a service (admin)
- *     description: Delete a service by ID (admin only)
- *     tags: [Admin Services]
+ *     summary: Delete a technology (admin)
+ *     description: Delete a technology by ID (admin only)
+ *     tags: [Admin Technology]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -339,10 +353,10 @@ export async function PUT(request, { params }) {
  *         required: true
  *         schema:
  *           type: string
- *         description: Service ID (MongoDB ObjectId)
+ *         description: Technology ID (MongoDB ObjectId)
  *     responses:
  *       200:
- *         description: Service deleted successfully
+ *         description: Technology deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -353,9 +367,9 @@ export async function PUT(request, { params }) {
  *                 message:
  *                   type: string
  *                 data:
- *                   $ref: '#/components/schemas/Service'
+ *                   $ref: '#/components/schemas/Technology'
  *       400:
- *         description: Invalid service ID
+ *         description: Invalid technology ID
  *         content:
  *           application/json:
  *             schema:
@@ -367,7 +381,7 @@ export async function PUT(request, { params }) {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *       404:
- *         description: Service not found
+ *         description: Technology not found
  *         content:
  *           application/json:
  *             schema:
@@ -396,30 +410,30 @@ export async function DELETE(request, { params }) {
 
 		if (!mongoose.Types.ObjectId.isValid(id)) {
 			return NextResponse.json(
-				{ error: "Invalid service ID" },
+				{ error: "Invalid technology ID" },
 				{ status: 400 }
 			);
 		}
 
-		const service = await Service.findByIdAndDelete(id).lean();
+		const technology = await Technology.findByIdAndDelete(id).select("-__v").lean();
 
-		if (!service) {
+		if (!technology) {
 			return NextResponse.json(
-				{ error: "Service not found" },
+				{ error: "Technology not found" },
 				{ status: 404 }
 			);
 		}
 
 		return NextResponse.json({
 			success: true,
-			message: "Service deleted successfully",
-			data: service,
+			message: "Technology deleted successfully",
+			data: technology,
 		});
 	} catch (error) {
-		console.error("Error deleting service:", error);
+		console.error("Error deleting technology:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to delete service",
+				error: "Failed to delete technology",
 				details: error.message,
 			},
 			{ status: 500 }

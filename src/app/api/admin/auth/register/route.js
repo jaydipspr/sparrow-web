@@ -2,7 +2,63 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
 import Admin from "@/models/Admin";
 
-// POST - Create new admin (protected route - should be used only by super admin)
+/**
+ * @swagger
+ * /api/admin/auth/register:
+ *   post:
+ *     summary: Register a new admin
+ *     description: Create a new admin account (protected route - should be used only by super admin)
+ *     tags: [Admin Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: admin@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: securePassword123
+ *     responses:
+ *       201:
+ *         description: Admin created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *       400:
+ *         description: Validation error or admin already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 export async function POST(request) {
 	try {
 		await connectDB();

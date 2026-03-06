@@ -6,7 +6,75 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
-// POST - Admin login
+/**
+ * @swagger
+ * /api/admin/auth/login:
+ *   post:
+ *     summary: Admin login
+ *     description: Authenticate admin user and receive JWT token
+ *     tags: [Admin Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: admin@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: password123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                       description: JWT token for authentication
+ *                     admin:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                         email:
+ *                           type: string
+ *       400:
+ *         description: Missing email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 export async function POST(request) {
 	try {
 		await connectDB();

@@ -1,21 +1,27 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
-import Service from "@/models/Service";
+import Technology from "@/models/Technology";
 import mongoose from "mongoose";
 
 /**
  * @swagger
- * /api/services:
+ * /api/technology:
  *   get:
- *     summary: Get all active services or a single service
- *     description: Retrieve all active services or a single service by ID (public endpoint)
- *     tags: [Public Services]
+ *     summary: Get all active technologies or a single technology
+ *     description: Retrieve all active technologies or a single technology by ID or category (public endpoint)
+ *     tags: [Public Technology]
  *     parameters:
  *       - in: query
  *         name: id
  *         schema:
  *           type: string
- *         description: Service ID (MongoDB ObjectId)
+ *         description: Technology ID (MongoDB ObjectId)
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *           enum: [Web Development, Application Development, Backend & Database]
+ *         description: Filter by category
  *     responses:
  *       200:
  *         description: Successful response
@@ -28,15 +34,15 @@ import mongoose from "mongoose";
  *                   type: boolean
  *                 data:
  *                   oneOf:
- *                     - $ref: '#/components/schemas/Service'
+ *                     - $ref: '#/components/schemas/Technology'
  *                     - type: array
  *                       items:
- *                         $ref: '#/components/schemas/Service'
+ *                         $ref: '#/components/schemas/Technology'
  *                 count:
  *                   type: integer
  *                   description: Total count (only for list response)
  *       404:
- *         description: Service not found
+ *         description: Technology not found
  *         content:
  *           application/json:
  *             schema:
@@ -54,48 +60,55 @@ export async function GET(request) {
 
 		const { searchParams } = new URL(request.url);
 		const id = searchParams.get("id");
+		const category = searchParams.get("category");
 
-		// Get single service by id
+		// Get single technology by id
 		if (id) {
-			let service = null;
+			let technology = null;
 			
 			// Check if id is a valid MongoDB ObjectId
 			if (mongoose.Types.ObjectId.isValid(id)) {
-				service = await Service.findOne({
+				technology = await Technology.findOne({
 					_id: new mongoose.Types.ObjectId(id),
 					isActive: true,
-				}).lean();
+				}).select("-__v").lean();
 			}
 
-			if (!service) {
+			if (!technology) {
 				return NextResponse.json(
-					{ error: "Service not found" },
+					{ error: "Technology not found" },
 					{ status: 404 }
 				);
 			}
 
 			return NextResponse.json({
 				success: true,
-				data: service,
+				data: technology,
 			});
 		}
 
-		// Get all active services
-		const services = await Service.find({ isActive: true })
+		// Build query for filtering
+		const query = { isActive: true };
+		if (category) {
+			query.category = category;
+		}
+
+		// Get all active technologies
+		const technologies = await Technology.find(query)
 			.sort({ createdAt: -1 })
-			.select("-__v -order")
+			.select("-__v")
 			.lean();
 
 		return NextResponse.json({
 			success: true,
-			data: services,
-			count: services.length,
+			data: technologies,
+			count: technologies.length,
 		});
 	} catch (error) {
-		console.error("Error fetching services:", error);
+		console.error("Error fetching technologies:", error);
 		return NextResponse.json(
 			{
-				error: "Failed to fetch services",
+				error: "Failed to fetch technologies",
 				details: error.message,
 			},
 			{ status: 500 }

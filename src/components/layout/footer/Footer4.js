@@ -1,11 +1,10 @@
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import Link from "next/link";
-import getNavItems from "@/libs/getNavItems";
+import { getAllServicesFromAPI } from "@/libs/getALlServices";
 
-const Footer4 = () => {
-	const navItems = getNavItems();
-	const serviceNav = navItems?.find((item) => item.name === "Services");
-	const services = serviceNav?.submenu || [];
+const Footer4 = async () => {
+	const apiServices = await getAllServicesFromAPI();
+	const services = apiServices?.slice(0, 6) || [];
 
 	return (
 		<footer className="tj-footer-section footer-4 section-gap-x">
@@ -110,15 +109,18 @@ const Footer4 = () => {
 								<h5 className="title">Services</h5>
 								<ul>
 									{services.length > 0
-										? services.slice(0, 6).map((service, idx) => (
-												<li key={service.id || idx}>
-													<Link href={service.path || `#`}>
-														{service.name}
-													</Link>
-												</li>
-										  ))
+										? services.map((service, idx) => {
+												const serviceId = service._id?.toString() || service.id;
+												return (
+													<li key={serviceId || idx}>
+														<Link href={`/services/${serviceId}`}>
+															{service.name}
+														</Link>
+													</li>
+												);
+										  })
 										: null}
-									{services.length > 6 && (
+									{apiServices && apiServices.length > 6 && (
 										<li>
 											<Link href="/services" className="view-more-link">
 												View More <i className="tji-arrow-right"></i>

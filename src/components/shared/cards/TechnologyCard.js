@@ -3,22 +3,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 const TechnologyCard = ({ technology, idx }) => {
-	const { title, shortTitle, slug, img, iconName, shortDesc, category } = technology || {};
+	const { name, title, id, _id, img, description, category } = technology || {};
+	const technologyId = id || _id?.toString();
+	const displayTitle = title || name;
+	const displayDesc = description || "";
+	
 	return (
 		<div className="tj-service-card-4">
 			<div className="service-card-image">
-				<Link href={`/technology/${slug}`}>
+				<Link href={`/technology/${technologyId}`}>
 					{img ? (
 						<Image
 							src={img}
-							alt={title || "Technology"}
+							alt={displayTitle || "Technology"}
 							width={370}
 							height={270}
 							style={{ height: "auto" }}
 						/>
 					) : (
 						<div className="service-icon-placeholder">
-							<i className={iconName || "tji-service-1"}></i>
+							<i className="tji-service-1"></i>
 						</div>
 					)}
 				</Link>
@@ -28,10 +32,10 @@ const TechnologyCard = ({ technology, idx }) => {
 					<span className="service-category">{category}</span>
 				)}
 				<h4 className="service-title">
-					<Link href={`/technology/${slug}`}>{shortTitle || title}</Link>
+					<Link href={`/technology/${technologyId}`}>{displayTitle}</Link>
 				</h4>
-				<p className="service-desc">{shortDesc}</p>
-				<Link href={`/technology/${slug}`} className="service-link">
+				<p className="service-desc">{displayDesc}</p>
+				<Link href={`/technology/${technologyId}`} className="service-link">
 					Learn More <i className="tji-arrow-right"></i>
 				</Link>
 			</div>

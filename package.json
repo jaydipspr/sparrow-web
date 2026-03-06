@@ -24,6 +24,7 @@
 		"isotope-layout": "^3.0.6",
 		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^9.2.3",
+		"multer": "^2.0.2",
 		"next": "^16.0.7",
 		"nice-select2": "^2.4.0",
 		"react": "^19.2.1",
@@ -32,6 +33,8 @@
 		"react-intersection-observer": "^9.16.0",
 		"react-odometerjs": "^3.1.3",
 		"react-range-slider-input": "^3.2.1",
+		"swagger-jsdoc": "^6.2.8",
+		"swagger-ui-react": "^5.32.0",
 		"sweetalert2": "^11.22.5",
 		"swiper": "^11.2.10",
 		"wow.js": "^1.2.2"

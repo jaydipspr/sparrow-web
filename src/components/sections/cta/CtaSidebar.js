@@ -8,7 +8,7 @@ const CtaSidebar = () => {
 				<span>Home Makeover</span>
 				<Link className="read-more feature-contact" href="tel:8321890640">
 					<i className="tji-phone-3"></i>
-					<span>+8 (321) 890-640</span>
+					<span>+91 9409354326</span>
 				</Link>
 			</div>
 			<div className="feature-images">

@@ -1,12 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import api from "@/lib/axios";
 import DeleteConfirmModal from "@/components/admin/modals/DeleteConfirmModal";
+import BaseTable from "@/components/admin/BaseTable";
 
 export default function AdminServices() {
 	const [services, setServices] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const [uploadingImg, setUploadingImg] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [editingService, setEditingService] = useState(null);
 	const [deleteModal, setDeleteModal] = useState({
@@ -21,21 +24,38 @@ export default function AdminServices() {
 		description: "",
 		points: [],
 		isActive: true,
-		order: 0,
 	});
 	const [newPoint, setNewPoint] = useState("");
+	const [pagination, setPagination] = useState({
+		currentPage: 1,
+		limit: 10,
+		totalCount: 0,
+		totalPages: 0,
+		hasNextPage: false,
+		hasPrevPage: false,
+	});
 
-	// Fetch services
-	const fetchServices = () => {
+	// Fetch services with pagination
+	const fetchServices = (page = 1, limit = 10) => {
 		setLoading(true);
 		setError("");
 
-		api.get("/api/admin/services")
+		api.get(`/api/admin/services?page=${page}&limit=${limit}`)
 			.then((response) => {
 				if (response.data.success) {
 					const servicesData = response.data.data || [];
+					const paginationData = response.data.pagination || {};
 					console.log("Fetched services:", servicesData);
+					console.log("Pagination:", paginationData);
 					setServices(servicesData);
+					setPagination({
+						currentPage: paginationData.currentPage || page,
+						limit: paginationData.limit || limit,
+						totalCount: paginationData.totalCount || 0,
+						totalPages: paginationData.totalPages || 0,
+						hasNextPage: paginationData.hasNextPage || false,
+						hasPrevPage: paginationData.hasPrevPage || false,
+					});
 				} else {
 					setError("Failed to fetch services");
 				}
@@ -49,8 +69,15 @@ export default function AdminServices() {
 			});
 	};
 
+	// Handle page change
+	const handlePageChange = (newPage) => {
+		if (newPage >= 1 && newPage <= pagination.totalPages) {
+			fetchServices(newPage, pagination.limit);
+		}
+	};
+
 	useEffect(() => {
-		fetchServices();
+		fetchServices(1, 10);
 	}, []);
 
 	// Handle form input change
@@ -113,7 +140,6 @@ export default function AdminServices() {
 			description: formData.description || "",
 			points: Array.isArray(formData.points) ? formData.points : [],
 			isActive: formData.isActive !== undefined ? formData.isActive : true,
-			order: formData.order !== undefined ? parseInt(formData.order) : 0,
 		};
 
 		console.log("Sending service data:", JSON.stringify(serviceData, null, 2));
@@ -125,7 +151,7 @@ export default function AdminServices() {
 		request
 			.then((response) => {
 				if (response.data.success) {
-					fetchServices();
+					fetchServices(pagination.currentPage, pagination.limit);
 					handleCloseForm();
 				} else {
 					setError(response.data.error || "Operation failed");
@@ -140,6 +166,35 @@ export default function AdminServices() {
 			});
 	};
 
+	// Upload service image (multer)
+	const handleImageUpload = (file) => {
+		if (!file) return;
+
+		setUploadingImg(true);
+		setError("");
+
+		const formDataUpload = new FormData();
+		formDataUpload.append("file", file);
+
+		api.post("/api/admin/upload/service-image", formDataUpload, {
+			headers: { "Content-Type": "multipart/form-data" },
+		})
+			.then((res) => {
+				if (res.data?.success && res.data?.url) {
+					setFormData((prev) => ({ ...prev, img: res.data.url }));
+				} else {
+					setError(res.data?.error || "Failed to upload image");
+				}
+			})
+			.catch((err) => {
+				console.error("Image upload error:", err);
+				setError(err.response?.data?.error || err.message || "Failed to upload image");
+			})
+			.finally(() => {
+				setUploadingImg(false);
+			});
+	};
+
 	// Handle edit
 	const handleEdit = (service) => {
 		setEditingService(service);
@@ -150,7 +205,6 @@ export default function AdminServices() {
 			description: service.description || "",
 			points: service.points || [],
 			isActive: service.isActive !== undefined ? service.isActive : true,
-			order: service.order || 0,
 		});
 		setNewPoint("");
 		setShowForm(true);
@@ -172,7 +226,7 @@ export default function AdminServices() {
 		api.delete(`/api/admin/services/${deleteModal.serviceId}`)
 			.then((response) => {
 				if (response.data.success) {
-					fetchServices();
+					fetchServices(pagination.currentPage, pagination.limit);
 					setDeleteModal({ isOpen: false, serviceId: null, serviceTitle: "" });
 				} else {
 					setError(response.data.error || "Failed to delete service");
@@ -200,7 +254,6 @@ export default function AdminServices() {
 			description: "",
 			points: [],
 			isActive: true,
-			order: 0,
 		});
 		setNewPoint("");
 		setEditingService(null);
@@ -253,60 +306,89 @@ export default function AdminServices() {
 							<p>No services found. Create your first service!</p>
 						</div>
 					) : (
-						<div className="admin-table-wrapper">
-							<table className="admin-table">
-								<thead>
-									<tr>
-										<th>Order</th>
-										<th>Service Name</th>
-										<th>Status</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									{services.map((service) => {
-										const isActive = service.isActive !== undefined ? Boolean(service.isActive) : true;
+						<BaseTable
+							columns={[
+								{
+									key: "__index",
+									label: "No.",
+									mobileVisible: false,
+									mobileLabel: "No.",
+									render: (_value, _row, index) =>
+										(pagination.currentPage - 1) * pagination.limit + index + 1,
+								},
+								{
+									key: "name",
+									label: "Service Name",
+									mobileVisible: true,
+									render: (value, row) => (
+										<div className="admin-table-title">{value || row.title || "-"}</div>
+									),
+								},
+								{
+									key: "isActive",
+									label: "Status",
+									mobileVisible: false,
+									mobileLabel: "Status",
+									render: (value, row) => {
+										// Check both row.isActive and value parameter, default to true if undefined
+										let isActiveValue;
+										if (row && row.isActive !== undefined) {
+											isActiveValue = row.isActive;
+										} else if (value !== undefined && value !== null) {
+											isActiveValue = value;
+										} else {
+											isActiveValue = true; // Default to active
+										}
+										
+										const isActive = Boolean(isActiveValue);
+										
 										return (
-											<tr key={service._id}>
-												<td>{service.order || 0}</td>
-												<td>
-													<div className="admin-table-title">{service.name || service.title}</div>
-												</td>
-												<td>
-													<span
-														className={`admin-badge ${
-															isActive
-																? "admin-badge-success"
-																: "admin-badge-danger"
-														}`}
-													>
-														{isActive ? "Active" : "Inactive"}
-													</span>
-												</td>
-												<td>
-													<div className="admin-table-actions">
-														<button
-															className="admin-btn-icon admin-btn-icon-edit"
-															onClick={() => handleEdit(service)}
-															title="Edit"
-														>
-															<i className="fa-light fa-edit"></i>
-														</button>
-														<button
-															className="admin-btn-icon admin-btn-icon-delete"
-															onClick={() => handleDeleteClick(service)}
-															title="Delete"
-														>
-															<i className="fa-light fa-trash"></i>
-														</button>
-													</div>
-												</td>
-											</tr>
+											<span
+												className={`admin-badge ${
+													isActive ? "admin-badge-success" : "admin-badge-danger"
+												}`}
+											>
+												{isActive ? "Active" : "Inactive"}
+											</span>
 										);
-									})}
-								</tbody>
-							</table>
-						</div>
+									},
+								},
+								{
+									key: "actions",
+									label: "Actions",
+									mobileVisible: true,
+								},
+							]}
+							data={services}
+							nameKey="name"
+							renderActions={(service) => (
+								<>
+									<Link
+										href={`/admin/services/${service._id}`}
+										className="admin-btn-icon admin-btn-icon-view"
+										title="View Details"
+									>
+										<i className="fa-light fa-eye"></i>
+									</Link>
+									<button
+										className="admin-btn-icon admin-btn-icon-edit"
+										onClick={() => handleEdit(service)}
+										title="Edit"
+									>
+										<i className="fa-light fa-edit"></i>
+									</button>
+									<button
+										className="admin-btn-icon admin-btn-icon-delete"
+										onClick={() => handleDeleteClick(service)}
+										title="Delete"
+									>
+										<i className="fa-light fa-trash"></i>
+									</button>
+								</>
+							)}
+							pagination={pagination.totalCount > 0 ? pagination : null}
+							onPageChange={handlePageChange}
+						/>
 					)}
 				</div>
 			</div>
@@ -356,26 +438,74 @@ export default function AdminServices() {
 										onChange={handleChange}
 										placeholder="Enter service title (displayed on detail page)"
 									/>
-									<small className="admin-form-help">
-										This title will be displayed on the service detail page. If left empty, the service name will be used.
-									</small>
 								</div>
 
 								<div className="admin-form-group admin-form-group-full">
 									<label htmlFor="img">
 										Image URL <span className="admin-required">*</span>
 									</label>
-									<input
-										type="text"
-										id="img"
-										name="img"
-										value={formData.img}
-										onChange={handleChange}
-										placeholder="/images/service/service-1.webp"
-										required
-									/>
+									<div className="admin-image-url-wrapper">
+										<input
+											type="text"
+											id="img"
+											name="img"
+											value={formData.img}
+											onChange={handleChange}
+											placeholder="/images/service/service-1.webp or /uploads/services/image.jpg"
+											required
+											className={formData.img ? "has-value" : ""}
+										/>
+										{formData.img && (
+											<button
+												type="button"
+												className="admin-image-clear-btn"
+												onClick={() => setFormData((prev) => ({ ...prev, img: "" }))}
+												title="Clear image URL"
+											>
+												<i className="fa-light fa-times"></i>
+											</button>
+										)}
+									</div>
 									<small className="admin-form-help">
-										Image displayed above the service title (Recommended: 420x450px)
+										Enter image URL manually or upload a file below to auto-fill this field.
+									</small>
+								</div>
+
+								<div className="admin-form-group admin-form-group-full">
+									<label htmlFor="serviceImageUpload">
+										Or Upload Image File
+									</label>
+									<div className="admin-file-upload-wrapper">
+										<input
+											type="file"
+											id="serviceImageUpload"
+											className="admin-file-input"
+											accept="image/*"
+											onChange={(e) => {
+												const file = e.target.files?.[0];
+												handleImageUpload(file);
+												// allow uploading same file again
+												e.target.value = "";
+											}}
+											disabled={uploadingImg}
+										/>
+										<label htmlFor="serviceImageUpload" className="admin-file-label">
+											<i className="fa-light fa-cloud-arrow-up"></i>
+											<span>{uploadingImg ? "Uploading..." : "Choose Image File"}</span>
+										</label>
+										{uploadingImg && (
+											<div className="admin-file-upload-progress">
+												<div className="admin-file-upload-spinner">
+													<i className="fa-light fa-spinner fa-spin"></i>
+												</div>
+											</div>
+										)}
+									</div>
+									<small className="admin-form-help">
+										{uploadingImg 
+											? "Uploading image, please wait..."
+											: "Upload an image file and the Image URL field above will be automatically filled."
+										}
 									</small>
 								</div>
 
@@ -442,21 +572,11 @@ export default function AdminServices() {
 								</div>
 
 								<div className="admin-form-group">
-									<label htmlFor="order">Order</label>
-									<input
-										type="number"
-										id="order"
-										name="order"
-										value={formData.order}
-										onChange={handleChange}
-										placeholder="0"
-									/>
-								</div>
-
-								<div className="admin-form-group">
+									<label htmlFor="isActive">Status</label>
 									<label className="admin-checkbox-label">
 										<input
 											type="checkbox"
+											id="isActive"
 											name="isActive"
 											checked={formData.isActive}
 											onChange={handleChange}
@@ -474,7 +594,11 @@ export default function AdminServices() {
 								>
 									Cancel
 								</button>
-								<button type="submit" className="admin-btn admin-btn-primary">
+								<button
+									type="submit"
+									className="admin-btn admin-btn-primary"
+									disabled={loading || uploadingImg}
+								>
 									{editingService ? "Update Service" : "Create Service"}
 								</button>
 							</div>

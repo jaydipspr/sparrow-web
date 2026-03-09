@@ -3,6 +3,7 @@ import connectDB from "@/lib/db/mongodb";
 import Service from "@/models/Service";
 import { authenticateAdmin } from "@/middleware/auth";
 import mongoose from "mongoose";
+import { generateUniqueSlug } from "@/lib/utils/slug";
 
 /**
  * @swagger
@@ -72,14 +73,17 @@ export async function GET(request, { params }) {
 
 		const { id } = await params;
 
-		if (!mongoose.Types.ObjectId.isValid(id)) {
-			return NextResponse.json(
-				{ error: "Invalid service ID" },
-				{ status: 400 }
-			);
+		let service = null;
+
+		// Try as MongoDB ObjectId first
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			service = await Service.findById(id).lean();
 		}
 
-		const service = await Service.findById(id).lean();
+		// If not found by ID, try as slug
+		if (!service) {
+			service = await Service.findOne({ slug: id }).lean();
+		}
 
 		if (!service) {
 			return NextResponse.json(
@@ -268,7 +272,11 @@ export async function PUT(request, { params }) {
 
 		// Build update object with only provided fields
 		const updateData = {};
-		if (name !== undefined) updateData.name = name;
+		if (name !== undefined) {
+			updateData.name = name;
+			// Regenerate slug when name changes
+			updateData.slug = await generateUniqueSlug(Service, name.trim(), id);
+		}
 		if (title !== undefined) updateData.title = title;
 		if (img !== undefined) updateData.img = img;
 		if (description !== undefined) updateData.description = description;

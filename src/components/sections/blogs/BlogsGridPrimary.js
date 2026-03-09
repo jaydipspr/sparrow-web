@@ -3,11 +3,10 @@ import BlogCard1 from "@/components/shared/cards/BlogCard1";
 import Paginations from "@/components/shared/others/Paginations";
 import BlogSidebar from "@/components/shared/sidebar/BlogSidebar";
 import usePagination from "@/hooks/usePagination";
-import getBlogs from "@/libs/getBlogs";
 import { useEffect, useMemo } from "react";
 
-const BlogsGridPrimary = ({ isSidebar = false }) => {
-	const items = useMemo(() => getBlogs());
+const BlogsGridPrimary = ({ blogs = [], isSidebar = false }) => {
+	const items = useMemo(() => blogs, [blogs]);
 	const limit = 6;
 	// get pagination details
 	const {
@@ -22,7 +21,6 @@ const BlogsGridPrimary = ({ isSidebar = false }) => {
 		lastItem,
 	} = usePagination(items, limit);
 	const totalItems = items?.length;
-	const totalItemsToShow = currentItems?.length;
 	useEffect(() => {
 		setCurrentpage(0);
 	}, [totalItems]);

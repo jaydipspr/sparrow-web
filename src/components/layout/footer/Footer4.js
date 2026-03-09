@@ -110,10 +110,10 @@ const Footer4 = async () => {
 								<ul>
 									{services.length > 0
 										? services.map((service, idx) => {
-												const serviceId = service._id?.toString() || service.id;
+												const serviceLink = service.slug || service._id?.toString() || service.id;
 												return (
-													<li key={serviceId || idx}>
-														<Link href={`/services/${serviceId}`}>
+													<li key={serviceLink || idx}>
+														<Link href={`/services/${serviceLink}`}>
 															{service.name}
 														</Link>
 													</li>
@@ -175,8 +175,10 @@ const Footer4 = async () => {
 									</div>
 									<div className="contact-item">
 										<Link href="tel:10095447818">P: +91 9409354326</Link>
-										<Link href="mailto:support@bexon.com">
-											M: support@bexon.com
+									</div>
+									<div className="contact-item">
+										<Link href="mailto:contact@sparrowsofttech.com" style={{ whiteSpace: "nowrap" }}>
+											M: contact@sparrowsofttech.com
 										</Link>
 									</div>
 									<div className="contact-item">

@@ -1,8 +1,7 @@
-"use client";
 import BlogCard4 from "@/components/shared/cards/BlogCard4";
-import getBlogs from "@/libs/getBlogs";
-const Blogs4 = () => {
-	const blogs = getBlogs().slice(0, 3);
+
+const Blogs4 = ({ blogs = [] }) => {
+	const displayBlogs = blogs.slice(0, 3);
 	return (
 		<section className="tj-blog-section-4 section-gap">
 			<div className="container">
@@ -19,8 +18,8 @@ const Blogs4 = () => {
 				<div className="row">
 					<div className="col-12">
 						<div className="h4-blog-wrap">
-							{blogs?.length
-								? blogs?.map((blog, idx) => (
+							{displayBlogs?.length
+								? displayBlogs?.map((blog, idx) => (
 										<BlogCard4 key={idx} blog={blog} idx={idx} />
 								  ))
 								: ""}

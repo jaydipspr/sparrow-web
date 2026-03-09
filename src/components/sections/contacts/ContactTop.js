@@ -25,8 +25,8 @@ const ContactTop = () => {
 							<div className="contact-icon">
 								<i className="tji-location-3"></i>
 							</div>
-							<h3 className="contact-title">Our Location</h3>
-							<p>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India.</p>
+						<h3 className="contact-title">Our Location</h3>
+						<p>MIG 51-52, First Floor, Near Jain Derasar, Shastrinagar, Bhavnagar, Gujarat – 364003, India.</p>
 						</div>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-sm-6">
@@ -39,9 +39,6 @@ const ContactTop = () => {
 							</div>
 							<h3 className="contact-title">Email us</h3>
 							<ul className="contact-list">
-								<li>
-									<Link href="mailto:support@bexon.com">support@bexon.com</Link>
-								</li>
 								<li>
 									<Link href="mailto:contact@sparrowsofttech.com">contact@sparrowsofttech.com</Link>
 								</li>
@@ -59,10 +56,7 @@ const ContactTop = () => {
 							<h3 className="contact-title">Call us</h3>
 							<ul className="contact-list">
 								<li>
-									<Link href="tel:10095447818">+91 9409354326</Link>
-								</li>
-								<li>
-									<Link href="tel:10098801810">+1 (009) 880-1810</Link>
+									<Link href="tel:+919409354326">+91 9409354326</Link>
 								</li>
 							</ul>
 						</div>
@@ -75,17 +69,17 @@ const ContactTop = () => {
 							<div className="contact-icon">
 								<i className="tji-chat"></i>
 							</div>
-							<h3 className="contact-title">Live chat</h3>
-							<ul className="contact-list">
-								<li>
-									<Link href="mailto:livechat@bexon.com">
-										livechat@bexon.com
-									</Link>
-								</li>
-								<li className="active">
-									<Link href="/contact">Need help?</Link>
-								</li>
-							</ul>
+						<h3 className="contact-title">Live chat</h3>
+						<ul className="contact-list">
+							<li>
+								<Link href="mailto:contact@sparrowsofttech.com">
+									contact@sparrowsofttech.com
+								</Link>
+							</li>
+							<li className="active">
+								<Link href="/contact">Need help?</Link>
+							</li>
+						</ul>
 						</div>
 					</div>
 				</div>

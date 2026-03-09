@@ -4,11 +4,11 @@ import Link from "next/link";
 import api from "@/lib/axios";
 import DeleteConfirmModal from "@/components/admin/modals/DeleteConfirmModal";
 import BaseTable from "@/components/admin/BaseTable";
+import { toast } from "react-toastify";
 
 export default function AdminServices() {
 	const [services, setServices] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
 	const [uploadingImg, setUploadingImg] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [editingService, setEditingService] = useState(null);
@@ -38,15 +38,12 @@ export default function AdminServices() {
 	// Fetch services with pagination
 	const fetchServices = (page = 1, limit = 10) => {
 		setLoading(true);
-		setError("");
 
 		api.get(`/api/admin/services?page=${page}&limit=${limit}`)
 			.then((response) => {
 				if (response.data.success) {
 					const servicesData = response.data.data || [];
 					const paginationData = response.data.pagination || {};
-					console.log("Fetched services:", servicesData);
-					console.log("Pagination:", paginationData);
 					setServices(servicesData);
 					setPagination({
 						currentPage: paginationData.currentPage || page,
@@ -57,12 +54,12 @@ export default function AdminServices() {
 						hasPrevPage: paginationData.hasPrevPage || false,
 					});
 				} else {
-					setError("Failed to fetch services");
+					toast.error("Failed to fetch services");
 				}
 			})
 			.catch((err) => {
 				console.error("Error fetching services:", err);
-				setError(err.response?.data?.error || "Failed to fetch services");
+				toast.error(err.response?.data?.error || "Failed to fetch services");
 			})
 			.finally(() => {
 				setLoading(false);
@@ -115,19 +112,18 @@ export default function AdminServices() {
 	// Handle form submit (create or update)
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setError("");
 
 		// Basic validation
 		if (!formData.name.trim()) {
-			setError("Service name is required.");
+			toast.error("Service name is required.");
 			return;
 		}
 		if (!formData.img.trim()) {
-			setError("Service image URL is required.");
+			toast.error("Service image URL is required.");
 			return;
 		}
 		if (!formData.img.startsWith("/") && !formData.img.startsWith("http://") && !formData.img.startsWith("https://")) {
-			setError("Image URL must be a valid URL or a relative path starting with /.");
+			toast.error("Image URL must be a valid URL or a relative path starting with /.");
 			return;
 		}
 
@@ -142,8 +138,6 @@ export default function AdminServices() {
 			isActive: formData.isActive !== undefined ? formData.isActive : true,
 		};
 
-		console.log("Sending service data:", JSON.stringify(serviceData, null, 2));
-
 		const request = editingService
 			? api.put(`/api/admin/services/${editingService._id}`, serviceData)
 			: api.post("/api/admin/services", serviceData);
@@ -151,15 +145,16 @@ export default function AdminServices() {
 		request
 			.then((response) => {
 				if (response.data.success) {
+					toast.success(editingService ? "Service updated successfully!" : "Service created successfully!");
 					fetchServices(pagination.currentPage, pagination.limit);
 					handleCloseForm();
 				} else {
-					setError(response.data.error || "Operation failed");
+					toast.error(response.data.error || "Operation failed");
 				}
 			})
 			.catch((err) => {
 				console.error("Error saving service:", err);
-				setError(err.response?.data?.error || "Failed to save service");
+				toast.error(err.response?.data?.error || "Failed to save service");
 			})
 			.finally(() => {
 				setLoading(false);
@@ -171,7 +166,6 @@ export default function AdminServices() {
 		if (!file) return;
 
 		setUploadingImg(true);
-		setError("");
 
 		const formDataUpload = new FormData();
 		formDataUpload.append("file", file);
@@ -182,13 +176,14 @@ export default function AdminServices() {
 			.then((res) => {
 				if (res.data?.success && res.data?.url) {
 					setFormData((prev) => ({ ...prev, img: res.data.url }));
+					toast.success("Image uploaded successfully!");
 				} else {
-					setError(res.data?.error || "Failed to upload image");
+					toast.error(res.data?.error || "Failed to upload image");
 				}
 			})
 			.catch((err) => {
 				console.error("Image upload error:", err);
-				setError(err.response?.data?.error || err.message || "Failed to upload image");
+				toast.error(err.response?.data?.error || err.message || "Failed to upload image");
 			})
 			.finally(() => {
 				setUploadingImg(false);
@@ -226,16 +221,17 @@ export default function AdminServices() {
 		api.delete(`/api/admin/services/${deleteModal.serviceId}`)
 			.then((response) => {
 				if (response.data.success) {
+					toast.success("Service deleted successfully!");
 					fetchServices(pagination.currentPage, pagination.limit);
 					setDeleteModal({ isOpen: false, serviceId: null, serviceTitle: "" });
 				} else {
-					setError(response.data.error || "Failed to delete service");
+					toast.error(response.data.error || "Failed to delete service");
 					setDeleteModal({ isOpen: false, serviceId: null, serviceTitle: "" });
 				}
 			})
 			.catch((err) => {
 				console.error("Error deleting service:", err);
-				setError(err.response?.data?.error || "Failed to delete service");
+				toast.error(err.response?.data?.error || "Failed to delete service");
 				setDeleteModal({ isOpen: false, serviceId: null, serviceTitle: "" });
 			});
 	};
@@ -264,17 +260,10 @@ export default function AdminServices() {
 		setShowForm(false);
 		setEditingService(null);
 		resetForm();
-		setError("");
 	};
 
 	return (
 		<div className="admin-page">
-			{error && (
-				<div className="admin-alert admin-alert-error">
-					<i className="fa-light fa-circle-exclamation"></i>
-					<span>{error}</span>
-				</div>
-			)}
 
 			<div className="admin-card">
 				<div className="admin-card-header">
@@ -364,7 +353,7 @@ export default function AdminServices() {
 							renderActions={(service) => (
 								<>
 									<Link
-										href={`/admin/services/${service._id}`}
+										href={`/admin/services/${service.slug || service._id}`}
 										className="admin-btn-icon admin-btn-icon-view"
 										title="View Details"
 									>

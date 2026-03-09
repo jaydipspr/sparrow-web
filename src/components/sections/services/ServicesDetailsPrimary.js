@@ -373,12 +373,14 @@ const ServicesDetailsPrimary = ({ option }) => {
 							>
 								<h4 className="widget-title">More Services</h4>
 								<ul>
-									{sidebarItems?.length
-										? sidebarItems?.map(({ name, title, id }, idx) => (
+								{sidebarItems?.length
+									? sidebarItems?.map(({ name, title, id, slug }, idx) => {
+											const linkId = slug || id;
+											return (
 												<li key={idx}>
 													<Link
-														className={`${currentId === id ? "active" : ""}`}
-														href={`/services/${id}`}
+														className={`${currentId === linkId ? "active" : ""}`}
+														href={`/services/${linkId}`}
 													>
 														{name || title}
 														<span className="icon">
@@ -386,8 +388,9 @@ const ServicesDetailsPrimary = ({ option }) => {
 														</span>
 													</Link>
 												</li>
-										  ))
-										: ""}
+											);
+									  })
+									: ""}
 								</ul>
 							</div>
 

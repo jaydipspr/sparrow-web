@@ -1,12 +1,15 @@
 "use client";
 import PortfolioCard4 from "@/components/shared/cards/PortfolioCard4";
-import getPortfolio from "@/libs/getPortfolio";
 
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-const Portfolios4 = () => {
-	const portfolioTShow = getPortfolio()?.slice(0, 3);
-	const portfolio = [...portfolioTShow, ...portfolioTShow];
+const Portfolios4 = ({ portfolios = [] }) => {
+	// Double the items for continuous loop effect
+	const portfolioItems = portfolios.length > 0 ? [...portfolios, ...portfolios] : [];
+
+	if (portfolios.length === 0) {
+		return null;
+	}
 
 	return (
 		<section className="tj-project-section-4 section-gap">
@@ -60,8 +63,8 @@ const Portfolios4 = () => {
 								modules={[Pagination, Autoplay]}
 								className="project-slider-3"
 							>
-								{portfolio?.length
-									? portfolio?.map((portfolio, idx) => (
+								{portfolioItems?.length
+									? portfolioItems?.map((portfolio, idx) => (
 											<SwiperSlide key={idx}>
 												<PortfolioCard4 portfolio={portfolio} />
 											</SwiperSlide>

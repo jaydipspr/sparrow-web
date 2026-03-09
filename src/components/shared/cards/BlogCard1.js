@@ -1,46 +1,80 @@
 import makePath from "@/libs/makePath";
-import modifyNumber from "@/libs/modifyNumber";
 import Image from "next/image";
 import Link from "next/link";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 
 const BlogCard1 = ({ blog, idx }) => {
-	const { title, desc, id, img, category, date, day, month } = blog || {};
+	const {
+		title,
+		desc,
+		id,
+		_id,
+		slug,
+		img,
+		category,
+		author,
+		date,
+		day,
+		month,
+		content,
+		createdAt,
+	} = blog || {};
+
+	const blogLink = slug || _id || id;
+	const displayImg = img || "/images/blog/blog-1.webp";
+	const displayAuthor = author || "Admin";
+	const displayDesc = desc || (Array.isArray(content) && content.length > 0 ? content[0] : "");
+
+	// Format date from API
+	let displayDay = day;
+	let displayMonth = month;
+	if (createdAt && !day) {
+		const d = new Date(createdAt);
+		displayDay = d.getDate();
+		const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+		displayMonth = months[d.getMonth()];
+	}
+
 	return (
 		<div className="blog-item wow fadeInUp" data-wow-delay={`0.${idx + 1}s`}>
 			<div className="blog-thumb">
-				<Link href={`/blogs/${id}`}>
+				<Link href={`/blogs/${blogLink}`}>
 					{" "}
 					<Image
-						src={img ? img : "/images/blog/blog-1.webp"}
-						alt="Images"
+						src={displayImg}
+						alt={title || "Blog"}
 						width={870}
 						height={450}
+						style={{ width: "100%", height: "100%", objectFit: "cover" }}
 					/>
 				</Link>
-				<div className="blog-date">
-					<span className="date">{modifyNumber(day)}</span>
-					<span className="month">{month}</span>
-				</div>
+				{displayDay && displayMonth && (
+					<div className="blog-date">
+						<span className="date">{String(displayDay).padStart(2, "0")}</span>
+						<span className="month">{displayMonth}</span>
+					</div>
+				)}
 			</div>
 			<div className="blog-content">
 				<div className="blog-meta">
-					<span className="categories">
-						<Link href={`/blogs?category=${makePath(category)}`}>
-							{" "}
-							{category}
-						</Link>
-					</span>
+					{category && (
+						<span className="categories">
+							<Link href={`/blogs`}>
+								{" "}
+								{category}
+							</Link>
+						</span>
+					)}
 					<span>
-						By <Link href={`/blogs/${id}`}>Ellinien Loma</Link>
+						By <Link href={`/blogs/${blogLink}`}>{displayAuthor}</Link>
 					</span>
 				</div>
 				<h4 className="title">
-					<Link href={`/blogs/${id}`}>{title}.</Link>
+					<Link href={`/blogs/${blogLink}`}>{title}</Link>
 				</h4>
 				<ButtonPrimary
 					text={"Read More"}
-					url={`/blogs/${id}`}
+					url={`/blogs/${blogLink}`}
 					isTextBtn={true}
 				/>
 			</div>

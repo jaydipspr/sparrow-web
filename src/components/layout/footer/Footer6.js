@@ -105,8 +105,8 @@ const Footer6 = () => {
 									</div>
 									<div className="contact-item">
 										<Link href="tel:10095447818">P: +91 9409354326</Link>
-										<Link href="mailto:support@bexon.com">
-											M: support@bexon.com
+										<Link href="mailto:contact@sparrowsofttech.com">
+											M: contact@sparrowsofttech.com
 										</Link>
 									</div>
 									<div className="contact-item">

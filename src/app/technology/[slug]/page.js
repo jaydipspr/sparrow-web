@@ -8,9 +8,13 @@ import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
 import { getTechnologyById } from "@/libs/getAllTechnologies";
 import { notFound } from "next/navigation";
 
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata({ params }) {
-	const { slug: id } = await params;
-	const technology = await getTechnologyById(id);
+	const { slug } = await params;
+	const technology = await getTechnologyById(slug);
 	
 	if (!technology || !technology.title) {
 		return {
@@ -26,8 +30,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function TechnologyDetails({ params }) {
-	const { slug: id } = await params;
-	const technology = await getTechnologyById(id);
+	const { slug } = await params;
+	const technology = await getTechnologyById(slug);
 
 	if (!technology) {
 		notFound();
@@ -52,5 +56,3 @@ export default async function TechnologyDetails({ params }) {
 		</div>
 	);
 }
-
-export const dynamic = "force-dynamic";

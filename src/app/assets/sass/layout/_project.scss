@@ -505,4 +505,119 @@ START: Project CSS
 	}
 }
 
+/* Technology Detail - Related Portfolios */
+.tech-related-portfolios {
+	margin-top: 50px;
+	margin-bottom: 50px;
+
+	h3 {
+		margin-bottom: 25px;
+		font-weight: var(--tj-fw-sbold);
+	}
+}
+
+.tech-related-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+
+	@media (max-width: 767px) {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+}
+
+.tech-related-card {
+	background: var(--tj-color-common-white);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+	transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+	&:hover {
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+		transform: translateY(-4px);
+
+		.tech-related-img img,
+		.tech-related-img > span > img {
+			transform: scale(1.05);
+		}
+	}
+}
+
+.tech-related-img {
+	position: relative;
+	width: 100%;
+	height: 200px;
+	overflow: hidden;
+
+	img {
+		transition: transform 0.4s ease;
+	}
+}
+
+.tech-related-img-placeholder {
+	width: 100%;
+	height: 100%;
+	background: #e9ecef;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	span {
+		opacity: 0.4;
+		font-size: 14px;
+	}
+}
+
+.tech-related-info {
+	padding: 18px 20px;
+}
+
+.tech-related-category {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 500;
+	padding: 3px 12px;
+	border: 1px solid var(--tj-color-border-1, #ddd);
+	border-radius: 20px;
+	margin-bottom: 10px;
+	color: var(--tj-color-text-body, #666);
+}
+
+.tech-related-title {
+	font-size: 18px;
+	font-weight: var(--tj-fw-sbold);
+	margin-bottom: 12px;
+	line-height: 1.4;
+
+	a {
+		color: inherit;
+		transition: color 0.2s;
+
+		&:hover {
+			color: var(--tj-color-theme-primary);
+		}
+	}
+}
+
+.tech-related-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--tj-color-theme-primary);
+	transition: gap 0.2s ease;
+
+	&:hover {
+		gap: 10px;
+		color: var(--tj-color-theme-primary);
+	}
+
+	i {
+		font-size: 12px;
+	}
+}
+
 /* !END: Project CSS */

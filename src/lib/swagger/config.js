@@ -44,6 +44,11 @@ const options = {
 							description: "Service name",
 							example: "Web Development",
 						},
+						slug: {
+							type: "string",
+							description: "URL-friendly slug (auto-generated from name)",
+							example: "web-development",
+						},
 						title: {
 							type: "string",
 							description: "Service title",
@@ -92,6 +97,11 @@ const options = {
 							description: "Technology name",
 							example: "React",
 						},
+						slug: {
+							type: "string",
+							description: "URL-friendly slug (auto-generated from name)",
+							example: "react",
+						},
 						category: {
 							type: "string",
 							enum: ["Web Development", "Application Development", "Backend & Database"],
@@ -119,6 +129,188 @@ const options = {
 						isActive: {
 							type: "boolean",
 							description: "Technology active status",
+							default: true,
+						},
+						createdAt: {
+							type: "string",
+							format: "date-time",
+						},
+						updatedAt: {
+							type: "string",
+							format: "date-time",
+						},
+					},
+				},
+				Team: {
+					type: "object",
+					properties: {
+						_id: {
+							type: "string",
+							description: "Team member ID",
+						},
+						name: {
+							type: "string",
+							description: "Team member name",
+							example: "John Doe",
+						},
+						img: {
+							type: "string",
+							description: "Team member image URL",
+							example: "/images/team/team-1.webp",
+						},
+						position: {
+							type: "string",
+							description: "Team member position",
+							example: "Chief Executive Officer",
+						},
+						isActive: {
+							type: "boolean",
+							description: "Team member active status",
+							default: true,
+						},
+						createdAt: {
+							type: "string",
+							format: "date-time",
+						},
+						updatedAt: {
+							type: "string",
+							format: "date-time",
+						},
+					},
+				},
+				Portfolio: {
+					type: "object",
+					properties: {
+						_id: {
+							type: "string",
+							description: "Portfolio ID",
+						},
+						name: {
+							type: "string",
+							description: "Portfolio name",
+							example: "E-commerce Platform",
+						},
+						slug: {
+							type: "string",
+							description: "URL-friendly slug (auto-generated from name)",
+							example: "e-commerce-platform",
+						},
+						title: {
+							type: "string",
+							description: "Portfolio title",
+							example: "Modern E-commerce Solution",
+						},
+						img: {
+							type: "string",
+							description: "Portfolio image URL",
+							example: "/images/portfolio/portfolio-1.webp",
+						},
+						description: {
+							type: "string",
+							description: "Portfolio description",
+						},
+						category: {
+							type: "string",
+							description: "Portfolio category",
+							example: "Web Development",
+						},
+						keyHighlights: {
+							type: "array",
+							items: {
+								type: "string",
+							},
+							description: "List of key highlights",
+							example: ["Responsive Design", "Payment Integration"],
+						},
+						technology: {
+							type: "array",
+							items: {
+								type: "string",
+							},
+							description: "List of technologies used",
+							example: ["React", "Node.js", "MongoDB"],
+						},
+						projectLink: {
+							type: "string",
+							description: "Project link URL",
+							example: "https://example.com",
+						},
+						isActive: {
+							type: "boolean",
+							description: "Portfolio active status",
+							default: true,
+						},
+						createdAt: {
+							type: "string",
+							format: "date-time",
+						},
+						updatedAt: {
+							type: "string",
+							format: "date-time",
+						},
+					},
+				},
+				Blog: {
+					type: "object",
+					properties: {
+						_id: {
+							type: "string",
+							description: "Blog ID",
+						},
+						title: {
+							type: "string",
+							description: "Blog title",
+							example: "The Future of AI in Business",
+						},
+						slug: {
+							type: "string",
+							description: "URL-friendly slug (auto-generated from title)",
+							example: "the-future-of-ai-in-business",
+						},
+						img: {
+							type: "string",
+							description: "Blog image URL",
+							example: "/images/blog/blog-1.webp",
+						},
+						author: {
+							type: "string",
+							description: "Author name",
+							example: "John Doe",
+						},
+						category: {
+							type: "string",
+							description: "Blog category",
+							example: "Technology",
+						},
+						content: {
+							type: "array",
+							items: {
+								type: "string",
+							},
+							description: "Blog content paragraphs",
+						},
+						thought: {
+							type: "string",
+							description: "Featured thought/quote",
+						},
+						thoughtAuthor: {
+							type: "string",
+							description: "Author of the thought/quote",
+						},
+						keyLessons: {
+							type: "array",
+							items: {
+								type: "string",
+							},
+							description: "Key lessons from the blog",
+						},
+						conclusion: {
+							type: "string",
+							description: "Blog conclusion",
+						},
+						isActive: {
+							type: "boolean",
+							description: "Blog active status",
 							default: true,
 						},
 						createdAt: {
@@ -189,12 +381,36 @@ const options = {
 				description: "Admin technology management endpoints",
 			},
 			{
+				name: "Admin Team",
+				description: "Admin team management endpoints",
+			},
+			{
+				name: "Admin Portfolio",
+				description: "Admin portfolio management endpoints",
+			},
+			{
 				name: "Public Services",
 				description: "Public service endpoints",
 			},
 			{
 				name: "Public Technology",
 				description: "Public technology endpoints",
+			},
+			{
+				name: "Public Team",
+				description: "Public team endpoints",
+			},
+			{
+				name: "Public Portfolio",
+				description: "Public portfolio endpoints",
+			},
+			{
+				name: "Admin Blogs",
+				description: "Admin blog management endpoints",
+			},
+			{
+				name: "Public Blogs",
+				description: "Public blog endpoints",
 			},
 		],
 	},

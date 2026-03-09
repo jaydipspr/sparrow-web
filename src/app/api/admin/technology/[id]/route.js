@@ -3,6 +3,7 @@ import connectDB from "@/lib/db/mongodb";
 import Technology from "@/models/Technology";
 import { authenticateAdmin } from "@/middleware/auth";
 import mongoose from "mongoose";
+import { generateUniqueSlug } from "@/lib/utils/slug";
 
 /**
  * @swagger
@@ -72,14 +73,17 @@ export async function GET(request, { params }) {
 
 		const { id } = await params;
 
-		if (!mongoose.Types.ObjectId.isValid(id)) {
-			return NextResponse.json(
-				{ error: "Invalid technology ID" },
-				{ status: 400 }
-			);
+		let technology = null;
+
+		// Try as MongoDB ObjectId first
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			technology = await Technology.findById(id).select("-__v").lean();
 		}
 
-		const technology = await Technology.findById(id).select("-__v").lean();
+		// If not found by ID, try as slug
+		if (!technology) {
+			technology = await Technology.findOne({ slug: id }).select("-__v").lean();
+		}
 
 		if (!technology) {
 			return NextResponse.json(
@@ -281,7 +285,11 @@ export async function PUT(request, { params }) {
 
 		// Build update object with only provided fields
 		const updateData = {};
-		if (name !== undefined) updateData.name = name.trim();
+		if (name !== undefined) {
+			updateData.name = name.trim();
+			// Regenerate slug when name changes
+			updateData.slug = await generateUniqueSlug(Technology, name.trim(), id);
+		}
 		if (category !== undefined) updateData.category = category.trim();
 		if (title !== undefined) updateData.title = title.trim();
 		if (img !== undefined) updateData.img = img.trim();

@@ -5,16 +5,18 @@ import Cta from "@/components/sections/cta/Cta";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
-import getPortfolio from "@/libs/getPortfolio";
-import getAPortfolio from "@/libs/getAPortfolio";
+import { getAllPortfoliosFromAPI, getPortfolioById } from "@/libs/getAllPortfolios";
 import { notFound } from "next/navigation";
-const items = getPortfolio();
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
-	const { id } = await params;
-	const portfolio = getAPortfolio(id);
-	
-	if (!portfolio || !portfolio.title) {
+	const { slug } = await params;
+	const portfolio = await getPortfolioById(slug);
+
+	if (!portfolio || !portfolio.name) {
 		return {
 			title: "Portfolio - Sparrow Softtech | Innovation Unlimited",
 			description: "Explore our portfolio of successful projects.",
@@ -22,18 +24,21 @@ export async function generateMetadata({ params }) {
 	}
 
 	return {
-		title: `${portfolio.title} - Portfolio | Sparrow Softtech | Innovation Unlimited`,
-		description: portfolio.shortDesc || portfolio.desc || `View ${portfolio.title} project from Sparrow Softtech portfolio.`,
+		title: `${portfolio.name} - Portfolio | Sparrow Softtech | Innovation Unlimited`,
+		description: portfolio.description || `View ${portfolio.name} project from Sparrow Softtech portfolio.`,
 	};
 }
 
 export default async function PortfolioDetails({ params }) {
-	const { id } = await params;
+	const { slug } = await params;
 
-	const isExistItem = items?.find(({ id: id1 }) => id1 === parseInt(id));
-	if (!isExistItem) {
+	// Fetch portfolio from API by slug or id
+	const portfolio = await getPortfolioById(slug);
+
+	if (!portfolio) {
 		notFound();
 	}
+
 	return (
 		<div>
 			<BackToTop />
@@ -43,7 +48,7 @@ export default async function PortfolioDetails({ params }) {
 				<div id="smooth-content">
 					<main>
 						<HeaderSpace />
-						<PortfolioDetailsMain currentItemId={parseInt(id)} />
+						<PortfolioDetailsMain portfolio={portfolio} />
 						<Cta />
 					</main>
 					<Footer />
@@ -54,6 +59,15 @@ export default async function PortfolioDetails({ params }) {
 		</div>
 	);
 }
+
 export async function generateStaticParams() {
-	return items?.map(({ id }) => ({ id: id.toString() }));
+	try {
+		const items = await getAllPortfoliosFromAPI();
+		return items?.map(({ slug, id, _id }) => ({
+			slug: slug || id?.toString() || _id?.toString(),
+		})) || [];
+	} catch (error) {
+		console.error("Error generating static params:", error);
+		return [];
+	}
 }

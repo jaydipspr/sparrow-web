@@ -3,25 +3,25 @@ import Image from "next/image";
 import Link from "next/link";
 
 const TechnologyCard = ({ technology, idx }) => {
-	const { name, title, id, _id, img, description, category } = technology || {};
-	const technologyId = id || _id?.toString();
+	const { name, title, id, _id, slug, img, description, category } = technology || {};
+	const technologyId = slug || id || _id?.toString();
 	const displayTitle = title || name;
 	const displayDesc = description || "";
 	
 	return (
 		<div className="tj-service-card-4">
-			<div className="service-card-image">
-				<Link href={`/technology/${technologyId}`}>
+			<div className="service-card-image" style={{ width: "100%", height: "250px", position: "relative", overflow: "hidden" }}>
+				<Link href={`/technology/${technologyId}`} style={{ display: "block", width: "100%", height: "100%" }}>
 					{img ? (
 						<Image
 							src={img}
 							alt={displayTitle || "Technology"}
-							width={370}
-							height={270}
-							style={{ height: "auto" }}
+							fill
+							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+							style={{ objectFit: "cover" }}
 						/>
 					) : (
-						<div className="service-icon-placeholder">
+						<div className="service-icon-placeholder" style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
 							<i className="tji-service-1"></i>
 						</div>
 					)}

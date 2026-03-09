@@ -36,7 +36,7 @@ START: Blog CSS
 	border-radius: 12px;
 	overflow: hidden;
 	.blog-thumb {
-		min-height: 280px;
+		height: 280px;
 		overflow: hidden;
 		position: relative;
 		&::before {
@@ -53,16 +53,12 @@ START: Blog CSS
 		}
 		img {
 			width: 100%;
-			min-height: 280px;
 			height: 100%;
 			object-fit: cover;
 			transition: all 0.4s linear;
 		}
 		@media #{$xl, $lg, $xs} {
-			min-height: 240px;
-			img {
-				min-height: 240px;
-			}
+			height: 240px;
 		}
 	}
 	.blog-content {

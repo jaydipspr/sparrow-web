@@ -7,6 +7,11 @@ const TechnologySchema = new mongoose.Schema(
 			required: [true, "Technology name is required"],
 			trim: true,
 		},
+		slug: {
+			type: String,
+			trim: true,
+			lowercase: true,
+		},
 		category: {
 			type: String,
 			required: [true, "Category is required"],
@@ -45,6 +50,7 @@ const TechnologySchema = new mongoose.Schema(
 
 // Index for faster queries
 TechnologySchema.index({ isActive: 1, category: 1, createdAt: -1 });
+TechnologySchema.index({ slug: 1 }, { unique: true, sparse: true });
 
 // Use existing model if available, otherwise create new one
 // This ensures we use the latest schema without breaking existing connections

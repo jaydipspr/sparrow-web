@@ -13,9 +13,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
-	const { id } = await params;
-	// Try to fetch from API first (by slug or id)
-	const service = await getServiceBySlug(id);
+	const { slug } = await params;
+	const service = await getServiceBySlug(slug);
 	
 	if (!service || !service.title) {
 		return {
@@ -31,10 +30,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ServiceDetails({ params }) {
-	const { id } = await params;
+	const { slug } = await params;
 
 	// Fetch service from API by slug or id
-	const service = await getServiceBySlug(id);
+	const service = await getServiceBySlug(slug);
 	
 	if (!service) {
 		notFound();
@@ -64,9 +63,8 @@ export default async function ServiceDetails({ params }) {
 export async function generateStaticParams() {
 	try {
 		const items = await getAllServicesFromAPI();
-		// Use ID as primary, fallback to slug for backward compatibility
-		return items?.map(({ id, _id, slug }) => ({ 
-			id: id?.toString() || _id?.toString() || slug 
+		return items?.map(({ slug, id, _id }) => ({ 
+			slug: slug || id?.toString() || _id?.toString()
 		})) || [];
 	} catch (error) {
 		console.error("Error generating static params:", error);

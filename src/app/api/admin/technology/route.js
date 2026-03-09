@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
 import Technology from "@/models/Technology";
 import { authenticateAdmin } from "@/middleware/auth";
+import { generateUniqueSlug } from "@/lib/utils/slug";
 
 /**
  * @swagger
@@ -257,9 +258,13 @@ export async function POST(request) {
 			);
 		}
 
+		// Generate unique slug from name
+		const slug = await generateUniqueSlug(Technology, name.trim());
+
 		// Create technology with only the new schema fields
 		const technologyData = {
 			name: name.trim(),
+			slug,
 			category: category.trim(),
 			title: (title || "").trim(),
 			img: img.trim(),

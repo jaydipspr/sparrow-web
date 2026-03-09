@@ -35,13 +35,13 @@ const AdminHeader = ({ toggleSidebar }) => {
 			settings: "Settings",
 		};
 
-		// Handle dynamic routes like /admin/services/[id]
+		// Handle dynamic routes like /admin/services/[slug] or /admin/services/[id]
 		if (routeParts.length === 2) {
 			const [section, id] = routeParts;
 			const sectionLabel = routeLabels[section] || section.charAt(0).toUpperCase() + section.slice(1);
 			
-			// Check if it's a details page (has an ID that looks like MongoDB ObjectId)
-			if (id && id.length === 24) {
+			// Check if it's a details page (slug or MongoDB ObjectId)
+			if (id) {
 				// It's a details page
 				breadcrumbs.push({
 					label: sectionLabel,

@@ -3,14 +3,19 @@ import AdminHeader from "./AdminHeader";
 import AdminSidebar from "./AdminSidebar";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminLayout = ({ children }) => {
 	const pathname = usePathname();
 	const isLoginPage = pathname === "/admin/login";
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
 
 	useEffect(() => {
+		setIsMounted(true);
+		
 		const checkMobile = () => {
 			setIsMobile(window.innerWidth < 992);
 			if (window.innerWidth < 992) {
@@ -52,6 +57,20 @@ const AdminLayout = ({ children }) => {
 					{children}
 				</main>
 			</div>
+			{isMounted && (
+				<ToastContainer
+					position="top-right"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="light"
+				/>
+			)}
 		</div>
 	);
 };

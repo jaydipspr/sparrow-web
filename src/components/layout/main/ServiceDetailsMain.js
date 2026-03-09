@@ -6,7 +6,7 @@ const ServiceDetailsMain = async ({ service }) => {
 	// Fetch all services for navigation
 	const items = await getAllServicesFromAPI();
 	
-	// Serialize service to plain object (already done in getServiceBySlug, but ensure it's plain)
+	// Serialize service to plain object
 	const currentItem = {
 		_id: service._id?.toString() || service._id,
 		id: service._id?.toString() || service.id,
@@ -21,7 +21,7 @@ const ServiceDetailsMain = async ({ service }) => {
 		updatedAt: service.updatedAt ? new Date(service.updatedAt).toISOString() : null,
 	};
 	
-	// Find current service index for prev/next navigation (using ID)
+	// Find current service index for prev/next navigation
 	const currentServiceId = currentItem.id;
 	const currentIndex = items.findIndex((item) => 
 		item.id === currentServiceId
@@ -30,9 +30,9 @@ const ServiceDetailsMain = async ({ service }) => {
 	const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
 	const nextItem = currentIndex < items.length - 1 && currentIndex >= 0 ? items[currentIndex + 1] : null;
 	
-	// Use ID for navigation links (primary), fallback to slug for backward compatibility
-	const prevId = prevItem?.id || prevItem?.slug;
-	const nextId = nextItem?.id || nextItem?.slug;
+	// Use slug for navigation links, fallback to id
+	const prevId = prevItem?.slug || prevItem?.id;
+	const nextId = nextItem?.slug || nextItem?.id;
 	const isPrevItem = !!prevItem;
 	const isNextItem = !!nextItem;
 	
@@ -51,7 +51,7 @@ const ServiceDetailsMain = async ({ service }) => {
 				option={{
 					currentItem,
 					items,
-					currentId: currentItem.id || currentItem.slug,
+					currentId: currentItem.slug || currentItem.id,
 					prevId,
 					nextId,
 					isPrevItem,

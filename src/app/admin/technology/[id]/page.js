@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function TechnologyDetails() {
 	const params = useParams();
-	const technologyId = params.id;
+	const technologyId = params.id; // Can be slug or ObjectId
 	const [technology, setTechnology] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");

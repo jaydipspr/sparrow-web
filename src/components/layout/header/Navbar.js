@@ -34,14 +34,14 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 							apiService.title?.toLowerCase() === navService.name?.toLowerCase()
 						);
 						
-						if (matchingService) {
-							// Update path with actual MongoDB ObjectId
-							const serviceId = matchingService._id?.toString() || matchingService.id;
-							return {
-								...navService,
-								path: `/services/${serviceId}`,
-							};
-						}
+					if (matchingService) {
+						// Update path with slug, fallback to ID
+						const serviceLink = matchingService.slug || matchingService._id?.toString() || matchingService.id;
+						return {
+							...navService,
+							path: `/services/${serviceLink}`,
+						};
+					}
 						
 						// Return null for services not found in API (inactive services)
 						return null;
@@ -65,12 +65,12 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 				apiTechnologies.forEach(tech => {
 					const category = tech.category;
 					if (technologiesByCategory[category]) {
-						const techId = tech._id?.toString() || tech.id;
+						const techLink = tech.slug || tech._id?.toString() || tech.id;
 						technologiesByCategory[category].push({
-							id: techId,
+							id: techLink,
 							name: tech.name,
-							path: `/technology/${techId}`,
-							badge: null // You can add badge logic here if needed
+							path: `/technology/${techLink}`,
+							badge: null
 						});
 					}
 				});

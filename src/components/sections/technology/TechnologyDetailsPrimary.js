@@ -3,7 +3,6 @@ import BootstrapWrapper from "@/components/shared/wrappers/BootstrapWrapper";
 import Image from "next/image";
 import Link from "next/link";
 import CtaSidebar from "../cta/CtaSidebar";
-import TechnologyTeamSection from "./TechnologyTeamSection";
 
 const TechnologyDetailsPrimary = ({ option }) => {
 	const {
@@ -14,9 +13,11 @@ const TechnologyDetailsPrimary = ({ option }) => {
 		isNextItem,
 		prevId,
 		nextId,
+		relatedPortfolios = [],
 	} = option || {};
-	const { title, titleLarge, img, desc, desc1, desc2, desc3, features } = currentItem || {};
+	const { name, title, titleLarge, img, desc, desc1, desc2, desc3, features } = currentItem || {};
 	const sidebarItems = items?.slice(0, 6);
+	const displayName = name || title || "Technology";
 	return (
 		<section className="tj-service-area section-gap">
 			<div className="container">
@@ -27,14 +28,14 @@ const TechnologyDetailsPrimary = ({ option }) => {
 								<div className="blog-images wow fadeInUp" data-wow-delay=".1s">
 									<Image
 										src={img}
-										alt={title || "Technology"}
+										alt={displayName}
 										width={870}
 										height={450}
 										style={{ height: "auto" }}
 									/>
 								</div>
 							)}
-							<h2 className="title title-anim">{titleLarge || title}</h2>
+							<h2 className="title title-anim">{displayName}</h2>
 							<div className="blog-text">
 								<p className="wow fadeInUp" data-wow-delay=".2s">
 									{desc}
@@ -70,11 +71,59 @@ const TechnologyDetailsPrimary = ({ option }) => {
 									</div>
 								</>
 							)}
-							{/* <!-- post navigation --> */}
-							<div
-								className="tj-post__navigation mb-0 wow fadeInUp"
-								data-wow-delay="0.3s"
-							>
+						{/* Related Portfolio Projects */}
+						{relatedPortfolios.length > 0 && (
+							<div className="tech-related-portfolios wow fadeInUp" data-wow-delay=".3s">
+								<h3>Projects Built with {displayName}</h3>
+								<div className="tech-related-grid">
+									{relatedPortfolios.map((portfolio) => {
+										const portfolioSlug = portfolio.slug || portfolio._id || portfolio.id;
+										const portfolioName = portfolio.name || portfolio.title;
+										const portfolioImg = portfolio.img;
+										const portfolioCategory = portfolio.category;
+
+										return (
+											<div key={portfolio._id || portfolio.id} className="tech-related-card">
+												<div className="tech-related-img">
+													{portfolioImg ? (
+														<Image
+															src={portfolioImg}
+															alt={portfolioName}
+															fill
+															sizes="(max-width: 768px) 100vw, 50vw"
+															style={{ objectFit: "cover" }}
+														/>
+													) : (
+														<div className="tech-related-img-placeholder">
+															<span>No Image</span>
+														</div>
+													)}
+												</div>
+												<div className="tech-related-info">
+													{portfolioCategory && (
+														<span className="tech-related-category">
+															{portfolioCategory}
+														</span>
+													)}
+													<h5 className="tech-related-title">
+														<Link href={`/portfolios/${portfolioSlug}`}>{portfolioName}</Link>
+													</h5>
+													<Link className="tech-related-btn" href={`/portfolios/${portfolioSlug}`}>
+														View Project <i className="tji-arrow-right"></i>
+													</Link>
+												</div>
+											</div>
+										);
+									})}
+								</div>
+							</div>
+						)}
+
+						{/* <!-- post navigation --> */}
+						<div
+							className="tj-post__navigation mb-0 wow fadeInUp"
+							data-wow-delay="0.3s"
+						>
 								{/* <!-- previous post --> */}
 								<div
 									className="tj-nav__post previous"
@@ -85,7 +134,7 @@ const TechnologyDetailsPrimary = ({ option }) => {
 											<span>
 												<i className="tji-arrow-left"></i>
 											</span>
-											{items?.find((item) => item.id === prevId)?.title || items?.find((item) => item.id === prevId)?.name || "Previous"}
+											{items?.find((item) => item.id === prevId)?.name || items?.find((item) => item.id === prevId)?.title || "Previous"}
 										</Link>
 									</div>
 								</div>
@@ -99,7 +148,7 @@ const TechnologyDetailsPrimary = ({ option }) => {
 								>
 									<div className="tj-nav-post__nav next_post">
 										<Link href={isNextItem ? `/technology/${nextId}` : "#"}>
-											{items?.find((item) => item.id === nextId)?.title || items?.find((item) => item.id === nextId)?.name || "Next"}
+											{items?.find((item) => item.id === nextId)?.name || items?.find((item) => item.id === nextId)?.title || "Next"}
 											<span>
 												<i className="tji-arrow-right"></i>
 											</span>
@@ -119,25 +168,25 @@ const TechnologyDetailsPrimary = ({ option }) => {
 							>
 								<h4 className="widget-title">More Technologies</h4>
 								<ul>
-									{sidebarItems?.length
-										? sidebarItems?.map((item, idx) => {
-												const technologyId = item.id || item._id?.toString();
-												const technologyTitle = item.title || item.name;
-												return (
-													<li key={idx}>
-														<Link
-															className={`${currentId === technologyId ? "active" : ""}`}
-															href={`/technology/${technologyId}`}
-														>
-															{technologyTitle}
-															<span className="icon">
-																<i className="tji-arrow-right"></i>
-															</span>
-														</Link>
-													</li>
-												);
-										  })
-										: ""}
+								{sidebarItems?.length
+									? sidebarItems?.map((item, idx) => {
+											const technologySlug = item.slug || item.id || item._id?.toString();
+											const technologyName = item.name || item.title;
+											return (
+												<li key={idx}>
+													<Link
+														className={`${currentId === technologySlug ? "active" : ""}`}
+														href={`/technology/${technologySlug}`}
+													>
+														{technologyName}
+														<span className="icon">
+															<i className="tji-arrow-right"></i>
+														</span>
+													</Link>
+												</li>
+											);
+									  })
+									: ""}
 								</ul>
 							</div>
 

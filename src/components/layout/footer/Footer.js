@@ -42,10 +42,10 @@ const Footer = async () => {
 								<ul>
 									{services.length > 0
 										? services.map((service, idx) => {
-												const serviceId = service._id?.toString() || service.id;
+												const serviceLink = service.slug || service._id?.toString() || service.id;
 												return (
-													<li key={serviceId || idx}>
-														<Link href={`/services/${serviceId}`}>
+													<li key={serviceLink || idx}>
+														<Link href={`/services/${serviceLink}`}>
 															{service.name}
 														</Link>
 													</li>

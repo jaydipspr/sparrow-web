@@ -6,13 +6,20 @@ import HeroInner from "@/components/sections/hero/HeroInner";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
+import { getAllBlogsFromAPI } from "@/libs/getAllBlogs";
 
 export const metadata = {
 	title: "Blog - Sparrow Softtech | Innovation Unlimited",
 	description: "Read our latest blog posts about technology trends, AI, Automation, Software Development, and industry insights from Sparrow Softtech.",
 };
 
-export default function Blogs() {
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function Blogs() {
+	const blogs = await getAllBlogsFromAPI();
+
 	return (
 		<div>
 			<BackToTop />
@@ -22,8 +29,8 @@ export default function Blogs() {
 				<div id="smooth-content">
 					<main>
 						<HeaderSpace />
-						<HeroInner title={"Blog grid"} text={"Blog grid"} />
-						<BlogsGridPrimary />
+						<HeroInner title={"Blog"} text={"Blog"} />
+						<BlogsGridPrimary blogs={blogs} />
 						<Cta />
 					</main>
 					<Footer />

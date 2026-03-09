@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function ServiceDetails() {
 	const params = useParams();
-	const serviceId = params.id;
+	const serviceId = params.id; // Can be slug or ObjectId
 	const [service, setService] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");

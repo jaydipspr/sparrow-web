@@ -5,15 +5,17 @@ import Cta from "@/components/sections/cta/Cta";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
-import getBlogs from "@/libs/getBlogs";
-import getABlog from "@/libs/getABlog";
+import { getAllBlogsFromAPI, getBlogBySlug } from "@/libs/getAllBlogs";
 import { notFound } from "next/navigation";
-const items = getBlogs();
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
-	const { id } = await params;
-	const blog = getABlog(id);
-	
+	const { slug } = await params;
+	const blog = await getBlogBySlug(slug);
+
 	if (!blog || !blog.title) {
 		return {
 			title: "Blog - Sparrow Softtech | Innovation Unlimited",
@@ -23,16 +25,20 @@ export async function generateMetadata({ params }) {
 
 	return {
 		title: `${blog.title} - Blog | Sparrow Softtech | Innovation Unlimited`,
-		description: blog.desc || blog.desc1 || `Read about ${blog.title} on Sparrow Softtech blog.`,
+		description: blog.content?.[0] || `Read about ${blog.title} on Sparrow Softtech blog.`,
 	};
 }
 
 export default async function BlogDetails({ params }) {
-	const { id } = await params;
-	const isExistItem = items?.find(({ id: id1 }) => id1 === parseInt(id));
-	if (!isExistItem) {
+	const { slug } = await params;
+
+	// Fetch blog from API by slug
+	const blog = await getBlogBySlug(slug);
+
+	if (!blog) {
 		notFound();
 	}
+
 	return (
 		<div>
 			<BackToTop />
@@ -42,7 +48,7 @@ export default async function BlogDetails({ params }) {
 				<div id="smooth-content">
 					<main>
 						<HeaderSpace />
-						<BlogDetailsMain currentItemId={parseInt(id)} />
+						<BlogDetailsMain blog={blog} />
 						<Cta />
 					</main>
 					<Footer />
@@ -54,5 +60,13 @@ export default async function BlogDetails({ params }) {
 }
 
 export async function generateStaticParams() {
-	return items?.map(({ id }) => ({ id: id.toString() }));
+	try {
+		const items = await getAllBlogsFromAPI();
+		return items?.map(({ slug }) => ({
+			slug: slug,
+		})) || [];
+	} catch (error) {
+		console.error("Error generating static params:", error);
+		return [];
+	}
 }

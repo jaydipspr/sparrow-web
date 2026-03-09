@@ -4,11 +4,11 @@ import Link from "next/link";
 import api from "@/lib/axios";
 import DeleteConfirmModal from "@/components/admin/modals/DeleteConfirmModal";
 import BaseTable from "@/components/admin/BaseTable";
+import { toast } from "react-toastify";
 
 export default function AdminTechnology() {
 	const [technologies, setTechnologies] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
 	const [uploadingImg, setUploadingImg] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [editingTechnology, setEditingTechnology] = useState(null);
@@ -39,7 +39,6 @@ export default function AdminTechnology() {
 	// Fetch technologies with pagination
 	const fetchTechnologies = (page = 1, limit = 10) => {
 		setLoading(true);
-		setError("");
 
 		api.get(`/api/admin/technology?page=${page}&limit=${limit}`)
 			.then((response) => {
@@ -56,12 +55,12 @@ export default function AdminTechnology() {
 						hasPrevPage: paginationData.hasPrevPage || false,
 					});
 				} else {
-					setError("Failed to fetch technologies");
+					toast.error("Failed to fetch technologies");
 				}
 			})
 			.catch((err) => {
 				console.error("Error fetching technologies:", err);
-				setError(err.response?.data?.error || "Failed to fetch technologies");
+				toast.error(err.response?.data?.error || "Failed to fetch technologies");
 			})
 			.finally(() => {
 				setLoading(false);
@@ -114,23 +113,22 @@ export default function AdminTechnology() {
 	// Handle form submit (create or update)
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setError("");
 
 		// Basic validation
 		if (!formData.name.trim()) {
-			setError("Technology name is required.");
+			toast.error("Technology name is required.");
 			return;
 		}
 		if (!formData.category.trim()) {
-			setError("Category is required.");
+			toast.error("Category is required.");
 			return;
 		}
 		if (!formData.img.trim()) {
-			setError("Technology image URL is required.");
+			toast.error("Technology image URL is required.");
 			return;
 		}
 		if (!formData.img.startsWith("/") && !formData.img.startsWith("http://") && !formData.img.startsWith("https://")) {
-			setError("Image URL must be a valid URL or a relative path starting with /.");
+			toast.error("Image URL must be a valid URL or a relative path starting with /.");
 			return;
 		}
 
@@ -153,15 +151,16 @@ export default function AdminTechnology() {
 		request
 			.then((response) => {
 				if (response.data.success) {
+					toast.success(editingTechnology ? "Technology updated successfully!" : "Technology created successfully!");
 					fetchTechnologies(pagination.currentPage, pagination.limit);
 					handleCloseForm();
 				} else {
-					setError(response.data.error || "Operation failed");
+					toast.error(response.data.error || "Operation failed");
 				}
 			})
 			.catch((err) => {
 				console.error("Error saving technology:", err);
-				setError(err.response?.data?.error || "Failed to save technology");
+				toast.error(err.response?.data?.error || "Failed to save technology");
 			})
 			.finally(() => {
 				setLoading(false);
@@ -173,7 +172,6 @@ export default function AdminTechnology() {
 		if (!file) return;
 
 		setUploadingImg(true);
-		setError("");
 
 		const formDataUpload = new FormData();
 		formDataUpload.append("file", file);
@@ -184,13 +182,14 @@ export default function AdminTechnology() {
 			.then((res) => {
 				if (res.data?.success && res.data?.url) {
 					setFormData((prev) => ({ ...prev, img: res.data.url }));
+					toast.success("Image uploaded successfully!");
 				} else {
-					setError(res.data?.error || "Failed to upload image");
+					toast.error(res.data?.error || "Failed to upload image");
 				}
 			})
 			.catch((err) => {
 				console.error("Image upload error:", err);
-				setError(err.response?.data?.error || err.message || "Failed to upload image");
+				toast.error(err.response?.data?.error || err.message || "Failed to upload image");
 			})
 			.finally(() => {
 				setUploadingImg(false);
@@ -229,16 +228,17 @@ export default function AdminTechnology() {
 		api.delete(`/api/admin/technology/${deleteModal.technologyId}`)
 			.then((response) => {
 				if (response.data.success) {
+					toast.success("Technology deleted successfully!");
 					fetchTechnologies(pagination.currentPage, pagination.limit);
 					setDeleteModal({ isOpen: false, technologyId: null, technologyTitle: "" });
 				} else {
-					setError(response.data.error || "Failed to delete technology");
+					toast.error(response.data.error || "Failed to delete technology");
 					setDeleteModal({ isOpen: false, technologyId: null, technologyTitle: "" });
 				}
 			})
 			.catch((err) => {
 				console.error("Error deleting technology:", err);
-				setError(err.response?.data?.error || "Failed to delete technology");
+				toast.error(err.response?.data?.error || "Failed to delete technology");
 				setDeleteModal({ isOpen: false, technologyId: null, technologyTitle: "" });
 			});
 	};
@@ -268,17 +268,10 @@ export default function AdminTechnology() {
 		setShowForm(false);
 		setEditingTechnology(null);
 		resetForm();
-		setError("");
 	};
 
 	return (
 		<div className="admin-page">
-			{error && (
-				<div className="admin-alert admin-alert-error">
-					<i className="fa-light fa-circle-exclamation"></i>
-					<span>{error}</span>
-				</div>
-			)}
 
 			<div className="admin-card">
 				<div className="admin-card-header">
@@ -374,7 +367,7 @@ export default function AdminTechnology() {
 							renderActions={(technology) => (
 								<>
 									<Link
-										href={`/admin/technology/${technology._id}`}
+										href={`/admin/technology/${technology.slug || technology._id}`}
 										className="admin-btn-icon admin-btn-icon-view"
 										title="View Details"
 									>

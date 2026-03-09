@@ -63,6 +63,18 @@ export async function GET() {
 							updatedAt: { type: "string", format: "date-time" },
 						},
 					},
+					Team: {
+						type: "object",
+						properties: {
+							_id: { type: "string", description: "Team member ID" },
+							name: { type: "string", description: "Team member name", example: "John Doe" },
+							img: { type: "string", description: "Team member image URL", example: "/images/team/team-1.webp" },
+							position: { type: "string", description: "Team member position", example: "Chief Executive Officer" },
+							isActive: { type: "boolean", description: "Team member active status", default: true },
+							createdAt: { type: "string", format: "date-time" },
+							updatedAt: { type: "string", format: "date-time" },
+						},
+					},
 					Error: {
 						type: "object",
 						properties: {
@@ -87,8 +99,10 @@ export async function GET() {
 				{ name: "Admin Auth", description: "Admin authentication endpoints" },
 				{ name: "Admin Services", description: "Admin service management endpoints" },
 				{ name: "Admin Technology", description: "Admin technology management endpoints" },
+				{ name: "Admin Team", description: "Admin team management endpoints" },
 				{ name: "Public Services", description: "Public service endpoints" },
 				{ name: "Public Technology", description: "Public technology endpoints" },
+				{ name: "Public Team", description: "Public team endpoints" },
 			],
 		},
 		apis: [

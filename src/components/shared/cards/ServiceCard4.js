@@ -18,8 +18,8 @@ const ServiceCard4 = ({ service, idx, lastItem }) => {
 
 	const displayTitle = name || title;
 	const displayDesc = description || desc;
-	// Use ID as primary, fallback to slug for backward compatibility
-	const serviceId = id || service?._id?.toString() || slug;
+	// Use slug as primary, fallback to ID
+	const serviceId = slug || id || service?._id?.toString();
 	
 	// Get icon from nav-items.json based on service name, fallback to iconName or default
 	const serviceIcon = getServiceIcon(name) || iconName || "tji-service-1";

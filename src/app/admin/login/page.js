@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/axios";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AdminLoginPage() {
 	const router = useRouter();
@@ -10,21 +13,23 @@ export default function AdminLoginPage() {
 		email: "",
 		password: "",
 	});
-	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
 
 	const handleChange = (e) => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
 		});
-		setError("");
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setError("");
 		setLoading(true);
 
 		api.post("/api/admin/auth/login", formData)
@@ -32,15 +37,18 @@ export default function AdminLoginPage() {
 				if (response.data.success && response.data.data?.token) {
 					// Store token in localStorage
 					localStorage.setItem("adminToken", response.data.data.token);
+					toast.success("Login successful! Redirecting...");
 					// Redirect to admin dashboard
-					router.push("/admin");
+					setTimeout(() => {
+						router.push("/admin");
+					}, 500);
 				} else {
 					throw new Error(response.data.error || "Login failed");
 				}
 			})
 			.catch((err) => {
 				console.error("Login error:", err);
-				setError(err.response?.data?.error || err.message || "An error occurred during login");
+				toast.error(err.response?.data?.error || err.message || "An error occurred during login");
 			})
 			.finally(() => {
 				setLoading(false);
@@ -62,13 +70,6 @@ export default function AdminLoginPage() {
 					</div>
 
 					<form onSubmit={handleSubmit} className="admin-login-form">
-						{error && (
-							<div className="admin-login-error">
-								<i className="fa-light fa-circle-exclamation"></i>
-								<span>{error}</span>
-							</div>
-						)}
-
 						<div className="admin-login-field">
 							<label htmlFor="email">Email Address</label>
 							<div className="admin-login-input-wrapper">
@@ -139,6 +140,20 @@ export default function AdminLoginPage() {
 					</div>
 				</div>
 			</div>
+			{isMounted && (
+				<ToastContainer
+					position="top-right"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="light"
+				/>
+			)}
 		</div>
 	);
 }

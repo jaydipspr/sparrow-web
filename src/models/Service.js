@@ -7,6 +7,11 @@ const ServiceSchema = new mongoose.Schema(
 			required: [true, "Service name is required"],
 			trim: true,
 		},
+		slug: {
+			type: String,
+			trim: true,
+			lowercase: true,
+		},
 		title: {
 			type: String,
 			default: "",
@@ -40,6 +45,7 @@ const ServiceSchema = new mongoose.Schema(
 
 // Index for faster queries
 ServiceSchema.index({ isActive: 1, createdAt: -1 });
+ServiceSchema.index({ slug: 1 }, { unique: true, sparse: true });
 
 // Use existing model if available, otherwise create new one
 // This ensures we use the latest schema without breaking existing connections

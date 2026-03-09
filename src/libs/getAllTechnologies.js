@@ -9,6 +9,7 @@ function serializeTechnology(technology) {
 		_id: technology._id?.toString() || technology._id,
 		id: technology._id?.toString() || technology.id,
 		name: technology.name,
+		slug: technology.slug,
 		category: technology.category,
 		title: technology.title,
 		img: technology.img,
@@ -92,8 +93,15 @@ export async function getTechnologyById(identifier) {
 			}
 		}
 
+		// If not found by ID, try as slug
+		if (!technology) {
+			technology = await Technology.findOne({
+				slug: identifier.toLowerCase(),
+				isActive: true,
+			}).lean();
+		}
+
 		if (technology) {
-			// Serialize technology to plain object for client components
 			return serializeTechnology(technology);
 		}
 

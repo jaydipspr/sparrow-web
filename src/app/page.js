@@ -11,13 +11,21 @@ import Services4 from "@/components/sections/services/Services4";
 import Testimonials4 from "@/components/sections/testimonials/Testimonials4";
 import BackToTop from "@/components/shared/others/BackToTop";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
+import { getAllServicesFromAPI } from "@/libs/getALlServices";
+import { getAllPortfoliosFromAPI } from "@/libs/getAllPortfolios";
+import { getAllBlogsFromAPI } from "@/libs/getAllBlogs";
 
 export const metadata = {
 	title: "Home - Sparrow Softtech | Innovation Unlimited",
 	description: "Sparrow Softtech - Empowering Your Business with Smart Solutions. We provide innovative technology solutions including AI, Automation, Robotics, Software Development, and more.",
 };
 
-export default function Home() {
+export default async function Home() {
+	// Fetch data server-side so HTML is rendered before WOW.js initializes
+	const services = await getAllServicesFromAPI();
+	const portfolios = await getAllPortfoliosFromAPI();
+	const blogs = await getAllBlogsFromAPI();
+
 	return (
 		<div>
 			<BackToTop />
@@ -30,12 +38,12 @@ export default function Home() {
 						<Hero4 />
 						<Features3 />
 						<About4 />
-						<Services4 />
+						<Services4 services={services} />
 						<Funfact2 />
-						<Portfolios4 />
+						<Portfolios4 portfolios={portfolios} />
 						<PricingPlan2 />
 						<Testimonials4 />
-						<Blogs4 />
+						<Blogs4 blogs={blogs} />
 					</main>
 					<Footer4 />
 				</div>

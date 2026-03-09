@@ -1,11 +1,10 @@
-"use client";
 import ServiceCard5 from "@/components/shared/cards/ServiceCard5";
-import getALlServices from "@/libs/getALlServices";
 import Link from "next/link";
 
-const Services4 = () => {
-	const services = getALlServices()?.slice(0, 3);
-	const lastItemIdx = services?.length - 1;
+const Services4 = ({ services = [] }) => {
+	const displayServices = services?.slice(0, 3) || [];
+	const lastItemIdx = displayServices?.length - 1;
+
 	return (
 		<section className="tj-service-section-5 section-gap">
 			<div className="container">
@@ -24,8 +23,8 @@ const Services4 = () => {
 				<div className="row">
 					<div className="col-12">
 						<div className="service-wrapper">
-							{services?.length
-								? services?.map((service, idx) => (
+							{displayServices?.length
+								? displayServices.map((service, idx) => (
 										<ServiceCard5
 											key={idx}
 											service={service}

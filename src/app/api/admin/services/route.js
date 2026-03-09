@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
 import Service from "@/models/Service";
 import { authenticateAdmin } from "@/middleware/auth";
+import { generateUniqueSlug } from "@/lib/utils/slug";
 
 /**
  * @swagger
@@ -243,9 +244,13 @@ export async function POST(request) {
 			);
 		}
 
+		// Generate unique slug from name
+		const slug = await generateUniqueSlug(Service, name.trim());
+
 		// Create service with only the new schema fields
 		const serviceData = {
 			name: name.trim(),
+			slug,
 			title: (title || "").trim(),
 			img: img.trim(),
 			description: description || "",

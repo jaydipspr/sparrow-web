@@ -17,8 +17,8 @@ const Contact2 = () => {
 										<span>Head office:</span>
 										<p>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India., USA.</p>
 										<Link href="tel:10095447818">P: +91 9409354326</Link>
-										<Link href="mailto:support@bexon.com">
-											M: support@bexon.com
+										<Link href="mailto:contact@sparrowsofttech.com">
+											M: contact@sparrowsofttech.com
 										</Link>
 									</div>
 								</div>
@@ -27,8 +27,8 @@ const Contact2 = () => {
 										<span>Regional office:</span>
 										<p>Hessisch Lichtenau 37235, Kassel, Germany.</p>
 										<Link href="tel:10098801810">P: +1 (009) 880-1810</Link>
-										<Link href="mailto:support@bexon.com">
-											M: support@bexon.com
+										<Link href="mailto:contact@sparrowsofttech.com">
+											M: contact@sparrowsofttech.com
 										</Link>
 									</div>
 								</div>
@@ -37,8 +37,8 @@ const Contact2 = () => {
 										<span>Regional office:</span>
 										<p>32 Altamira, State of Pará, Brazil.</p>
 										<Link href="tel:10095447818">P: +91 9409354326</Link>
-										<Link href="mailto:support@bexon.com">
-											M: support@bexon.com
+										<Link href="mailto:contact@sparrowsofttech.com">
+											M: contact@sparrowsofttech.com
 										</Link>
 									</div>
 								</div>

@@ -1,17 +1,22 @@
 import HeroInner from "@/components/sections/hero/HeroInner";
 import TechnologyDetailsPrimary from "@/components/sections/technology/TechnologyDetailsPrimary";
-import TechnologyTeamSection from "@/components/sections/technology/TechnologyTeamSection";
+
 import { getAllTechnologiesFromAPI } from "@/libs/getAllTechnologies";
+import { getPortfoliosByTechnology } from "@/libs/getAllPortfolios";
 
 const TechnologyDetailsMain = async ({ technology }) => {
-	// Fetch all technologies for navigation
-	const items = await getAllTechnologiesFromAPI();
+	// Fetch all technologies for navigation and related portfolios in parallel
+	const [items, relatedPortfolios] = await Promise.all([
+		getAllTechnologiesFromAPI(),
+		getPortfoliosByTechnology(technology.id || technology._id, technology.slug),
+	]);
 	
-	// Serialize technology to plain object (already done in getTechnologyById, but ensure it's plain)
+	// Serialize technology to plain object
 	const currentItem = {
 		_id: technology._id?.toString() || technology._id,
 		id: technology._id?.toString() || technology.id,
 		name: technology.name,
+		slug: technology.slug,
 		category: technology.category,
 		title: technology.title || technology.name,
 		titleLarge: technology.title || technology.name,
@@ -26,7 +31,7 @@ const TechnologyDetailsMain = async ({ technology }) => {
 		updatedAt: technology.updatedAt ? new Date(technology.updatedAt).toISOString() : null,
 	};
 	
-	// Find current technology index for prev/next navigation (using ID)
+	// Find current technology index for prev/next navigation
 	const currentTechnologyId = currentItem.id;
 	const currentIndex = items.findIndex((item) => 
 		item.id === currentTechnologyId
@@ -35,9 +40,9 @@ const TechnologyDetailsMain = async ({ technology }) => {
 	const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
 	const nextItem = currentIndex < items.length - 1 && currentIndex >= 0 ? items[currentIndex + 1] : null;
 	
-	// Use ID for navigation links
-	const prevId = prevItem?.id;
-	const nextId = nextItem?.id;
+	// Use slug for navigation links, fallback to id
+	const prevId = prevItem?.slug || prevItem?.id;
+	const nextId = nextItem?.slug || nextItem?.id;
 	const isPrevItem = !!prevItem;
 	const isNextItem = !!nextItem;
 	
@@ -55,14 +60,14 @@ const TechnologyDetailsMain = async ({ technology }) => {
 				option={{
 					currentItem,
 					items,
-					currentId: currentTechnologyId,
+					currentId: currentItem.slug || currentItem.id,
 					prevId,
 					nextId,
 					isPrevItem,
 					isNextItem,
+					relatedPortfolios,
 				}}
 			/>
-			<TechnologyTeamSection />
 		</div>
 	);
 };

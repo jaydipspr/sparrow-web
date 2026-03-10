@@ -171,7 +171,7 @@ const Footer4 = async () => {
 								<h5 className="title">Our Office</h5>
 								<div className="footer-contact-info">
 									<div className="contact-item">
-										<span>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India., USA.</span>
+										<span>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India.</span>
 									</div>
 									<div className="contact-item">
 										<Link href="tel:10095447818">P: +91 9409354326</Link>

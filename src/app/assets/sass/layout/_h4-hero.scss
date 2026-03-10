@@ -60,6 +60,9 @@ START: Hero CSS
 					border-start-end-radius: 12px;
 					border-end-end-radius: 0;
 					border-end-start-radius: 0;
+					@media #{$xxl, $xl} {
+						max-height: 550px;
+					}
 					@media #{$lg, $md} {
 						min-height: 500px;
 					}
@@ -147,7 +150,10 @@ START: Hero CSS
 		width: 100%;
 		margin-inline-start: auto;
 		margin-inline-end: auto;
-		@media #{$xl, $lg} {
+		@media #{$xxl, $xl} {
+			min-height: 600px;
+		}
+		@media #{$lg} {
 			min-height: 700px;
 		}
 	}

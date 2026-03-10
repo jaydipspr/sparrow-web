@@ -15,7 +15,7 @@ const Contact2 = () => {
 								<div className="location-indicator loc-1">
 									<div className="location-tooltip">
 										<span>Head office:</span>
-										<p>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India., USA.</p>
+										<p>MIG 51, 52, Bhavnagar - Near Jain derasar, Shastrinagar, Bhavnagar, Gujarat – 364001, India.</p>
 										<Link href="tel:10095447818">P: +91 9409354326</Link>
 										<Link href="mailto:contact@sparrowsofttech.com">
 											M: contact@sparrowsofttech.com

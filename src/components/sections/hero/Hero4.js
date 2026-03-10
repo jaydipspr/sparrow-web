@@ -24,7 +24,7 @@ const Hero4 = () => {
 					<div className="banner-img">
 						<Image
 							data-speed="0.8"
-							src="/images/hero/h4-hero-img.webp"
+							src="/images/home/home03.jpg"
 							alt=""
 							width={1479}
 							height={648}

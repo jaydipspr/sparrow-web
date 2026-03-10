@@ -520,11 +520,11 @@ export default function AdminServices() {
 														<span className="admin-point-text">{point}</span>
 														<button
 															type="button"
-															className="admin-btn-icon admin-btn-icon-delete admin-point-remove"
+															className="admin-point-remove"
 															onClick={() => handleRemovePoint(index)}
 															title="Remove point"
 														>
-															<i className="fa-light fa-trash"></i>
+															<i className="fa-light fa-times"></i>
 														</button>
 													</div>
 												))}

@@ -100,7 +100,9 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 	const serviceNav = makeActiveLink(mergedNavItems[2]);
 	const portfolioNav = makeActiveLink(mergedNavItems[3]);
 	const blogNav = makeActiveLink(mergedNavItems[4]);
-	const contactNav = makeActiveLink(mergedNavItems[5]);
+	const aboutNav = makeActiveLink(mergedNavItems[5]);
+	const careerNav = makeActiveLink(mergedNavItems[6]);
+	const contactNav = makeActiveLink(mergedNavItems[7]);
 
 	return (
 		<div className="menu-area d-none d-lg-inline-flex align-items-center">
@@ -312,6 +314,16 @@ const Navbar = ({ headerType, isStickyHeader }) => {
 								  ))}
 							</ul>
 						) : null}
+					</li>
+					<li className={aboutNav?.isActive ? "current-menu-ancestor" : ""}>
+						<Link href={aboutNav?.path ? aboutNav?.path : "#"}>
+							{aboutNav?.name ? aboutNav?.name : "About"}
+						</Link>
+					</li>
+					<li className={careerNav?.isActive ? "current-menu-ancestor" : ""}>
+						<Link href={careerNav?.path ? careerNav?.path : "#"}>
+							{careerNav?.name ? careerNav?.name : "Career"}
+						</Link>
 					</li>
 					<li className={contactNav?.isActive ? "current-menu-ancestor" : ""}>
 						<Link href={contactNav?.path ? contactNav?.path : "#"}>

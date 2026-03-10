@@ -17,10 +17,7 @@ const About4 = () => {
 									</span>
 								</div>
 								<h2 className="sec-title title-highlight">
-									Committed Delivering{" "}
-									<img src="/images/marquee/marquee-1.webp" alt="" /> Measurable
-									Results and Building from the Lasting Relationships{" "}
-									<img src="/images/marquee/marquee-2.webp" alt="" /> through
+									Committed Delivering Results and Building from the Lasting Relationships
 									trust and innovation and shared for success industries
 									Experts.
 								</h2>

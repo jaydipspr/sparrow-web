@@ -99,7 +99,9 @@ const MobileNavbar = () => {
 	const serviceNav = mergedNavItems[2];
 	const portfolioNav = mergedNavItems[3];
 	const blogNav = mergedNavItems[4];
-	const contactNav = mergedNavItems[5];
+	const aboutNav = mergedNavItems[5];
+	const careerNav = mergedNavItems[6];
+	const contactNav = mergedNavItems[7];
 	return (
 		<div className="hamburger_menu">
 			<div className="mobile_menu mean-container">
@@ -311,6 +313,16 @@ const MobileNavbar = () => {
 									</Link>
 								</li>
 							)}
+							<li>
+								<Link href={aboutNav?.path ? aboutNav?.path : "#"}>
+									{aboutNav?.name ? aboutNav?.name : "About"}
+								</Link>
+							</li>
+							<li>
+								<Link href={careerNav?.path ? careerNav?.path : "#"}>
+									{careerNav?.name ? careerNav?.name : "Career"}
+								</Link>
+							</li>
 							<li className="mean-last">
 								<Link href={contactNav?.path ? contactNav?.path : "#"}>
 									{" "}

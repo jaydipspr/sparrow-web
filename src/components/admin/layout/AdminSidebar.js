@@ -62,12 +62,18 @@ const AdminSidebar = ({ isOpen, onClose }) => {
 		},
 		{
 			id: 7,
+			title: "Careers",
+			icon: "fa-light fa-briefcase",
+			path: "/admin/careers",
+		},
+		{
+			id: 8,
 			title: "Team",
 			icon: "fa-light fa-users",
 			path: "/admin/team",
 		},
 		{
-			id: 8,
+			id: 9,
 			title: "Settings",
 			icon: "fa-light fa-gear",
 			path: "/admin/settings",

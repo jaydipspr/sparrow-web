@@ -25,7 +25,7 @@ const TechnologyPrimary = () => {
 			}
 		}
 	}, [apiTechnologies, loading]);
-	const limit = 9;
+	const limit = 6;
 	// get pagination details
 	const {
 		currentItems,
@@ -42,51 +42,58 @@ const TechnologyPrimary = () => {
 	const totalItemsToShow = currentItems?.length;
 	if (loading) {
 		return (
-			<div className="tj-service-section service-4 section-gap">
+			<section className="tj-project-section section-gap">
 				<div className="container">
-					<div className="row">
-						<div className="col-12 text-center">
-							<p>Loading technologies...</p>
-						</div>
+					<div className="admin-loading" style={{ textAlign: "center", padding: "40px 0" }}>
+						<i className="fa-light fa-spinner fa-spin"></i>
+						<span> Loading technologies...</span>
 					</div>
 				</div>
-			</div>
+			</section>
 		);
 	}
 
 	if (error) {
 		return (
-			<div className="tj-service-section service-4 section-gap">
+			<section className="tj-project-section section-gap">
 				<div className="container">
-					<div className="row">
-						<div className="col-12 text-center">
-							<p style={{ color: "red" }}>Error: {error}</p>
-						</div>
+					<div className="admin-alert admin-alert-error">
+						<i className="fa-light fa-circle-exclamation"></i>
+						<span>Error: {error}</span>
 					</div>
 				</div>
-			</div>
+			</section>
+		);
+	}
+
+	if (items.length === 0) {
+		return (
+			<section className="tj-project-section section-gap">
+				<div className="container">
+					<div className="admin-empty-state" style={{ textAlign: "center", padding: "40px 0" }}>
+						<i className="fa-light fa-inbox" style={{ fontSize: "48px", color: "#ccc", display: "block", marginBottom: "16px" }}></i>
+						<p>No technologies found.</p>
+					</div>
+				</div>
+			</section>
 		);
 	}
 
 	return (
-		<div className="tj-service-section service-4 section-gap">
+		<section className="tj-project-section section-gap">
 			<div className="container">
 				<div className="row row-gap-4">
 					{currentItems?.length
 						? currentItems?.map((item, idx) => (
 								<div
 									key={item.id || item._id || idx}
-									className="col-lg-4 col-md-6 wow fadeInUp"
+									className="col-xl-4 col-md-6 wow fadeInUp"
 									data-wow-delay={makeWowDelay(idx, 0.1)}
 								>
-									<TechnologyCard technology={item} idx={idx} />
+									<TechnologyCard key={idx} technology={item} />
 								</div>
 						  ))
-						: !loading && (
-							<div className="col-12 text-center">
-								<p>No technologies found.</p>
-							</div>
-						)}
+						: ""}
 				</div>
 				{/* <!-- post pagination --> */}
 				{totalItemsToShow < totalItems ? (
@@ -107,7 +114,7 @@ const TechnologyPrimary = () => {
 					""
 				)}
 			</div>
-		</div>
+		</section>
 	);
 };
 

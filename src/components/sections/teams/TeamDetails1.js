@@ -68,22 +68,27 @@ const TeamDetails1 = ({ currentItemId }) => {
 							<div className="social-links wow fadeInUp" data-wow-delay=".5s">
 								<ul>
 									<li>
-										<a href="https://www.facebook.com/" target="_blank">
+										<a href="https://www.facebook.com/sparrowsofttech" target="_blank">
 											<i className="fa-brands fa-facebook-f"></i>
 										</a>
 									</li>
 									<li>
-										<a href="https://www.instagram.com/" target="_blank">
+										<a href="https://www.instagram.com/sparrowsofttech?igsh=MWhyNjR2ODJubjRkYQ==" target="_blank">
 											<i className="fa-brands fa-instagram"></i>
 										</a>
 									</li>
 									<li>
-										<a href="https://x.com/" target="_blank">
+										<a href="https://x.com/sparrowsofttech" target="_blank">
 											<i className="fa-brands fa-x-twitter"></i>
 										</a>
 									</li>
 									<li>
-										<a href="https://www.linkedin.com/" target="_blank">
+										<a href="https://www.youtube.com/channel/UC992i7AnX4XqgX0U9dewMEA" target="_blank">
+											<i className="fa-brands fa-youtube"></i>
+										</a>
+									</li>
+									<li>
+										<a href="https://in.linkedin.com/company/sparrow-softtech" target="_blank">
 											<i className="fa-brands fa-linkedin-in"></i>
 										</a>
 									</li>

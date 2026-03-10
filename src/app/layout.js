@@ -15,6 +15,7 @@ import "./assets/css/meanmenu.css";
 import "./assets/css/nice-select2.css";
 import "./assets/css/odometer-theme-default.css";
 import "./globals.scss";
+import TawkToWidget from "@/components/shared/TawkToWidget";
 
 const bodyFont = Mona_Sans({
 	variable: "--tj-ff-body",
@@ -41,6 +42,7 @@ export default function RootLayout({ children }) {
 		<html lang="en" data-scroll-behavior="smooth" dir="ltr">
 			<body className={`${bodyFont.variable} ${headingFont.variable}`}>
 				{children}
+				<TawkToWidget />
 			</body>
 		</html>
 	);

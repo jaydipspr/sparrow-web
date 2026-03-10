@@ -240,7 +240,17 @@
 	},
 	{
 		"id": 6,
+		"name": "Career",
+		"path": "/careers"
+	},
+	{
+		"id": 7,
 		"name": "Contact",
 		"path": "/contact"
+	},
+	{
+		"id": 8,
+		"name": "About Us",
+		"path": "/about"
 	}
 ]

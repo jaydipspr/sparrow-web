@@ -551,11 +551,11 @@ export default function AdminTechnology() {
 														<span className="admin-point-text">{feature}</span>
 														<button
 															type="button"
-															className="admin-btn-icon admin-btn-icon-delete admin-point-remove"
+															className="admin-point-remove"
 															onClick={() => handleRemoveFeature(index)}
 															title="Remove feature"
 														>
-															<i className="fa-light fa-trash"></i>
+															<i className="fa-light fa-times"></i>
 														</button>
 													</div>
 												))}

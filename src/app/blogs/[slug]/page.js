@@ -5,6 +5,7 @@ import Cta from "@/components/sections/cta/Cta";
 import BackToTop from "@/components/shared/others/BackToTop";
 import HeaderSpace from "@/components/shared/others/HeaderSpace";
 import ClientWrapper from "@/components/shared/wrappers/ClientWrapper";
+import BlogViewTracker from "@/components/shared/BlogViewTracker";
 import { getAllBlogsFromAPI, getBlogBySlug } from "@/libs/getAllBlogs";
 import { notFound } from "next/navigation";
 
@@ -41,6 +42,7 @@ export default async function BlogDetails({ params }) {
 
 	return (
 		<div>
+			<BlogViewTracker blogId={blog._id?.toString()} blogSlug={blog.slug} />
 			<BackToTop />
 			<Header />
 			<Header isStickyHeader={true} />

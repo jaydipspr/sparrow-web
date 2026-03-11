@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
+import ReCaptcha from "@/components/shared/recaptcha/ReCaptcha";
 
 const CareerApplicationForm = () => {
 	const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const CareerApplicationForm = () => {
 	});
 	const [submitting, setSubmitting] = useState(false);
 	const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
+	const [recaptchaToken, setRecaptchaToken] = useState(null);
+	const recaptchaRef = useRef(null);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -25,6 +28,14 @@ const CareerApplicationForm = () => {
 		if (file) {
 			setFormData((prev) => ({ ...prev, resume: file }));
 		}
+	};
+
+	const handleRecaptchaChange = (token) => {
+		setRecaptchaToken(token);
+	};
+
+	const handleRecaptchaExpired = () => {
+		setRecaptchaToken(null);
 	};
 
 	const handleSubmit = async (e) => {
@@ -58,6 +69,12 @@ const CareerApplicationForm = () => {
 			return;
 		}
 
+		// Validate reCAPTCHA
+		if (!recaptchaToken) {
+			setStatusMessage({ type: "error", text: "Please complete the reCAPTCHA verification." });
+			return;
+		}
+
 		setSubmitting(true);
 
 		try {
@@ -68,6 +85,7 @@ const CareerApplicationForm = () => {
 			formDataToSend.append("experience", formData.experience);
 			formDataToSend.append("email", formData.email.trim());
 			formDataToSend.append("phone", formData.phone.trim());
+			formDataToSend.append("recaptchaToken", recaptchaToken);
 			if (formData.resume) {
 				formDataToSend.append("resume", formData.resume);
 			}
@@ -82,14 +100,29 @@ const CareerApplicationForm = () => {
 			if (res.ok && data.success) {
 				setStatusMessage({ type: "success", text: data.message || "Application submitted successfully!" });
 				setFormData({ name: "", address: "", designation: "", experience: "", email: "", phone: "", resume: null });
+				setRecaptchaToken(null);
 				// Reset file input
 				const fileInput = document.querySelector('input[type="file"]');
 				if (fileInput) fileInput.value = "";
+				// Reset reCAPTCHA
+				if (recaptchaRef.current) {
+					recaptchaRef.current.reset();
+				}
 			} else {
 				setStatusMessage({ type: "error", text: data.error || "Failed to submit application. Please try again." });
+				// Reset reCAPTCHA on error
+				if (recaptchaRef.current) {
+					recaptchaRef.current.reset();
+				}
+				setRecaptchaToken(null);
 			}
 		} catch (error) {
 			setStatusMessage({ type: "error", text: "Something went wrong. Please try again later." });
+			// Reset reCAPTCHA on error
+			if (recaptchaRef.current) {
+				recaptchaRef.current.reset();
+			}
+			setRecaptchaToken(null);
 		} finally {
 			setSubmitting(false);
 		}
@@ -266,6 +299,13 @@ const CareerApplicationForm = () => {
 												)}
 											</div>
 										</div>
+									</div>
+									<div className="col-12">
+										<ReCaptcha
+											ref={recaptchaRef}
+											onChange={handleRecaptchaChange}
+											onExpired={handleRecaptchaExpired}
+										/>
 									</div>
 									<div className="col-12">
 										<div className="submit-btn">

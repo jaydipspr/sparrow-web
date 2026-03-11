@@ -81,6 +81,7 @@ export async function GET(request) {
 			.select("-__v")
 			.lean();
 
+		// viewCount is already included in the blog document, no need for aggregation
 		const totalPages = Math.ceil(totalCount / limit);
 		const hasNextPage = page < totalPages;
 		const hasPrevPage = page > 1;
@@ -129,6 +130,7 @@ export async function GET(request) {
  *               - img
  *               - author
  *               - category
+ *               - content
  *             properties:
  *               title:
  *                 type: string
@@ -218,6 +220,13 @@ export async function POST(request) {
 			);
 		}
 
+		if (!Array.isArray(content) || content.length === 0 || content.some((p) => typeof p !== "string" || p.trim() === "")) {
+			return NextResponse.json(
+				{ error: "Content paragraphs are required" },
+				{ status: 400 }
+			);
+		}
+
 		// Generate unique slug from title
 		const slug = await generateUniqueSlug(Blog, title.trim());
 
@@ -227,7 +236,7 @@ export async function POST(request) {
 			img: img.trim(),
 			author: author.trim(),
 			category: category.trim(),
-			content: Array.isArray(content) ? content : [],
+			content: content.map((p) => p.trim()).filter(Boolean),
 			thought: thought || "",
 			thoughtAuthor: (thoughtAuthor || "").trim(),
 			keyLessons: Array.isArray(keyLessons) ? keyLessons : [],

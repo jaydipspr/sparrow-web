@@ -21,6 +21,13 @@ const BlogDetailsMain = async ({ blog }) => {
 		keyLessons: Array.isArray(blog.keyLessons) ? [...blog.keyLessons] : [],
 		conclusion: blog.conclusion,
 		isActive: Boolean(blog.isActive),
+		comments: Array.isArray(blog.comments) ? blog.comments.map((comment) => ({
+			name: comment.name,
+			email: comment.email,
+			website: comment.website || "",
+			comment: comment.comment,
+			createdAt: comment.createdAt ? new Date(comment.createdAt).toISOString() : new Date().toISOString(),
+		})) : [],
 		createdAt: blog.createdAt ? new Date(blog.createdAt).toISOString() : null,
 		updatedAt: blog.updatedAt ? new Date(blog.updatedAt).toISOString() : null,
 	};

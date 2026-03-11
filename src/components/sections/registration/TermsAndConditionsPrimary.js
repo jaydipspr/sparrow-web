@@ -8,247 +8,216 @@ const TermsAndConditionsPrimary = () => {
 					<div className="col-10">
 						<div className="terms-and-conditions-wrapper">
 							<div>
-								<h2>
-									Terms &amp; Conditions{" "}
-									<span className="pill">
-										Bexon – Corporate Business HTML Template
-									</span>
-								</h2>
-								<p className="muted">Last updated: September 9, 2025</p>
+								<h2>Terms &amp; Conditions</h2>
+								<p className="muted">Last Updated: 08/10/2025</p>
 								<p>
-									Thank you for choosing{" "}
-									<strong>Bexon – Corporate Business HTML Template</strong> .
-									These Terms &amp; Conditions govern your use of the Template
-									purchased from{" "}
-									<Link
-										href="https://themeforest.net/"
-										target="_blank"
-										rel="noopener"
-									>
-										ThemeForest (Envato Market)
+									Welcome to Sparrow Softtech. By accessing or using our website
+									and services, you agree to be bound by the following Terms and
+									Conditions. Please read them carefully before using our services.
+								</p>
+							</div>
+
+							<div>
+								<h3>1. Introduction</h3>
+								<p>
+									Sparrow Softtech ("we", "our", "us") is a service-based company
+									that provides software development, embedded systems solutions,
+									and technology services as per client requirements.
+								</p>
+								<p>
+									These Terms govern your use of our website, services, and any
+									products developed or delivered by us.
+								</p>
+							</div>
+
+							<div>
+								<h3>2. Scope of Services</h3>
+								<p>
+									Sparrow Softtech provides custom development services, including
+									but not limited to website design, software development, embedded
+									systems, mobile applications, and digital solutions.
+								</p>
+								<p>
+									All projects are executed strictly according to the
+									specifications, materials, and instructions provided by the
+									client.
+								</p>
+								<p>
+									The client is responsible for providing complete, accurate, and
+									lawful content or instructions for the project.
+								</p>
+							</div>
+
+							<div>
+								<h3>3. Client Responsibility</h3>
+								<p>
+									The client must ensure that all materials, data, and information
+									shared with us do not violate any copyright, trademark, or
+									applicable law.
+								</p>
+								<p>
+									The client assumes full responsibility for how the final product
+									or service is used, managed, or distributed.
+								</p>
+								<p>
+									Once a project is delivered and approved, Sparrow Softtech is not
+									responsible for further maintenance, misuse, or operational issues
+									unless a separate support agreement is signed.
+								</p>
+							</div>
+
+							<div>
+								<h3>4. Service Disclaimer</h3>
+								<p>Sparrow Softtech acts solely as a service provider.</p>
+								<p>
+									All websites, applications, software, and embedded systems are
+									developed as per client specifications.
+								</p>
+								<p>
+									Once delivered, Sparrow Softtech holds no ownership, control, or
+									responsibility for the operation, content, or purpose of the
+									developed solution.
+								</p>
+								<p>Sparrow Softtech shall not be held liable for any:</p>
+								<ul>
+									<li>misuse or illegal use of the delivered project,</li>
+									<li>
+										financial loss or business damage caused by the use of the
+										service,
+									</li>
+									<li>
+										security issues, downtime, or third-party misuse after project
+										delivery.
+									</li>
+								</ul>
+								<p>
+									Our duty is limited to providing the requested service and
+									receiving payment for that service. After delivery, we are not
+									associated with the client's business or its activities.
+								</p>
+							</div>
+
+							<div>
+								<h3>5. Intellectual Property</h3>
+								<p>
+									All source code, designs, and materials created by Sparrow
+									Softtech remain our property until full payment is received.
+								</p>
+								<p>
+									Upon full payment, the ownership rights of the final deliverables
+									are transferred to the client, except any pre-existing components,
+									frameworks, or third-party assets used in development.
+								</p>
+								<p>
+									Sparrow Softtech reserves the right to display non-confidential
+									work in our portfolio or promotional materials unless otherwise
+									agreed upon in writing.
+								</p>
+							</div>
+
+							<div>
+								<h3>6. Payments and Refund Policy</h3>
+								<p>
+									All payments are to be made according to the terms specified in
+									the invoice or project agreement.
+								</p>
+								<p>
+									Once a project is started, payments made are non-refundable, as
+									development work begins immediately.
+								</p>
+								<p>
+									Any additional features or modifications requested after the
+									final delivery will be treated as a new service and billed
+									separately.
+								</p>
+							</div>
+
+							<div>
+								<h3>7. Limitation of Liability</h3>
+								<p>
+									In no event shall Sparrow Softtech or its team be liable for any:
+								</p>
+								<ul>
+									<li>indirect, incidental, consequential, or special damages,</li>
+									<li>loss of profit, revenue, data, or goodwill,</li>
+									<li>
+										claims resulting from the use or inability to use our services.
+									</li>
+								</ul>
+								<p>
+									Our total liability under any agreement shall not exceed the total
+									amount paid by the client for the specific service.
+								</p>
+							</div>
+
+							<div>
+								<h3>8. Third-Party Services</h3>
+								<p>
+									Some projects may use third-party tools, APIs, or integrations.
+									Sparrow Softtech is not responsible for any downtime, pricing
+									change, or malfunction of third-party services used within the
+									project.
+								</p>
+							</div>
+
+							<div>
+								<h3>9. Confidentiality</h3>
+								<p>
+									Both Sparrow Softtech and the client agree to keep confidential
+									all non-public business information, code, or materials shared
+									during the project, unless disclosure is required by law.
+								</p>
+							</div>
+
+							<div>
+								<h3>10. Termination</h3>
+								<p>
+									Either party may terminate a project with written notice if the
+									other party breaches these Terms. All work completed up to
+									termination must be paid for in full.
+								</p>
+							</div>
+
+							<div>
+								<h3>11. Governing Law</h3>
+								<p>
+									These Terms shall be governed by and interpreted according to the
+									laws of India, and any disputes shall be subject to the exclusive
+									jurisdiction of the courts in Bhavnagar, Gujarat.
+								</p>
+							</div>
+
+							<div>
+								<h3>12. Contact Information</h3>
+								<p>
+									If you have any questions about these Terms, please contact us
+									at:
+								</p>
+								<p>
+									📧{" "}
+									<Link href="mailto:info@sparrowsofttech.com">
+										info@sparrowsofttech.com
 									</Link>
-									. By downloading, installing, or using the Template, you agree
-									to be bound by these Terms and the applicable{" "}
+								</p>
+							</div>
+
+							<div>
+								<h3>13. Default Applicability of Terms</h3>
+								<p>
+									In the absence of any separately signed written agreement or
+									contract, all services, projects, or deliverables provided by
+									Sparrow Softtech shall automatically be governed by the Terms
+									&amp; Conditions and Privacy Policy published on our official
+									website{" "}
 									<Link
-										href="https://themeforest.net/licenses/standard"
+										href="https://sparrowsofttech.com"
 										target="_blank"
 										rel="noopener"
 									>
-										Envato License
+										https://sparrowsofttech.com
 									</Link>
-									.
-								</p>
-								<div className="note">
-									<strong>Short version:</strong> You can use Bexon on the
-									number of end products allowed by your Envato license, but you
-									can’t resell, redistribute, or share the source files. Support
-									and updates are provided according to the policies below.
-								</div>
-							</div>
-
-							<nav className="toc" aria-label="Table of contents">
-								<h2>Table of Contents</h2>
-								<ol>
-									<li>
-										<button
-											className="tj-scroll-btn"
-											data-target="#definitions"
-										>
-											Definitions
-										</button>
-									</li>
-									<li>
-										<button className="tj-scroll-btn" data-target="#license">
-											License &amp; Permitted Use
-										</button>
-									</li>
-									<li>
-										<button
-											className="tj-scroll-btn"
-											data-target="#restrictions"
-										>
-											Restrictions
-										</button>
-									</li>
-									<li>
-										<button className="tj-scroll-btn" data-target="#support">
-											Support Policy
-										</button>
-									</li>
-									<li>
-										<button className="tj-scroll-btn" data-target="#updates">
-											Updates &amp; Compatibility
-										</button>
-									</li>
-								</ol>
-							</nav>
-
-							<div id="definitions">
-								<h3>1. Definitions</h3>
-								<p>
-									<strong>“We”, “Us”, “Our”</strong> refers to{" "}
-									<em>
-										<Link href="https://themeforest.net/user/theme-junction">
-											Theme Junction
-										</Link>
-									</em>
-									, the author of the Template on ThemeForest.
-								</p>
-								<p>
-									<strong>“You”, “Your”</strong> refers to the
-									purchaser/licensee who downloads or uses the Template.
-								</p>
-								<p>
-									<strong>“License”</strong> refers to the Envato Market license
-									(Regular or Extended) under which the Template is purchased.
-									For full details, see the{" "}
-									<Link
-										href="https://themeforest.net/licenses/standard"
-										target="_blank"
-										rel="noopener"
-									>
-										Envato License Terms
-									</Link>
-									.
 								</p>
 							</div>
-
-							<div id="license">
-								<h3>2. License &amp; Permitted Use</h3>
-								<p>
-									Your rights to use the Template are determined by the Envato
-									license you purchased:
-								</p>
-								<ul>
-									<li>
-										<strong>Regular License:</strong> Permits the use of the
-										Template in a single <em>end product</em> that is not
-										offered for sale, where end users are not charged to access
-										or use it.
-									</li>
-									<li>
-										<strong>Extended License:</strong> Permits the use of the
-										Template in a single <em>end product offered for sale</em>{" "}
-										(e.g., a SaaS or paid access site). The Template itself
-										cannot be resold as a template or theme.
-									</li>
-								</ul>
-								<p>
-									Each license is valid for <strong>one end product</strong>. If
-									you need the Template for multiple projects, you must purchase
-									one license for each end product. All uses must comply with
-									Envato’s licensing rules.
-								</p>
-							</div>
-
-							<div id="restrictions">
-								<h3>3. Restrictions</h3>
-								<p>
-									You agree that you will <strong>not</strong>:
-								</p>
-								<ul>
-									<li>
-										Resell, redistribute, sublicense, share, or make the
-										Template (or any source files) publicly available, except as
-										permitted by your Envato license.
-									</li>
-									<li>
-										Use the Template in any way that competes with the original
-										item (e.g., as a theme/template for sale, or in a template
-										library/marketplace).
-									</li>
-									<li>
-										Remove, obscure, or alter copyright notices, license
-										headers, or item metadata where present.
-									</li>
-									<li>Claim the Template as your own original work.</li>
-									<li>
-										Use the Template for unlawful, harmful, or offensive
-										content, or in violation of any applicable law or
-										regulation.
-									</li>
-								</ul>
-							</div>
-
-							<div id="support">
-								<h3>4. Support Policy</h3>
-								<p>
-									Item support is provided in accordance with Envato’s{" "}
-									<Link
-										href="https://themeforest.net/page/item_support_policy"
-										target="_blank"
-										rel="noopener"
-									>
-										Item Support Policy
-									</Link>{" "}
-									for the support period associated with your purchase.
-								</p>
-								<p>
-									<strong>What’s included:</strong>
-								</p>
-								<ul>
-									<li>
-										Answering questions about item features and functionality.
-									</li>
-									<li>
-										Bug fixes and reported issue investigation (if the issue is
-										reproducible with the original item).
-									</li>
-									<li>
-										Updates to maintain item compatibility with supported
-										browsers and dependencies listed in the documentation.
-									</li>
-								</ul>
-								<p>
-									<strong>What’s not included:</strong>
-								</p>
-								<ul>
-									<li>Installation, customization, or new feature requests.</li>
-									<li>
-										Support for third‑party plugins, scripts, or hosting/server
-										issues.
-									</li>
-									<li>
-										Issues arising from modifications beyond the provided code
-										or from outdated dependencies not specified in the docs.
-									</li>
-								</ul>
-								<p>
-									<strong>How to get support:</strong> Please open a ticket or
-									contact us via ThemeForest comments with your{" "}
-									<em>Envato username</em> and <em>purchase code</em>. We may
-									ask for temporary access or additional details to diagnose
-									issues.
-								</p>
-							</div>
-
-							<div id="updates">
-								<h3>5. Updates &amp; Compatibility</h3>
-								<p>
-									We may release updates to improve features, fix bugs, or
-									maintain compatibility. You’ll have access to updates via your
-									ThemeForest downloads during the support/maintenance period.
-								</p>
-								<ul>
-									<li>
-										The Template is built as a static HTML/CSS/JS item. It does
-										not include server‑side code.
-									</li>
-									<li>
-										Browser support targets versions listed in the
-										documentation. Older/legacy browsers may require polyfills
-										or are not supported.
-									</li>
-								</ul>
-							</div>
-							<p className="muted">
-								<small>
-									This Terms &amp; Conditions page is provided for general
-									guidance only and does not constitute legal advice. Please
-									consult your legal advisor to adapt it to your specific needs
-									and local laws.
-								</small>
-							</p>
 						</div>
 					</div>
 				</div>

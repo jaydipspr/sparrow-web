@@ -25,7 +25,8 @@ const PortfolioSchema = new mongoose.Schema(
 		},
 		description: {
 			type: String,
-			default: "",
+			required: [true, "Portfolio description is required"],
+			trim: true,
 		},
 		category: {
 			type: String,

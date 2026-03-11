@@ -1,13 +1,11 @@
 "use client";
 import TestimonialsCard2 from "@/components/shared/cards/TestimonialsCard2";
-import ReactNiceSelect from "@/components/shared/Inputs/ReactNiceSelect";
 import getTestimonials from "@/libs/getTestimonials";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const Testimonials4 = () => {
 	const testimonials = getTestimonials()?.slice(0, 3);
-	const handleSelect = option => {};
 	return (
 		<section className="tj-contact-section h4-contact-section section-gap section-gap-x">
 			<div className="container">
@@ -45,36 +43,8 @@ const Testimonials4 = () => {
 									</div>
 									<div className="col-sm-6">
 										<div className="form-input">
-											<div className="tj-nice-select-box">
-												<div className="tj-select">
-													<label className="cf-label">Chose a option</label>
-													<ReactNiceSelect
-														selectedIndex={0}
-														options={[
-															{ value: "0", optionName: "Chose a option" },
-															{ value: "1", optionName: "Business Strategy" },
-															{ value: "2", optionName: "Customer Experience" },
-															{
-																value: "3",
-																optionName: "Sustainability and ESG",
-															},
-															{
-																value: "4",
-																optionName: "Training and Development",
-															},
-															{
-																value: "5",
-																optionName: "IT Support & Maintenance",
-															},
-															{
-																value: "6",
-																optionName: "Marketing Strategy",
-															},
-														]}
-														getSelectedOption={handleSelect}
-													/>
-												</div>
-											</div>
+											<label className="cf-label">Subject *</label>
+											<input type="text" name="cfSubject3" />
 										</div>
 									</div>
 									<div className="col-sm-12">

@@ -43,12 +43,41 @@ import Contact from "@/models/Contact";
  *       500:
  *         description: Server error
  */
+// Verify reCAPTCHA token with Google
+async function verifyRecaptcha(token) {
+	if (!token) {
+		return false;
+	}
+
+	const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+	if (!secretKey) {
+		console.warn("reCAPTCHA secret key is not configured. Skipping verification.");
+		return true; // Allow in development if key is not set
+	}
+
+	try {
+		const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			body: `secret=${secretKey}&response=${token}`,
+		});
+
+		const data = await response.json();
+		return data.success === true;
+	} catch (error) {
+		console.error("Error verifying reCAPTCHA:", error);
+		return false;
+	}
+}
+
 export async function POST(request) {
 	try {
 		await connectDB();
 
 		const body = await request.json();
-		const { name, email, phone, subject, message } = body;
+		const { name, email, phone, subject, message, recaptchaToken } = body;
 
 		// Validation
 		if (!name || !name.trim()) {
@@ -77,6 +106,15 @@ export async function POST(request) {
 		if (!message || !message.trim()) {
 			return NextResponse.json(
 				{ error: "Message is required" },
+				{ status: 400 }
+			);
+		}
+
+		// Verify reCAPTCHA
+		const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+		if (!isRecaptchaValid) {
+			return NextResponse.json(
+				{ error: "reCAPTCHA verification failed. Please try again." },
 				{ status: 400 }
 			);
 		}

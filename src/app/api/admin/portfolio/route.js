@@ -214,19 +214,26 @@ export async function POST(request) {
 			);
 		}
 
+		if (!description || description.trim() === "") {
+			return NextResponse.json(
+				{ error: "Portfolio description is required" },
+				{ status: 400 }
+			);
+		}
+
 		// Generate unique slug from name
 		const slug = await generateUniqueSlug(Portfolio, name.trim());
 
 		const newPortfolio = await Portfolio.create({
-			name,
+			name: name.trim(),
 			slug,
-			title: title || "",
-			img,
-			description: description || "",
-			category,
+			title: (title || "").trim(),
+			img: img.trim(),
+			description: description.trim(),
+			category: category.trim(),
 			keyHighlights: Array.isArray(keyHighlights) ? keyHighlights : [],
 			technology: Array.isArray(technology) ? technology : [],
-			projectLink: projectLink || "",
+			projectLink: (projectLink || "").trim(),
 			isActive: isActive !== undefined ? isActive : true,
 		});
 

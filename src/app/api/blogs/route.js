@@ -77,7 +77,14 @@ export async function GET(request) {
 				blog = await Blog.findOne({
 					slug: id,
 					isActive: true,
-				}).select("-__v").lean();
+				})
+					.select("-__v")
+					.lean();
+				
+				// Sort comments by createdAt (newest first) if blog exists
+				if (blog && blog.comments) {
+					blog.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+				}
 			}
 
 			if (!blog) {

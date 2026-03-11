@@ -12,6 +12,7 @@ const AdminLayout = ({ children }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const [isMounted, setIsMounted] = useState(false);
+	const [isNotFound, setIsNotFound] = useState(false);
 
 	useEffect(() => {
 		setIsMounted(true);
@@ -30,6 +31,45 @@ const AdminLayout = ({ children }) => {
 		return () => window.removeEventListener("resize", checkMobile);
 	}, []);
 
+	useEffect(() => {
+		// Check if this is a not-found page
+		const isValidAdminRoute = (path) => {
+			const exactRoutes = [
+				"/admin",
+				"/admin/login",
+				"/admin/blogs",
+				"/admin/services",
+				"/admin/portfolio",
+				"/admin/technology",
+				"/admin/contacts",
+				"/admin/careers",
+				"/admin/activities",
+				"/admin/settings",
+				"/admin/team"
+			];
+			
+			if (exactRoutes.includes(path)) {
+				return true;
+			}
+			
+			const dynamicPatterns = [
+				/^\/admin\/blogs\/[^/]+$/,
+				/^\/admin\/services\/[^/]+$/,
+				/^\/admin\/portfolio\/[^/]+$/,
+				/^\/admin\/technology\/[^/]+$/,
+				/^\/admin\/team\/[^/]+$/
+			];
+			
+			return dynamicPatterns.some(pattern => pattern.test(path));
+		};
+		
+		const isNotFoundPage = pathname.startsWith("/admin/") && 
+			pathname !== "/admin/login" &&
+			!isValidAdminRoute(pathname);
+		
+		setIsNotFound(isNotFoundPage);
+	}, [pathname]);
+
 	const toggleSidebar = () => {
 		setSidebarOpen(!sidebarOpen);
 	};
@@ -40,8 +80,43 @@ const AdminLayout = ({ children }) => {
 		}
 	};
 
-	// Don't render sidebar/header for login page
-	if (isLoginPage) {
+	// Initial check for not-found (before useEffect runs)
+	const isValidAdminRoute = (path) => {
+		const exactRoutes = [
+			"/admin",
+			"/admin/login",
+			"/admin/blogs",
+			"/admin/services",
+			"/admin/portfolio",
+			"/admin/technology",
+			"/admin/contacts",
+			"/admin/careers",
+			"/admin/activities",
+			"/admin/settings",
+			"/admin/team"
+		];
+		
+		if (exactRoutes.includes(path)) {
+			return true;
+		}
+		
+		const dynamicPatterns = [
+			/^\/admin\/blogs\/[^/]+$/,
+			/^\/admin\/services\/[^/]+$/,
+			/^\/admin\/portfolio\/[^/]+$/,
+			/^\/admin\/technology\/[^/]+$/,
+			/^\/admin\/team\/[^/]+$/
+		];
+		
+		return dynamicPatterns.some(pattern => pattern.test(path));
+	};
+	
+	const initialIsNotFound = pathname.startsWith("/admin/") && 
+		pathname !== "/admin/login" &&
+		!isValidAdminRoute(pathname);
+
+	// Don't render sidebar/header for login page or not-found page
+	if (isLoginPage || isNotFound || initialIsNotFound) {
 		return <>{children}</>;
 	}
 

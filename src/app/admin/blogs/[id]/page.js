@@ -1,39 +1,70 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/axios";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import DeleteConfirmModal from "@/components/admin/modals/DeleteConfirmModal";
 
 export default function BlogDetails() {
 	const params = useParams();
-	const blogId = params.id;
+	const blogId = params?.id;
 	const [blog, setBlog] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const [deleteModal, setDeleteModal] = useState({
+		isOpen: false,
+		commentIndex: null,
+		commentName: "",
+	});
 
-	useEffect(() => {
-		if (!blogId) return;
+	// Always render something valid, even if params are not ready
+	if (!params || !blogId) {
+		return (
+			<div className="admin-page">
+				<div className="admin-loading">
+					<i className="fa-light fa-spinner fa-spin"></i>
+					<span>Loading...</span>
+				</div>
+			</div>
+		);
+	}
+
+	// Function to fetch blog data
+	const fetchBlog = useCallback(async () => {
+		if (!blogId) {
+			setError("Invalid blog ID");
+			setLoading(false);
+			return;
+		}
 
 		setLoading(true);
 		setError("");
 
-		api.get(`/api/admin/blogs/${blogId}`)
-			.then((response) => {
-				if (response.data.success) {
-					setBlog(response.data.data);
-				} else {
-					setError(response.data.error || "Failed to fetch blog");
-				}
-			})
-			.catch((err) => {
-				console.error("Error fetching blog:", err);
+		try {
+			const response = await api.get(`/api/admin/blogs/${blogId}`);
+			if (response.data.success) {
+				setBlog(response.data.data);
+			} else {
+				setError(response.data.error || "Failed to fetch blog");
+			}
+		} catch (err) {
+			console.error("Error fetching blog:", err);
+			// Handle 404 specifically
+			if (err.response?.status === 404) {
+				setError("Blog not found");
+			} else {
 				setError(err.response?.data?.error || "Failed to fetch blog");
-			})
-			.finally(() => {
-				setLoading(false);
-			});
+			}
+		} finally {
+			setLoading(false);
+		}
 	}, [blogId]);
+
+	useEffect(() => {
+		fetchBlog();
+	}, [fetchBlog]);
 
 	if (loading) {
 		return (
@@ -46,15 +77,18 @@ export default function BlogDetails() {
 		);
 	}
 
-	if (error || !blog) {
+	if (!loading && (error || !blog)) {
 		return (
 			<div className="admin-page">
-				<div className="admin-alert admin-alert-error">
-					<i className="fa-light fa-circle-exclamation"></i>
-					<span>{error || "Blog not found"}</span>
-				</div>
 				<div className="admin-card">
+					<div className="admin-card-header">
+						<h2 className="admin-card-title">Blog Not Found</h2>
+					</div>
 					<div className="admin-card-body">
+						<div className="admin-alert admin-alert-error" style={{ marginBottom: "20px" }}>
+							<i className="fa-light fa-circle-exclamation"></i>
+							<span>{error || "The blog you are looking for doesn't exist or has been moved."}</span>
+						</div>
 						<Link href="/admin/blogs" className="admin-btn admin-btn-primary">
 							<i className="fa-light fa-arrow-left"></i>
 							<span>Back to Blogs</span>
@@ -66,6 +100,79 @@ export default function BlogDetails() {
 	}
 
 	const displayTitle = blog.title || "Untitled Blog";
+
+	// Handle delete click - open confirmation modal
+	const handleDeleteComment = (commentIndex, commentName) => {
+		setDeleteModal({
+			isOpen: true,
+			commentIndex: commentIndex,
+			commentName: commentName || "this comment",
+		});
+	};
+
+	// Handle delete confirmation - actually delete the comment
+	const handleDeleteConfirm = async () => {
+		if (deleteModal.commentIndex === null || deleteModal.commentIndex === undefined) {
+			toast.error("No comment selected for deletion");
+			return;
+		}
+
+		// Use the blog's _id instead of the route parameter (which might be a slug)
+		if (!blog || !blog._id) {
+			toast.error("Blog information not available");
+			setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+			return;
+		}
+
+		try {
+			// Ensure commentIndex is a number
+			const commentIndex = Number(deleteModal.commentIndex);
+			if (isNaN(commentIndex) || commentIndex < 0) {
+				console.error("Invalid comment index:", deleteModal.commentIndex, "Parsed as:", commentIndex);
+				toast.error(`Invalid comment index: ${deleteModal.commentIndex}`);
+				setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+				return;
+			}
+
+			// Validate that the comment index is within bounds
+			if (!blog.comments || !Array.isArray(blog.comments) || commentIndex >= blog.comments.length) {
+				toast.error("Comment index is out of bounds");
+				setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+				return;
+			}
+
+			// Use blog._id (ensure it's a string)
+			const blogId = String(blog._id);
+			console.log("Deleting comment:", { blogId, commentIndex, totalComments: blog.comments.length });
+			
+			const response = await api.delete(`/api/admin/blogs/${blogId}/comment/${commentIndex}`);
+			if (response.data.success) {
+				toast.success("Comment deleted successfully");
+				// Refresh blog data to update comments
+				await fetchBlog();
+				setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+			} else {
+				toast.error(response.data.error || "Failed to delete comment");
+				setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+			}
+		} catch (err) {
+			console.error("Error deleting comment:", err);
+			console.error("Error details:", {
+				blogId: blog?._id,
+				commentIndex: deleteModal.commentIndex,
+				response: err.response?.data,
+				status: err.response?.status,
+			});
+			const errorMessage = err.response?.data?.error || err.response?.data?.details || err.message || "Failed to delete comment";
+			toast.error(errorMessage);
+			setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+		}
+	};
+
+	// Handle delete modal close
+	const handleDeleteModalClose = () => {
+		setDeleteModal({ isOpen: false, commentIndex: null, commentName: "" });
+	};
 
 	return (
 		<div className="admin-page">
@@ -231,10 +338,97 @@ export default function BlogDetails() {
 									)}
 								</div>
 							</div>
+
+							{/* Comments Section */}
+							<div className="admin-details-section">
+								<label className="admin-details-label">
+									Comments ({blog.comments && Array.isArray(blog.comments) ? blog.comments.length : 0})
+								</label>
+								<div className="admin-details-value">
+									{blog.comments && Array.isArray(blog.comments) && blog.comments.length > 0 ? (
+										<div className="admin-comments-list">
+											{[...blog.comments]
+												.map((comment, originalIndex) => ({ comment, originalIndex }))
+												.sort((a, b) => {
+													const dateA = a.comment.createdAt ? new Date(a.comment.createdAt).getTime() : 0;
+													const dateB = b.comment.createdAt ? new Date(b.comment.createdAt).getTime() : 0;
+													return dateB - dateA;
+												})
+												.map(({ comment, originalIndex }) => (
+													<div key={originalIndex} className="admin-comment-item">
+														<div className="admin-comment-header">
+															<div className="admin-comment-author">
+																<strong>{comment.name}</strong>
+																{comment.email && (
+																	<span className="admin-comment-email">({comment.email})</span>
+																)}
+																{comment.website && (
+																	<Link
+																		href={comment.website}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																		className="admin-comment-website"
+																	>
+																		{comment.website}
+																	</Link>
+																)}
+															</div>
+															<div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+																<div className="admin-comment-date">
+																	{comment.createdAt
+																		? new Date(comment.createdAt).toLocaleDateString("en-US", {
+																				year: "numeric",
+																				month: "long",
+																				day: "numeric",
+																				hour: "2-digit",
+																				minute: "2-digit",
+																		  })
+																		: "N/A"}
+																</div>
+																<button
+																	type="button"
+																	className="admin-btn admin-btn-sm"
+																	onClick={() => handleDeleteComment(originalIndex, comment.name)}
+																	style={{
+																		padding: "6px 12px",
+																		minWidth: "auto",
+																		backgroundColor: "rgba(220, 53, 69, 0.1)",
+																		borderColor: "rgba(220, 53, 69, 0.3)",
+																		color: "rgba(220, 53, 69, 0.8)",
+																	}}
+																	title="Delete comment"
+																>
+																	<i className="fa-light fa-trash"></i>
+																</button>
+															</div>
+														</div>
+														<div className="admin-comment-content">
+															<p>{comment.comment}</p>
+														</div>
+													</div>
+												))}
+										</div>
+									) : (
+										<p className="admin-details-text" style={{ color: "#999", fontStyle: "italic" }}>
+											No comments yet.
+										</p>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			{/* Delete Confirmation Modal */}
+			<DeleteConfirmModal
+				isOpen={deleteModal.isOpen}
+				onClose={handleDeleteModalClose}
+				onConfirm={handleDeleteConfirm}
+				title="Delete Comment"
+				message={`Are you sure you want to delete the comment from "${deleteModal.commentName}"?`}
+				itemName={deleteModal.commentName}
+			/>
 		</div>
 	);
 }

@@ -24,7 +24,7 @@ const Testimonials2 = ({ type }) => {
 							<div className="testimonial-img">
 								<img
 									data-speed=".8"
-									src="/images/testimonial/testimonial-img.webp"
+									src="/images/testimonial/testimonial-img.jpg"
 									alt=""
 								/>
 								<div className="sec-heading style-2">

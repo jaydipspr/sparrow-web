@@ -77,7 +77,7 @@ const Footer = async () => {
 								</li>
 								<li>
 									<Link href="/careers">
-										Careers <span className="badge">New</span>
+										Careers
 									</Link>
 								</li>
 								<li>
@@ -181,10 +181,9 @@ const Footer = async () => {
 								</div>
 								<div className="copyright-text">
 									<p>
-										&copy; 2025 
+										&copy; 2026 
 										<Link
-											href="https://themeforest.net/user/theme-junction/portfolio"
-											target="_blank"
+											href="#"
 										>
 											Sparrow Softtech
 										</Link>{" "}

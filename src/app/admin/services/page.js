@@ -122,6 +122,10 @@ export default function AdminServices() {
 			toast.error("Service image URL is required.");
 			return;
 		}
+		if (!formData.description?.trim()) {
+			toast.error("Service description is required.");
+			return;
+		}
 		if (!formData.img.startsWith("/") && !formData.img.startsWith("http://") && !formData.img.startsWith("https://")) {
 			toast.error("Image URL must be a valid URL or a relative path starting with /.");
 			return;
@@ -133,7 +137,7 @@ export default function AdminServices() {
 			name: formData.name.trim(),
 			title: formData.title.trim(),
 			img: formData.img.trim(),
-			description: formData.description || "",
+			description: formData.description.trim(),
 			points: Array.isArray(formData.points) ? formData.points : [],
 			isActive: formData.isActive !== undefined ? formData.isActive : true,
 		};
@@ -499,7 +503,9 @@ export default function AdminServices() {
 								</div>
 
 								<div className="admin-form-group admin-form-group-full">
-									<label htmlFor="description">Description</label>
+									<label htmlFor="description">
+										Description <span className="admin-required">*</span>
+									</label>
 									<textarea
 										id="description"
 										name="description"
@@ -507,6 +513,7 @@ export default function AdminServices() {
 										onChange={handleChange}
 										rows="5"
 										placeholder="Enter service description"
+										required
 									></textarea>
 								</div>
 

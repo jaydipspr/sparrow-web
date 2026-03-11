@@ -224,7 +224,15 @@ export async function PUT(request, { params }) {
 		if (img !== undefined) updateData.img = img.trim();
 		if (author !== undefined) updateData.author = author.trim();
 		if (category !== undefined) updateData.category = category.trim();
-		if (content !== undefined) updateData.content = Array.isArray(content) ? content : [];
+		if (content !== undefined) {
+			if (!Array.isArray(content) || content.length === 0 || content.some((p) => typeof p !== "string" || p.trim() === "")) {
+				return NextResponse.json(
+					{ error: "Content paragraphs are required" },
+					{ status: 400 }
+				);
+			}
+			updateData.content = content.map((p) => p.trim()).filter(Boolean);
+		}
 		if (thought !== undefined) updateData.thought = thought;
 		if (thoughtAuthor !== undefined) updateData.thoughtAuthor = (thoughtAuthor || "").trim();
 		if (keyLessons !== undefined) updateData.keyLessons = Array.isArray(keyLessons) ? keyLessons : [];

@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
+import ReCaptcha from "@/components/shared/recaptcha/ReCaptcha";
 
 const Contact3 = () => {
 	const [formData, setFormData] = useState({
@@ -12,10 +13,20 @@ const Contact3 = () => {
 	});
 	const [submitting, setSubmitting] = useState(false);
 	const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
+	const [recaptchaToken, setRecaptchaToken] = useState(null);
+	const recaptchaRef = useRef(null);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleRecaptchaChange = (token) => {
+		setRecaptchaToken(token);
+	};
+
+	const handleRecaptchaExpired = () => {
+		setRecaptchaToken(null);
 	};
 
 	const handleSubmit = async (e) => {
@@ -25,6 +36,12 @@ const Contact3 = () => {
 		// Basic validation
 		if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
 			setStatusMessage({ type: "error", text: "Please fill in all required fields." });
+			return;
+		}
+
+		// Validate reCAPTCHA
+		if (!recaptchaToken) {
+			setStatusMessage({ type: "error", text: "Please complete the reCAPTCHA verification." });
 			return;
 		}
 
@@ -40,6 +57,7 @@ const Contact3 = () => {
 					phone: formData.phone.trim(),
 					subject: formData.subject.trim(),
 					message: formData.message.trim(),
+					recaptchaToken: recaptchaToken,
 				}),
 			});
 
@@ -48,11 +66,26 @@ const Contact3 = () => {
 			if (res.ok && data.success) {
 				setStatusMessage({ type: "success", text: data.message || "Message sent successfully!" });
 				setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+				setRecaptchaToken(null);
+				// Reset reCAPTCHA
+				if (recaptchaRef.current) {
+					recaptchaRef.current.reset();
+				}
 			} else {
 				setStatusMessage({ type: "error", text: data.error || "Failed to send message. Please try again." });
+				// Reset reCAPTCHA on error
+				if (recaptchaRef.current) {
+					recaptchaRef.current.reset();
+				}
+				setRecaptchaToken(null);
 			}
 		} catch (error) {
 			setStatusMessage({ type: "error", text: "Something went wrong. Please try again later." });
+			// Reset reCAPTCHA on error
+			if (recaptchaRef.current) {
+				recaptchaRef.current.reset();
+			}
+			setRecaptchaToken(null);
 		} finally {
 			setSubmitting(false);
 		}
@@ -145,6 +178,13 @@ const Contact3 = () => {
 												required
 											></textarea>
 										</div>
+									</div>
+									<div className="col-sm-12">
+										<ReCaptcha
+											ref={recaptchaRef}
+											onChange={handleRecaptchaChange}
+											onExpired={handleRecaptchaExpired}
+										/>
 									</div>
 									<div className="submit-btn">
 										<ButtonPrimary

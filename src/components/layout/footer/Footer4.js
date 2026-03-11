@@ -11,37 +11,30 @@ const Footer4 = async () => {
 			<div className="footer-top">
 				<div className="container">
 					<div className="row align-items-center">
-						<div className="col-lg-6">
+						<div className="col-lg-12">
 							<div className="footer-cta">
-								<h2 className="cta-title title-anim">
-									Let’s Build Future Together?
-								</h2>
-								<Link
-									className="cta-btn wow fadeInUp"
-									data-wow-delay=".3s"
-									href="/contact"
-								>
-									<div className="customers">
-										<ul>
-											<li>
-												<img src="/images/testimonial/client-1.webp" alt="" />
-											</li>
-											<li>
-												<img src="/images/testimonial/client-2.webp" alt="" />
-											</li>
-											<li>
-												<img src="/images/testimonial/client-3.webp" alt="" />
-											</li>
-										</ul>
-									</div>
-									<span className="btn-text">
-										<span>Lets Talk</span>{" "}
-										<i className="tji-arrow-right-long"></i>
-									</span>
-								</Link>
+								<div className="footer-cta-content">
+									<h2 className="cta-title title-anim">
+										Let's Build Future Together?
+									</h2>
+									<Link
+										className="cta-btn wow fadeInUp"
+										data-wow-delay=".3s"
+										href="/contact"
+									>
+										<div className="customers">
+										</div>
+										<div className="customers">
+										</div>
+										<span className="btn-text">
+											<span>Lets Talk</span>{" "}
+											<i className="tji-arrow-right-long"></i>
+										</span>
+									</Link>
+								</div>
 							</div>
 						</div>
-						<div className="col-lg-6">
+						{/* <div className="col-lg-6">
 							<div
 								className="footer-widget widget-subscribe-3 wow fadeInUp"
 								data-wow-delay=".5s"
@@ -75,7 +68,7 @@ const Footer4 = async () => {
 									</form>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
@@ -145,7 +138,7 @@ const Footer4 = async () => {
 									</li>
 									<li>
 										<Link href="/careers">
-											Careers <span className="badge">New</span>
+											Careers
 										</Link>
 									</li>
 									<li>
@@ -183,7 +176,7 @@ const Footer4 = async () => {
 									</div>
 									<div className="contact-item">
 										<span>
-											<i className="tji-clock"></i> Mon-Fri 10am-10pm
+											<i className="tji-clock"></i> Mon-Fri 10am-7pm
 										</span>
 									</div>
 								</div>
@@ -199,10 +192,9 @@ const Footer4 = async () => {
 							<div className="copyright-content-area">
 								<div className="copyright-text">
 									<p>
-										&copy; 2025 
+										&copy; 2026 
 										<Link
-											href="https://themeforest.net/user/theme-junction/portfolio"
-											target="_blank"
+											href="#"
 										>
 											Sparrow Softtech
 										</Link>{" "}
@@ -241,7 +233,7 @@ const Footer4 = async () => {
 								<div className="copyright-menu">
 									<ul>
 										<li>
-											<Link href="/contact">Privacy Policy</Link>
+											<Link href="/privacy-policy">Privacy Policy</Link>
 										</li>
 										<li>
 											<Link href="/terms-and-conditions">

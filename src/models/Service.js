@@ -25,7 +25,8 @@ const ServiceSchema = new mongoose.Schema(
 		},
 		description: {
 			type: String,
-			default: "",
+			required: [true, "Service description is required"],
+			trim: true,
 		},
 		points: {
 			type: [String],

@@ -202,6 +202,10 @@ export default function AdminPortfolio() {
 			toast.error("Image URL must be a valid URL or a relative path starting with /.");
 			return;
 		}
+		if (!formData.description || !formData.description.trim()) {
+			toast.error("Portfolio description is required.");
+			return;
+		}
 
 		setLoading(true);
 
@@ -209,7 +213,7 @@ export default function AdminPortfolio() {
 			name: formData.name.trim(),
 			title: formData.title.trim(),
 			img: formData.img.trim(),
-			description: formData.description || "",
+			description: formData.description.trim(),
 			category: formData.category.trim(),
 			keyHighlights: Array.isArray(formData.keyHighlights) ? formData.keyHighlights : [],
 			technology: Array.isArray(formData.technology) ? formData.technology : [],
@@ -617,13 +621,16 @@ export default function AdminPortfolio() {
 								</div>
 
 								<div className="admin-form-group admin-form-group-full">
-									<label htmlFor="description">Description</label>
+									<label htmlFor="description">
+										Description <span className="admin-required">*</span>
+									</label>
 									<textarea
 										id="description"
 										name="description"
 										value={formData.description}
 										onChange={handleChange}
 										rows={4}
+										required
 										placeholder="Enter portfolio description"
 									/>
 								</div>

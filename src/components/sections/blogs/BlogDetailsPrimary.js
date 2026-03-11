@@ -2,6 +2,8 @@
 import BlogSidebar from "@/components/shared/sidebar/BlogSidebar";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import api from "@/lib/axios";
 
 const BlogDetailsPrimary = ({ option }) => {
 	const { prevId, nextId, currentItem, items, currentId, isPrevItem, isNextItem } = option || {};
@@ -16,7 +18,16 @@ const BlogDetailsPrimary = ({ option }) => {
 		keyLessons,
 		conclusion,
 		createdAt,
+		slug,
 	} = currentItem || {};
+
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		website: "",
+		comment: "",
+	});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	// Format date
 	const formattedDate = createdAt
@@ -26,6 +37,51 @@ const BlogDetailsPrimary = ({ option }) => {
 				day: "numeric",
 		  })
 		: "";
+
+	// Handle comment form submission
+	const handleCommentSubmit = async (e) => {
+		e.preventDefault();
+		
+		// Browser's native validation will handle required fields
+		if (!formData.name.trim() || !formData.email.trim() || !formData.comment.trim()) {
+			return;
+		}
+
+		setIsSubmitting(true);
+
+		try {
+			const response = await api.post(`/api/blogs/${slug}/comment`, {
+				name: formData.name,
+				email: formData.email,
+				website: formData.website,
+				comment: formData.comment,
+			});
+
+			if (response.data.success) {
+				// Reset form on success
+				setFormData({
+					name: "",
+					email: "",
+					website: "",
+					comment: "",
+				});
+			}
+		} catch (error) {
+			console.error("Error submitting comment:", error);
+			// Silently handle error - no toast notification
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
 
 	return (
 		<section className="tj-blog-section section-gap slidebar-stickiy-container">
@@ -208,6 +264,79 @@ const BlogDetailsPrimary = ({ option }) => {
 											</span>
 										</Link>
 									</div>
+								</div>
+							</div>
+
+							{/* Comments Section - Only Form (Comments visible only in admin panel) */}
+							<div className="tj-comments__container wow fadeInUp" data-wow-delay="0.3s">
+								<h3 className="comment-reply-title">Leave a Comment</h3>
+								
+								{/* Comment Form */}
+								<div className="comment-respond">
+									<form className="comment-form" onSubmit={handleCommentSubmit}>
+										<div className="row">
+											<div className="col-sm-12">
+												<div className="form-input">
+													<textarea
+														name="comment"
+														placeholder="Write Your Comment *"
+														value={formData.comment}
+														onChange={handleInputChange}
+														required
+													></textarea>
+												</div>
+											</div>
+											<div className="col-sm-4">
+												<div className="form-input">
+													<input
+														type="text"
+														name="name"
+														placeholder="Full Name *"
+														value={formData.name}
+														onChange={handleInputChange}
+														required
+													/>
+												</div>
+											</div>
+											<div className="col-sm-4">
+												<div className="form-input">
+													<input
+														type="email"
+														name="email"
+														placeholder="Your Email *"
+														value={formData.email}
+														onChange={handleInputChange}
+														required
+													/>
+												</div>
+											</div>
+											<div className="col-sm-4">
+												<div className="form-input">
+													<input
+														type="url"
+														name="website"
+														placeholder="Website"
+														value={formData.website}
+														onChange={handleInputChange}
+													/>
+												</div>
+											</div>
+											<div className="col-sm-12">
+												<button
+													type="submit"
+													className="tj-primary-btn"
+													disabled={isSubmitting}
+												>
+													<span className="btn-text">
+														<span>{isSubmitting ? "Submitting..." : "Submit Now"}</span>
+													</span>
+													<span className="btn-icon">
+														<i className="tji-arrow-right-long"></i>
+													</span>
+												</button>
+											</div>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

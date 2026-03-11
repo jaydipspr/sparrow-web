@@ -99,7 +99,7 @@ const FooterClient = () => {
 								</li>
 								<li>
 									<Link href="/careers">
-										Careers <span className="badge">New</span>
+										Careers
 									</Link>
 								</li>
 								<li>
@@ -117,33 +117,7 @@ const FooterClient = () => {
 							</ul>
 							</div>
 						</div>
-						<div className="col-xl-4 col-lg-5 col-md-6">
-							<div
-								className="footer-widget widget-subscribe wow fadeInUp"
-								data-wow-delay=".7s"
-							>
-								<h3 className="title">Subscribe to Our Newsletter.</h3>
-								<div className="subscribe-form">
-									<form action="#">
-										<input
-											type="email"
-											name="email"
-											placeholder="Enter email"
-										/>
-										<button type="submit">
-											<i className="tji-plane"></i>
-										</button>
-										<label htmlFor="agree">
-											<input id="agree" type="checkbox" />
-											Agree to our{" "}
-											<Link href="/terms-and-conditions">
-												Terms & Condition?
-											</Link>
-										</label>
-									</form>
-								</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -203,10 +177,9 @@ const FooterClient = () => {
 								</div>
 								<div className="copyright-text">
 									<p>
-										&copy; 2025{" "}
+										&copy; 2026 
 										<Link
-											href="https://themeforest.net/user/theme-junction/portfolio"
-											target="_blank"
+											href="#"
 										>
 											Sparrow Softtech
 										</Link>{" "}

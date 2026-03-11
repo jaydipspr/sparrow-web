@@ -15,23 +15,40 @@ START: Theme Footer CSS
 	}
 }
 .footer-cta {
+	width: 100%;
+	.footer-cta-content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: 100%;
+	}
 	.cta-title {
-		max-width: 580px;
+		max-width: none;
+		width: auto;
 		font-size: 74px;
 		line-height: 1.108;
 		margin-bottom: 30px;
+		white-space: nowrap;
+		display: inline-block;
 		@media #{$xl} {
 			font-size: 70px;
 		}
-		@media #{$lg, $md} {
+		@media #{$lg} {
 			font-size: 60px;
+			white-space: normal;
+		}
+		@media #{$md} {
+			font-size: 55px;
+			white-space: normal;
 		}
 		@media #{$sm} {
 			font-size: 50px;
+			white-space: normal;
 		}
 		@media #{$xs} {
 			font-size: 43px;
 			margin-bottom: 25px;
+			white-space: normal;
 		}
 	}
 	.cta-btn {

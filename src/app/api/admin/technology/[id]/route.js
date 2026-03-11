@@ -275,6 +275,16 @@ export async function PUT(request, { params }) {
 			}
 		}
 
+		// Validate description if provided
+		if (description !== undefined) {
+			if (!description || description.trim() === "") {
+				return NextResponse.json(
+					{ error: "Technology description is required" },
+					{ status: 400 }
+				);
+			}
+		}
+
 		// Validate features is an array if provided
 		if (features !== undefined && !Array.isArray(features)) {
 			return NextResponse.json(
@@ -293,7 +303,7 @@ export async function PUT(request, { params }) {
 		if (category !== undefined) updateData.category = category.trim();
 		if (title !== undefined) updateData.title = title.trim();
 		if (img !== undefined) updateData.img = img.trim();
-		if (description !== undefined) updateData.description = description;
+		if (description !== undefined) updateData.description = description.trim();
 		if (features !== undefined) updateData.features = features;
 		if (isActive !== undefined) updateData.isActive = isActive;
 

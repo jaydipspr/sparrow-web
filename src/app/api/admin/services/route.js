@@ -132,6 +132,7 @@ export async function GET(request) {
  *             required:
  *               - name
  *               - img
+ *               - description
  *             properties:
  *               name:
  *                 type: string
@@ -216,6 +217,13 @@ export async function POST(request) {
 			);
 		}
 
+		if (!description || description.trim() === "") {
+			return NextResponse.json(
+				{ error: "Service description is required" },
+				{ status: 400 }
+			);
+		}
+
 		// Validate image URL format
 		if (!img.startsWith("/") && !img.startsWith("http://") && !img.startsWith("https://")) {
 			return NextResponse.json(
@@ -253,7 +261,7 @@ export async function POST(request) {
 			slug,
 			title: (title || "").trim(),
 			img: img.trim(),
-			description: description || "",
+			description: description.trim(),
 			points: Array.isArray(points) ? points : [],
 			isActive: isActive !== undefined ? Boolean(isActive) : true,
 		};

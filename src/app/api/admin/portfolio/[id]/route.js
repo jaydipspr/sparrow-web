@@ -224,15 +224,25 @@ export async function PUT(request, { params }) {
 		const body = await request.json();
 		const { name, title, img, description, category, keyHighlights, technology, projectLink, isActive } = body;
 
+		// Validate description if provided
+		if (description !== undefined) {
+			if (!description || description.trim() === "") {
+				return NextResponse.json(
+					{ error: "Portfolio description is required" },
+					{ status: 400 }
+				);
+			}
+		}
+
 		const updateData = {};
 		if (name !== undefined) {
-			updateData.name = name;
+			updateData.name = name.trim();
 			// Regenerate slug when name changes
 			updateData.slug = await generateUniqueSlug(Portfolio, name.trim(), id);
 		}
-		if (title !== undefined) updateData.title = title;
-		if (img !== undefined) updateData.img = img;
-		if (description !== undefined) updateData.description = description;
+		if (title !== undefined) updateData.title = title.trim();
+		if (img !== undefined) updateData.img = img.trim();
+		if (description !== undefined) updateData.description = description.trim();
 		if (category !== undefined) updateData.category = category;
 		if (keyHighlights !== undefined) updateData.keyHighlights = Array.isArray(keyHighlights) ? keyHighlights : [];
 		if (technology !== undefined) updateData.technology = Array.isArray(technology) ? technology : [];

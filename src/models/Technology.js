@@ -30,7 +30,8 @@ const TechnologySchema = new mongoose.Schema(
 		},
 		description: {
 			type: String,
-			default: "",
+			required: [true, "Technology description is required"],
+			trim: true,
 		},
 		features: {
 			type: [String],

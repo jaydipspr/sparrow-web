@@ -136,6 +136,7 @@ export async function GET(request) {
  *               - name
  *               - category
  *               - img
+ *               - description
  *             properties:
  *               name:
  *                 type: string
@@ -230,6 +231,13 @@ export async function POST(request) {
 			);
 		}
 
+		if (!description || description.trim() === "") {
+			return NextResponse.json(
+				{ error: "Technology description is required" },
+				{ status: 400 }
+			);
+		}
+
 		// Validate image URL format
 		if (!img.startsWith("/") && !img.startsWith("http://") && !img.startsWith("https://")) {
 			return NextResponse.json(
@@ -268,7 +276,7 @@ export async function POST(request) {
 			category: category.trim(),
 			title: (title || "").trim(),
 			img: img.trim(),
-			description: description || "",
+			description: description.trim(),
 			features: Array.isArray(features) ? features : [],
 			isActive: isActive !== undefined ? Boolean(isActive) : true,
 		};

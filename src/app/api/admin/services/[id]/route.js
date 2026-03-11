@@ -262,6 +262,16 @@ export async function PUT(request, { params }) {
 			}
 		}
 
+		// Validate description if provided
+		if (description !== undefined) {
+			if (!description || description.trim() === "") {
+				return NextResponse.json(
+					{ error: "Service description is required" },
+					{ status: 400 }
+				);
+			}
+		}
+
 		// Validate points is an array if provided
 		if (points !== undefined && !Array.isArray(points)) {
 			return NextResponse.json(
@@ -279,7 +289,7 @@ export async function PUT(request, { params }) {
 		}
 		if (title !== undefined) updateData.title = title;
 		if (img !== undefined) updateData.img = img;
-		if (description !== undefined) updateData.description = description;
+		if (description !== undefined) updateData.description = description.trim();
 		if (points !== undefined) updateData.points = points;
 		if (isActive !== undefined) updateData.isActive = isActive;
 

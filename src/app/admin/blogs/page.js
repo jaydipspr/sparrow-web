@@ -168,6 +168,10 @@ export default function AdminBlogs() {
 			toast.error("Category is required.");
 			return;
 		}
+		if (!Array.isArray(formData.content) || formData.content.length === 0) {
+			toast.error("Content paragraphs are required.");
+			return;
+		}
 		if (!formData.img.trim()) {
 			toast.error("Blog image URL is required.");
 			return;
@@ -184,7 +188,7 @@ export default function AdminBlogs() {
 			img: formData.img.trim(),
 			author: formData.author.trim(),
 			category: formData.category.trim(),
-			content: Array.isArray(formData.content) ? formData.content : [],
+			content: Array.isArray(formData.content) ? formData.content.filter((p) => typeof p === "string" && p.trim()) : [],
 			thought: formData.thought || "",
 			thoughtAuthor: (formData.thoughtAuthor || "").trim(),
 			keyLessons: Array.isArray(formData.keyLessons) ? formData.keyLessons : [],
@@ -391,6 +395,27 @@ export default function AdminBlogs() {
 									render: (value) => value || "-",
 								},
 								{
+									key: "viewCount",
+									label: "Visitors",
+									mobileVisible: false,
+									mobileLabel: "Visitors",
+									render: (value, row) => {
+										const count = row.viewCount || value || 0;
+										return (
+											<span style={{ 
+												display: "inline-flex", 
+												alignItems: "center", 
+												gap: "6px",
+												fontWeight: 500,
+												color: "var(--tj-color-text-body-2)"
+											}}>
+												<i className="fa-light fa-eye" style={{ fontSize: "14px", color: "var(--tj-color-theme-primary)" }}></i>
+												{count}
+											</span>
+										);
+									},
+								},
+								{
 									key: "isActive",
 									label: "Status",
 									mobileVisible: false,
@@ -594,7 +619,9 @@ export default function AdminBlogs() {
 
 								{/* Content Paragraphs Manager */}
 								<div className="admin-form-group admin-form-group-full">
-									<label>Content Paragraphs</label>
+									<label>
+										Content Paragraphs <span className="admin-required">*</span>
+									</label>
 									<div className="admin-points-manager">
 										{formData.content && formData.content.length > 0 && (
 											<ul className="admin-points-list">

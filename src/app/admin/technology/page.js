@@ -127,6 +127,10 @@ export default function AdminTechnology() {
 			toast.error("Technology image URL is required.");
 			return;
 		}
+		if (!formData.description?.trim()) {
+			toast.error("Technology description is required.");
+			return;
+		}
 		if (!formData.img.startsWith("/") && !formData.img.startsWith("http://") && !formData.img.startsWith("https://")) {
 			toast.error("Image URL must be a valid URL or a relative path starting with /.");
 			return;
@@ -139,7 +143,7 @@ export default function AdminTechnology() {
 			category: formData.category.trim(),
 			title: formData.title.trim(),
 			img: formData.img.trim(),
-			description: formData.description || "",
+			description: formData.description.trim(),
 			features: Array.isArray(formData.features) ? formData.features : [],
 			isActive: formData.isActive !== undefined ? formData.isActive : true,
 		};
@@ -530,7 +534,9 @@ export default function AdminTechnology() {
 								</div>
 
 								<div className="admin-form-group admin-form-group-full">
-									<label htmlFor="description">Description</label>
+									<label htmlFor="description">
+										Description <span className="admin-required">*</span>
+									</label>
 									<textarea
 										id="description"
 										name="description"
@@ -538,6 +544,7 @@ export default function AdminTechnology() {
 										onChange={handleChange}
 										rows="5"
 										placeholder="Enter technology description"
+										required
 									></textarea>
 								</div>
 

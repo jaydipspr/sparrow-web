@@ -36,16 +36,17 @@ const AdminHeader = ({ toggleSidebar }) => {
 		}
 
 		// Map route names to display names
-		const routeLabels = {
-			services: "Services",
-			technology: "Technology",
-			blogs: "Blogs",
-			portfolio: "Portfolio",
-			contacts: "Contacts",
-			careers: "Careers",
-			team: "Team",
-			settings: "Settings",
-		};
+				const routeLabels = {
+					services: "Services",
+					technology: "Technology",
+					blogs: "Blogs",
+					portfolio: "Portfolio",
+					contacts: "Contacts",
+					careers: "Careers",
+					activities: "Activities",
+					team: "Team",
+					settings: "Settings",
+				};
 
 		// Handle dynamic routes like /admin/services/[slug] or /admin/services/[id]
 		if (routeParts.length === 2) {

@@ -16,6 +16,9 @@ import "./assets/css/nice-select2.css";
 import "./assets/css/odometer-theme-default.css";
 import "./globals.scss";
 import TawkToWidget from "@/components/shared/TawkToWidget";
+import PageViewTracker from "@/components/shared/PageViewTracker";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const bodyFont = Mona_Sans({
 	variable: "--tj-ff-body",
@@ -40,10 +43,23 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en" data-scroll-behavior="smooth" dir="ltr">
-			<body className={`${bodyFont.variable} ${headingFont.variable}`}>
-				{children}
-				<TawkToWidget />
-			</body>
+		<body className={`${bodyFont.variable} ${headingFont.variable}`} suppressHydrationWarning>
+			<PageViewTracker />
+			{children}
+			<TawkToWidget />
+			<ToastContainer
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
+		</body>
 		</html>
 	);
 }
